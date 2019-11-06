@@ -1,0 +1,9 @@
+eclipse.preferences.version=1
+encoding//WebContent/register.jsp=UTF-8
+encoding//WebContent/technology.jsp=UTF-8
+encoding//src/servlet/ChangePassword.java=UTF-8
+encoding//src/servlet/ForgotPassword.java=UTF-8
+encoding//src/servlet/Login.java=UTF-8
+encoding//src/servlet/RegisterEmail.java=UTF-8
+encoding//src/servlet/VerifyRegisteredEmailHash.java=UTF-8
+encoding/<project>=UTF-8
