@@ -2,9 +2,12 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,7 +43,6 @@ public class RegisterEmail extends HttpServlet {
 	 */
     
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
 		String userName = request.getParameter("inputUserName");
@@ -50,9 +52,9 @@ public class RegisterEmail extends HttpServlet {
 			UserAccount up = new UserAccount();
 			up.setUSERNAME(userName);
 			up.setEMAIL(email);
-			java.util.Date date = new java.util.Date();
-			java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-			up.setCREATED_TIME(timestamp);
+			up.setCREATED_TIME(Timestamp.valueOf(LocalDateTime.now()));
+			up.setCODE(Utils.prepareRandomString(30));
+			up.setSCORE(0);
 			up.setROLE_ID(GlobalConstants.BASIC_USER);
 			up.setSTATUS(GlobalConstants.NEW);
 			// generate hash for password
@@ -63,40 +65,38 @@ public class RegisterEmail extends HttpServlet {
 			
 			// generate hash for password
 			up.setEMAIL_VERIFICATION_HASH(BCrypt.hashpw(hash, GlobalConstants.SALT));
-		    try {
 		    	// check whether email exists or not
 		    	if(!UserDAO.isEmailExists(email)) {
 		    		if(!UserDAO.isUserNameExists(userName)) {
 		    		// create account if email not exists
-		    		
+		    		try {
 		    		String id = UserDAO.insertRow(up);
-		    		
-//		    		// send verification email
-		    		
-					MailUtil.sendEmailRegistrationLink(id, email, hash);
-					request.setAttribute(GlobalConstants.MESSAGE, "đăng ký hoàn tất, vui lòng kiểm tra Email của bạn");
-					request.getRequestDispatcher("/messagetouser.jsp").forward(request, response);	
+		    		MailUtil.sendEmailRegistrationLink(id, email, hash);
+		    		request.setAttribute(GlobalConstants.MESSAGE, "đăng ký hoàn tất, vui lòng kiểm tra Email của bạn");
+					request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);	
+		    		}catch(Exception e){
+		    			e.getMessage();
+		    		}
+
 		    	}else {
 		    		request.setAttribute(GlobalConstants.ERROR, "Tên tài khoản đã được sử dụng");
 		    		request.setAttribute("email",email);
-					request.getRequestDispatcher("/register.jsp").forward(request, response);	
+					request.getRequestDispatcher("/WEB-INF/classes/register.jsp").forward(request, response);	
 		    	}
 		    		}else {
 		    		// tell user that the email already in use
 		    		request.setAttribute(GlobalConstants.ERROR, "Email đã được sử dụng");
 		    		request.setAttribute("username",userName);
-		    		request.getRequestDispatcher("/register.jsp").forward(request, response);	
+		    		request.getRequestDispatcher("/WEB-INF/classes/register.jsp").forward(request, response);
 		    	
 		    	}
 				
-			} catch (MessagingException e) {
-				e.getStackTrace();
-			}
+			
 		    	
-		}
+	}
 	   
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		super.doGet(req, resp);
+		
 	}
 }

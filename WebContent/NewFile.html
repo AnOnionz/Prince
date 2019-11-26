@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- import CSS -->
+
+  <style type="text/css">
+  @import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
+  </style>
+</head>
+<script src="//unpkg.com/vue/dist/vue.js"></script>
+<script src="//unpkg.com/element-ui@2.12.0/lib/index.js"></script>
+<body>
+<div id="app">
+<template>
+  <el-button
+    plain>
+    Success
+  </el-button>
+  <el-button
+    plain
+    @click="open2">
+    Warning
+  </el-button>
+  <el-button
+    plain
+    @click="open3">
+    Info
+  </el-button>
+  <el-button
+    plain
+    @click="open4">
+    Error
+  </el-button>
+</template>
+</div>
+</body>
+<script type="text/javascript">
+var Main = {
+		methods: {
+			  open1() {
+	        this.$notify({
+	          title: 'Chúc mừng',
+	          message: 'Giao dịch đã thành công,',
+	          type: 'success',
+	          showClose: false,
+	          duration: 1800
+	        });
+			  }
+	    },
+	    mounted: function () {
+	        this.open1()
+	        }
+}
+	var Ctor = Vue.extend(Main)
+	new Ctor().$mount('#app')
+</script>
+</html>

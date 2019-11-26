@@ -27,7 +27,7 @@ public class MailUtil {
 			}
 		  });
 
-		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=5&userId="+id+"&hash="+hash;
+		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=4&userId="+id+"&hash="+hash;
 		
 		  StringBuilder bodyText = new StringBuilder(); 
 			bodyText.append("<div>")
@@ -63,7 +63,7 @@ public class MailUtil {
 			}
 		  });
 
-		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=4&userId="+id+"&hash="+hash;
+		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=3&userId="+id+"&hash="+hash;
 		
 		  StringBuilder bodyText = new StringBuilder(); 
 			bodyText.append("<div>")

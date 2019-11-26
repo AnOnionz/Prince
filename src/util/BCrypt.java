@@ -766,6 +766,7 @@ package util;
 		public static void main(String[] args) {
 			//$10$DOWSDz/CyKaJ40hslrk5feeK9wvjAlJl7PbaRE3O4nre4RIfw7M5.;
 			BCrypt b = new BCrypt();
-			System.out.println(b.hashpw("1234567", GlobalConstants.SALT));
+			System.out.println(b.hashpw("123456", GlobalConstants.SALT));
+			//$2a$10$DOWSDz/CyKaJ40hslrk5fe0bsQa.Lg7u5LXl6uYx.b3bxaDaPM7Xm
 		}
 	}

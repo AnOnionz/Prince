@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -46,15 +47,20 @@ public class ForgotPassword extends HttpServlet {
 				UserDAO.updateEmailVerificationHashForResetPassword(inputEmail, BCrypt.hashpw(hash,GlobalConstants.SALT));
 				MailUtil.sendResetPasswordLink(up.getUSER_ID()+"", inputEmail, hash);
 				request.setAttribute(GlobalConstants.MESSAGE, "Yêu cầu của bạn được chấp nhận.Chúng tôi đã gửi Email cho bạn!");
-				request.getRequestDispatcher("/messagetouser.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);
 			} else {
 				request.setAttribute(GlobalConstants.ERROR, "Tài khoản không tồn tại");
-				request.getRequestDispatcher("/forgotpassword.jsp").forward(request, response);
+				request.getRequestDispatcher("/WEB-INF/classes/forgotpassword.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
 			
 		}
 		
+	}
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/forgotpassword.jsp");
+	       dispatcher.forward(req, resp);
 	}
 
 }

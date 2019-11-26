@@ -48,16 +48,15 @@
            		   		<%=error %></p>
            		   		</div>
            		   		<% } %>
-            	<a href="forgotpassword.jsp">quên mật khẩu?</a>
+            	<a href="${pageContext.request.contextPath}/ForgotPassword">quên mật khẩu?</a>
             	<input type="submit" class="btn" value="đăng nhập">
             	<div style="display: flex; justify-content: space-between;">
             	<p >bạn chưa có tài khoản?</p>
-            	<a style="font-size: 1.1rem;margin-top: -.11rem" href="register.jsp">tạo tài khoản</a>
+            	<a style="font-size: 1.1rem;margin-top: -.11rem" href="${pageContext.request.contextPath}/Register">tạo tài khoản</a>
             	</div>
             </form>
         </div>	
     </div>
-
     <script type="text/javascript" src="assets/js/login.js"></script>
 </body>
 </html>

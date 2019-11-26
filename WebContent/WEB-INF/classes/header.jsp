@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page import="util.GlobalConstants"%>
 <!DOCTYPE html>
 
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -32,6 +34,8 @@
 	rel="stylesheet">
 <link rel="stylesheet" type="text/css"
 	href="assets/css/fontawesome-all.min.css">
+	<link rel="stylesheet" type="text/css"
+	href="assets/css/vendor/tippy.css">
 <link rel="stylesheet" type="text/css" href="assets/css/iconfont.css">
 <!-- css links
     	======================================== -->
@@ -50,86 +54,54 @@
 <!-- Custom css -->
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 <style type="text/css">
-@import url('https://fonts.googleapis.com/css?family=Roboto|Taviraj&display=swap');
-.containerdangtin {
-  width: auto;
-  margin: auto;
+
+  @import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
+ 
+.main-nav-wrapper {
+	margin-left: 50%;
 }
-a {
-  
-  text-decoration: none;
-  font-weight: 700;
+
+.navbar-inner {
+	height: fit-content;
 }
-@keyframes top {
-  from {
-    transform: translate(0rem, 0);
-  }
-  to {
-    transform: translate(0rem, 3.5rem);
-  }
+
+.dropdown>.dropdown-menu {
+	top: 170%;
+	font-size: 1.5rem;
+	transition: 0.3s all ease-in-out;
+	right: -180%;
+	left: auto;
+	border-radius: .5rem;
+	padding: 1rem 1rem;
 }
-@keyframes bottom {
-  from {
-    transform: translate(-11.5rem, 0);
-  }
-  to {
-    transform: translate(0rem, 0);
-  }
+
+.dropdown-item {
+	padding: .5rem 1.5rem;
 }
-.dangtin {
-  position: relative;
-  letter-spacing: 0.15em;
-  margin: 0 auto;
-  font-size:1.6rem;
-  padding: 1rem 2.5rem;
-  background: transparent;
-  outline: none;
-  color: #121213;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.15s;
+
+.dropdown:hover>.dropdown-menu {
+	display: block;
+	top: 90%;
 }
-.dangtin::after, .dangtin::before {
-  content: "";
-  position: absolute;
-  height: 40%;
-  width: 10%;
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  z-index: -2;
-  border-radius: 50%;
+
+.dropdown {
+	cursor: pointer;
 }
-.dangtin::before {
-  background-color: #c92918;
-  top: -0.75rem;
-  left: 0.5rem;
-  animation: top 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.25s infinite alternate;
-}
-.dangtin::after {
-  background-color: #e74c3c;
-  top: 3rem;
-  left: 13rem;
-  animation: bottom 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.5s infinite alternate;
-}
-.dangtin:hover {
-  color: white;
-}
-.dangtin:hover::before, .dangtin:hover::after {
-  top: 0;
-  height: 100%;
-  width: 100%;
-  border-radius: 0;
-  animation: none;
-}
-.dangtin:hover::after {
-  left: 0rem;
-}
-.dangtin:hover::before {
-  top: 0.5rem;
-  left: 0.35rem;
+
+.dropdown>.dropdown-toggle:active {
+	/*Without this, clicking will make it sticky*/
+	pointer-events: none;
 }
 
 </style>
 </head>
 
 <body>
+<div id="app">
+<template>
+  
+</template>
+</div>
 	<!--[if lte IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
@@ -186,47 +158,65 @@ a {
 	<!-- Main contents
 	================================================ -->
 
-	<!-- End of .side-nav -->
-	<!-- Header starts -->
 	<header class="page-header">
-		<!-- End of .header-top -->
+		<div class="header-top bg-grey-dark-one">
+			<div class="container">
+				<div class="row align-items-center">
+					<div class="col-md">
+						<ul
+							class="header-top-nav list-inline justify-content-center justify-content-md-start">
+							<li class="current-date">25 July, 2019</li>
+							<li><a href="#">Tiện ích</a></li>
+							<li><a href="about-us.html">Giới thiệu</a></li>
+							<li><a href="contact.html">Liên hệ</a></li>
+						</ul>
+						<!-- End of .header-top-nav -->
+					</div>
+					<div class="col-md-auto">
+						<ul class="ml-auto social-share header-top__social-share">
+							<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+							<li><a href="#"><i class="fab fa-twitter"></i></a></li>
+							<li><a href="#"><i class="fab fa-instagram"></i></a></li>
+							<li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- End of .row -->
+			</div>
+			<!-- End of .container -->
+		</div>
 		<nav class="navbar bg-white">
 			<div class="container">
 				<div class="navbar-inner">
 					<div class="brand-logo-container">
-						<a href="index.jsp"> <img src="assets/images/prince.png"
-							alt="" class="brand-logo">
+						<a href="${pageContext.request.contextPath}/Home"> <img
+							src="assets/images/prince.png" alt="" class="brand-logo">
 						</a>
 					</div>
-					<!-- End of .brand-logo-container -->
+
 					<div class="main-nav-wrapper">
 						<ul class="main-navigation list-inline" id="main-menu">
-							<li><a href="business.jsp">kinh Tế</a></li>
-							<li><a href="lifestyle.jsp">đời sống</a></li>
-							<li><a href="technology.jsp">công nghệ</a></li>
-							<li><a href="sports.jsp">thể thao</a></li>
-							<li class="has-dropdown"><a href="#">khác</a>
-								<ul class="submenu">
-									<li><a href="error-404.jsp">404 Error</a></li>
-									<li><a href="under-construction.jsp">Coming Soon</a></li>
-									<li><a href="about-us.jsp">About Us</a></li>
-									<li><a href="team.jsp">Team</a></li>
-									<li><a href="contact.jsp">Contact fUs</a></li>
-								</ul> <!-- End of .submenu --></li>
-								<li><div class="containerdangtin"><a class="dangtin" href="editcontent.jsp">đăng tin</a></div>
+
+							<li><a href="#">Thông báo</a></li>
+							<li><a href="#">Trợ giúp</a></li>
+							<li><a
+								href="${pageContext.request.contextPath}/Create?step=1">Đăng
+									tin</a>
+							<li class="has-dropdown"><div class="dropdown"
+									id="dropdownUser">
+									<i id="user" class="far fa-user"></i>
+									<c:out value='${userName}' />
+									<div class="dropdown-menu" aria-labelledby="dropdownUser">
+										<a class="dropdown-item" href="#">Tài khoản của tôi</a> <a
+											class="dropdown-item"
+											href="${pageContext.request.contextPath}/MyListPost">Quảng
+											cáo của tôi</a> <a class="dropdown-item"
+											href="${pageContext.request.contextPath}/Logout">Đăng
+											xuất</a>
+									</div>
+								</div></li>
+						</ul>
 						<!-- End of .main-navigation -->
-					</div>
-					<!-- End of .main-nav-wrapper -->
-					<div class="navbar-extra-features ml-auto">
-					<i class="far fa-user"></i>
-						
-					</div>
-					<!-- End of .navbar-extra-features -->
-					<div class="main-nav-toggler d-block d-lg-none"
-						id="main-nav-toggler">
-						<div class="toggler-inner">
-							<span></span> <span></span> <span></span>
-						</div>
 					</div>
 					<!-- End of .main-nav-toggler -->
 				</div>
@@ -236,11 +226,12 @@ a {
 		</nav>
 		<!-- End of .navbar -->
 	</header>
-	<!-- End of .page-header -->
-	<!-- End of .main-content -->
+
 	<!-- Javascripts
     	======================================= -->
 	<!-- jQuery -->
+	<script src="//unpkg.com/vue/dist/vue.js"></script>
+<script src="//unpkg.com/element-ui@2.12.0/lib/index.js"></script>
 	<script src="assets/js/vendor/jquery.min.js"></script>
 	<script src="assets/js/vendor/jquery-migrate.min.js"></script>
 	<!-- jQuery Easing Plugin -->
@@ -264,7 +255,34 @@ a {
 	<script src="https://cdn.jsdelivr.net/npm/css-vars-ponyfill@2"></script>
 	<!-- Plugins -->
 	<script src="assets/js/plugins.js"></script>
+	<script src="assets/js/vendor/popper.min.js"></script>
+	<script src="assets/js/vendor/tippy-bundle.iife.js"></script>
 	<!-- Custom Script -->
 	<script src="assets/js/main.js"></script>
 </body>
+<c:if test="${!empty(notify)}">
+<script type="text/javascript">
+var Main = {
+		methods: {
+			  open1() {
+	        this.$notify({
+	          title: '${notify.title}',
+	          message: '${notify.message}',
+	          type: '${notify.type}',
+	          showClose: false,
+	          dangerouslyUseHTMLString: '${notify.html}',
+	          duration: 3000,
+	          offset: 113
+	        });
+			  }
+	    },
+	    mounted: function () {
+	        this.open1()
+	        }
+}
+	var Ctor = Vue.extend(Main)
+	new Ctor().$mount('#app')
+</script>
+	<c:remove var="notify" />
+</c:if>
 </html>

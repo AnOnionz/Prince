@@ -1,9 +1,14 @@
 package beans;
 
 import java.sql.Timestamp;
+import java.util.Date;
+
+import com.mysql.cj.jdbc.Blob;
 
 public class UserAccount {
 	private int USER_ID;
+	
+	private String IDENTIFY;
 
 	private String USERNAME;
 
@@ -16,8 +21,8 @@ public class UserAccount {
 	public String getAVATAR() {
 		return AVATAR;
 	}
-	public void setAVATAR(String aVATAR) {
-		AVATAR = aVATAR;
+	public void setAVATAR(String blob) {
+		AVATAR = blob;
 	}
 
 	private Timestamp CREATED_TIME;
@@ -34,7 +39,7 @@ public class UserAccount {
 
 	private String GENDER;
 
-	private String DATEOFBIRTH;
+	private java.sql.Date DATEOFBIRTH;
 
 	private int AGE;
 
@@ -137,12 +142,12 @@ public class UserAccount {
 		GENDER = gENDER;
 	}
 
-	public String getDATEOFBIRTH() {
+	public java.sql.Date getDATEOFBIRTH() {
 		return DATEOFBIRTH;
 	}
 
-	public void setDATEOFBIRTH(String dATEOFBIRTH) {
-		DATEOFBIRTH = dATEOFBIRTH;
+	public void setDATEOFBIRTH(java.sql.Date date) {
+		DATEOFBIRTH = date;
 	}
 
 	public int getAGE() {
@@ -184,7 +189,12 @@ public class UserAccount {
 	public void setROLE_ID(int rOLE_ID) {
 		ROLE_ID = rOLE_ID;
 	}
-
+	public String getIDENTIFY() {
+		return IDENTIFY;
+	}
+	public void setIDENTIFY(String iDENTIFY) {
+		IDENTIFY = iDENTIFY;
+	}
 	 @Override
 	    public String toString()
 	    {
