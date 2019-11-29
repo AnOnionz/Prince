@@ -21,7 +21,7 @@ public class PostDAO {
 		Post post = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("select post_id, category_id, author_id, click, created_time, title, subtitle1, subtitle2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, score, content1, content2, format, visiter, status from post where author_id=? and format=1");
+			ps = conn.prepareStatement("select post_id, category_id, author_id, click, created_time, title, subtitle1, subtitle2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, score, content1, content2, format, visiter, status from post where author_id=? and format=1 order by created_time desc");
 			ps.setString(1, userId);
 			res = ps.executeQuery();
 			if (res != null) {

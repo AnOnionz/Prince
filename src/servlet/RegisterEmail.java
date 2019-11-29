@@ -45,10 +45,9 @@ public class RegisterEmail extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
-		String userName = request.getParameter("inputUserName");
-		String email = request.getParameter("inputEmail");
-		String password = request.getParameter("inputPassword");
-			
+		String userName = request.getParameter("inputUserName").trim();;
+		String email = request.getParameter("inputEmail").trim();;
+		String password = request.getParameter("inputPassword").trim();;
 			UserAccount up = new UserAccount();
 			up.setUSERNAME(userName);
 			up.setEMAIL(email);

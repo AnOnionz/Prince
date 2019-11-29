@@ -452,6 +452,37 @@ public class UserDAO {
 		}
 		return user;
 	}
+	public static UserAccount selectAuthorById(int id) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet res = null;
+		UserAccount user = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConnection();
+			ps = conn.prepareStatement(
+					"select  username, email, status, created_time, role_id from user where user_id = ?");
+			ps.setInt(1, id);
+			res = ps.executeQuery();
+			if (res != null) {
+				while (res.next()) {
+					user = new UserAccount();
+					
+					user.setUSERNAME(res.getNString(1));
+					user.setEMAIL(res.getString(2));
+					user.setSTATUS(res.getInt(3));
+					user.setCREATED_TIME(res.getTimestamp(4));
+					user.setROLE_ID(res.getInt(5));
+				}
+			}
+			MySQLConnUtils.close(conn, ps, res);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.getMessage();
+			MySQLConnUtils.close(conn, ps, res);
+
+		}
+		return user;
+	}
+
 
 	public static void main(String[] args) throws ParseException {
 		UserDAO ud = new UserDAO();

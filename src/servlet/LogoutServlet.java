@@ -39,7 +39,7 @@ public class LogoutServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		session.invalidate();
 		DBUtils.deleteUserCookie(request, response);
-		response.sendRedirect("/Prince/");
+		response.sendRedirect("/Prince/Login");
 	}
 
 }

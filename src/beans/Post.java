@@ -78,7 +78,10 @@ public class Post {
 	public int getAuth_id() {
 		return author_id;
 	}
-
+	public String getAuthor() {
+		return UserDAO.selectAuthorById(author_id).getUSERNAME();
+		
+	}
 	public void setAuth_id(int author_id) {
 		this.author_id = author_id;
 	}

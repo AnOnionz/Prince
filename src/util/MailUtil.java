@@ -11,6 +11,9 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import beans.UserAccount;
+import beans.UserDAO;
+
 public class MailUtil {
 
 	public static void sendEmailRegistrationLink(String id, String email, String hash) throws AddressException, MessagingException {
@@ -28,22 +31,22 @@ public class MailUtil {
 		  });
 
 		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=4&userId="+id+"&hash="+hash;
-		
+		UserAccount user = UserDAO.selectUSERbyEmail(email);
 		  StringBuilder bodyText = new StringBuilder(); 
 			bodyText.append("<div>")
-			     .append("  Dear User<br/><br/>")
-			     .append("  Thank you for registration. Your mail ("+email+") is under verification<br/>")
-			     .append("  Please click <a href=\""+link+"\">here</a> or open below link in browser<br/>")
+			     .append("  Chào "+user.getUSERNAME()+" <br/><br/>")
+			     .append("  Rất vui khi bạn đã đăng kí tài khoản. Email của bạn ("+email+") đã được xác thực<br/>")
+			     .append("  Vui lòng nhấn vào <a href=\""+link+"\">đây</a> hoặc mở liên kết bên dưới trên trình duyệt<br/>")
 			     .append("  <a href=\""+link+"\">"+link+"</a>")
 			     .append("  <br/><br/>")
-			     .append("  Thanks,<br/>")
-			     .append("  Prince Team")
+			     .append("  Cảm ơn,<br/>")
+			     .append("  Đội ngũ Prince")
 			     .append("</div>");
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(Setup.MAIL_USERNAME));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(email));
-			message.setSubject("Email Registration");
+			message.setSubject("Email Registion");
 			message.setContent(bodyText.toString(), "text/html; charset=utf-8");
 			Transport.send(message);
 	}
@@ -64,16 +67,16 @@ public class MailUtil {
 		  });
 
 		String link = Setup.MAIL_REGISTRATION_SITE_LINK+"?scope=3&userId="+id+"&hash="+hash;
-		
+		UserAccount user = UserDAO.selectUSERbyEmail(email);
 		  StringBuilder bodyText = new StringBuilder(); 
 			bodyText.append("<div>")
-			     .append("  Dear User<br/><br/>")
-			     .append("  We got your reset password request, Find below link to reset password <br/>")
-			     .append("  Please click <a href=\""+link+"\">here</a> or open below link in browser<br/>")
+			     .append("  Chào "+user.getUSERNAME()+" <br/><br/>")
+			     .append("  Yêu cầu đổi mật khẩu của bạn đã được tiếp nhận, đường dẫn bên dưới sẽ dẫn bạn đến trang đổi mật khẩu<br/>")
+			     .append("  Vui lòng nhấp vào <a href=\""+link+"\">đây</a> hoặc mở liên kết bên dưới trên trình duyệt<br/>")
 			     .append("  <a href=\""+link+"\">"+link+"</a>")
 			     .append("  <br/><br/>")
-			     .append("  Thanks,<br/>")
-			     .append("  SodhanaLibrary Team")
+			     .append("  Cảm ơn,<br/>")
+			     .append("  Đội ngũ Prince")
 			     .append("</div>");
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(Setup.MAIL_USERNAME));

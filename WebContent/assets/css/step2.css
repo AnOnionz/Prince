@@ -184,7 +184,6 @@ form {
 }
 
 a {
-	display: block;
 	text-align: right;
 	color: #999;
 	font-size: 1.6rem;
@@ -397,8 +396,8 @@ p {
 	outline: 0;
 	border: none;
 	box-shadow: 2px 2px 10px rgba($ dark, .5);
-	transition: all .5s ease-in-out; &: hover {background : darken( $ white
-	, 5%);
+	transition: all .5s ease-in-out; &: hover {background : darken( $ 
+	white, 5%);
 	transform: scale(1.05);
 	transition: all .3s ease-in-out
 }
@@ -424,15 +423,33 @@ keyframes roll { 0%{
 
 50%{
 left
+
+
 :
-60%;transform
+
+
+60%;
+transform
+
+
 :rotate(168deg)
+
+
 }
 100%{
 transform
+
+
 :rotate(0deg)
-;left
+
+
+;
+left
+
+
 :
+
+
 25%
 }
 }
@@ -443,27 +460,23 @@ keyframes move { 0%{
 
 50%{
 left
+
+
 :
+
+
 60%
 }
 100%{
 left
+
+
 :
+
+
 25%
 }
 }
-footer {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	text-align: center;
-	font-size: 1em;
-	text-transform: uppercase;
-	padding: 10px;
-	font-family: $ font; p {color : $ error;
-	letter-spacing: 2px
-}
-
 a {
 	color: $success;
 	text-decoration: none; &:
@@ -488,4 +501,69 @@ html {
 
 .br {
 	border-radius: 2rem
+}
+
+.labels {
+	margin-right: 1.3rem;
+}
+
+.fileInput {
+	background: aqua;
+	padding: 1em;
+	margin: 1em;
+}
+
+footer {
+	width: 100%;
+}
+
+$
+input-file-color: grey ; $input-file-hover-color: black ; input[type=file]
+	{
+	outline: 0;
+	opacity: 0;
+	pointer-events: none;
+	user-select: none;
+}
+
+.input-file::-webkit-file-upload-button {
+	visibility: hidden;
+}
+
+.input-file::-webkit-file-upload-text {
+	-webkit-appearance: none;
+}
+
+.label {
+	width: 120px;
+	height: 100px;
+	border: 2px dashed$input-file-color;
+	border-radius: 5px;
+	display: block;
+	padding: 1.2em;
+	transition: border 300ms ease;
+	cursor: pointer;
+	text-align: center; i { display : block;
+	font-size: 42px;
+	padding-bottom: 16px;
+}
+
+i, .title {
+	color: $input-file-color;
+	transition: 200ms color;
+}
+
+&
+:hover {
+	border: 2px solid$input-file-hover-color;
+	i
+	,
+	.title
+	{
+	color
+	:
+	$
+	input-file-hover-color;
+}
+}
 }

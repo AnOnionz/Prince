@@ -38,7 +38,7 @@ public class ForgotPassword extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	 	request.setCharacterEncoding("UTF-8");
 	    response.setCharacterEncoding("UTF-8");
-		String inputEmail = request.getParameter("inputEmail");
+		String inputEmail = request.getParameter("inputEmail").trim();;
 		
 		try {
 			UserAccount up = UserDAO.selectUSERbyEmail(inputEmail); 
@@ -53,6 +53,7 @@ public class ForgotPassword extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/classes/forgotpassword.jsp").forward(request, response);
 			}
 		} catch (Exception e) {
+			
 			
 		}
 		

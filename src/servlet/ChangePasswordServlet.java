@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +40,7 @@ public class ChangePasswordServlet extends HttpServlet {
     	if(userId != null) {
     		request.getRequestDispatcher("/WEB-INF/classes/changePassword.jsp").forward(request, response);	
     	} else {
-    		String message = "nhấn vào <a href=\"login.jsp\">đây</a> để đăng nhập";
+    		String message = "nhấn vào <a href=\"/Prince/Login\">đây</a> để đăng nhập";
     		request.setAttribute(GlobalConstants.MESSAGE, message);
 			request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);
     	}
@@ -53,11 +54,11 @@ public class ChangePasswordServlet extends HttpServlet {
 
 		String inputCurrentPassword = null;
 		if(request.getParameter("inputCurrentPassword")!=null) {
-			inputCurrentPassword = BCrypt.hashpw(request.getParameter("inputCurrentPassword"), GlobalConstants.SALT);	
+			inputCurrentPassword = BCrypt.hashpw(request.getParameter("inputCurrentPassword").trim(), GlobalConstants.SALT);	
 		};
 		String inputPassword = null;
 		if(request.getParameter("inputPassword")!=null) {
-			inputPassword = BCrypt.hashpw(request.getParameter("inputPassword"), GlobalConstants.SALT);	
+			inputPassword = BCrypt.hashpw(request.getParameter("inputPassword").trim(), GlobalConstants.SALT);	
 		};
 		Integer userId = (Integer) request.getSession().getAttribute(GlobalConstants.USER_ID);
 		String isResetPasswordVerified = (String) request.getSession().getAttribute(GlobalConstants.IS_RESET_PASSWORD_VERIFIED);
@@ -66,16 +67,24 @@ public class ChangePasswordServlet extends HttpServlet {
 			if(userId!=null && inputCurrentPassword != null) {
 				if(UserDAO.verifyUserIdAndPassword(userId.toString(), inputCurrentPassword)) {
 					UserDAO.updatePassword(userId.toString(), inputPassword);
-					request.setAttribute(GlobalConstants.MESSAGE, "Mật khẩu đã thay đổi thành công.Nhấp vào <a href=\"/WEB-INF/classes/login.jsp\">đây</a> để đăng nhập");
-					request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);
+					request.setAttribute(GlobalConstants.MESSAGE, "Mật khẩu đã thay đổi thành công </br>Nhấp vào <a href=\"/Prince/Login\">đây</a> để đăng nhập");
+					RequestDispatcher dispatcher = this.getServletContext()
+							.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp");
+					dispatcher.forward(request, response);
 				} else {
 					request.setAttribute(GlobalConstants.ERROR, "Sai mật khẩu, vui lòng nhập lại!");
-					request.getRequestDispatcher("/WEB-INF/classes/changepassword.jsp").forward(request, response);
+					RequestDispatcher dispatcher = this.getServletContext()
+							.getRequestDispatcher("/WEB-INF/classes/changepassword.jsp");
+					dispatcher.forward(request, response);
+				
 				}	
 			} else if(userId!=null && isResetPasswordVerified != null) {
 				UserDAO.updatePassword(userId.toString(), inputPassword);
-				request.setAttribute(GlobalConstants.MESSAGE, "Mật khẩu đã thay đổi thành công.Nhấp vào <a href=\"/WEB-INF/classes/login.jsp\">đây</a> để đăng nhập");
-				request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);
+				request.setAttribute(GlobalConstants.MESSAGE, "Mật khẩu đã thay đổi thành công</br>Nhấp vào <a href=\"/Prince/Login\">đây</a> để đăng nhập");
+				RequestDispatcher dispatcher = this.getServletContext()
+						.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp");
+				dispatcher.forward(request, response);
+				
 			}
 		} catch (Exception e) {
 			e.getStackTrace();

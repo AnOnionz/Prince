@@ -1,11 +1,5 @@
 eclipse.preferences.version=1
-encoding//WebContent/NewFile.html=UTF-8
 encoding//WebContent/WEB-INF/classes/register.jsp=UTF-8
 encoding//WebContent/WEB-INF/classes/technology.jsp=UTF-8
 encoding//WebContent/index.jsp=UTF-8
-encoding//src/servlet/ChangePasswordServlet.java=UTF-8
-encoding//src/servlet/ForgotPassword.java=UTF-8
-encoding//src/servlet/LoginServlet.java=UTF-8
-encoding//src/servlet/RegisterEmail.java=UTF-8
-encoding//src/servlet/VerifyRegisteredEmailHash.java=UTF-8
 encoding/<project>=UTF-8

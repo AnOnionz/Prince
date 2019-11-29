@@ -1,59 +1,137 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+<meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<!-- import CSS -->
+<style type="text/css">
+@import "compass/css3";
+ body, html {
+	 height: 100%;
+	 background: #fff;
+}
+ .container {
+	 width: 200px;
+	 height: 100%;
+	 margin: 0 auto 0;
+	 -webkit-perspective: 1000;
+	 -webkit-backface-visibility: hidden;
+	 background: #fff;
+}
+ .pulse-button {
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 margin-left: -50px;
+	 margin-top: -50px;
+	 display: block;
+	 width: 100px;
+	 height: 100px;
+	 font-size: 1.3em;
+	 font-weight: light;
+	 font-family: 'Trebuchet MS', sans-serif;
+	 text-transform: uppercase;
+	 text-align: center;
+	 line-height: 100px;
+	 letter-spacing: -1px;
+	 color: white;
+	 border: none;
+	 border-radius: 50%;
+	 background: #5a99d4;
+	 cursor: pointer;
+	 box-shadow: 0 0 0 0 #5a99d4;
+	 -webkit-animation: pulse 1.5s infinite;
+}
+ .pulse-button:hover {
+	 -webkit-animation: none;
+}
+ @-webkit-keyframes pulse {
+	 70% {
+		 box-shadow: 0 0 0 50px ;
+	}
+	 100% {
+		 box-shadow: 0 0 0 0 ;
+	}
+}
+ 
+</style>
 
-  <style type="text/css">
-  @import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
-  </style>
 </head>
-<script src="//unpkg.com/vue/dist/vue.js"></script>
-<script src="//unpkg.com/element-ui@2.12.0/lib/index.js"></script>
 <body>
-<div id="app">
-<template>
-  <el-button
-    plain>
-    Success
-  </el-button>
-  <el-button
-    plain
-    @click="open2">
-    Warning
-  </el-button>
-  <el-button
-    plain
-    @click="open3">
-    Info
-  </el-button>
-  <el-button
-    plain
-    @click="open4">
-    Error
-  </el-button>
-</template>
+   
+<div class='container' id="1">
+ 
+  <a href="#"><span class="pulse-button" id = "recive">pulse</span></a>
+</div>
+<div class='container' id="2">
+ <span class="pulse-button" id="time">pulse</span>
+  
 </div>
 </body>
+
 <script type="text/javascript">
-var Main = {
-		methods: {
-			  open1() {
-	        this.$notify({
-	          title: 'Chúc mừng',
-	          message: 'Giao dịch đã thành công,',
-	          type: 'success',
-	          showClose: false,
-	          duration: 1800
-	        });
-			  }
-	    },
-	    mounted: function () {
-	        this.open1()
-	        }
+window.onload = function () {
+	document.getElementById("1").style.display = "none";
+    var 
+        display2 = document.querySelector('#time'),
+        timer2 = new CountDownTimer(5);
+
+  
+    timer2.onTick(format(display2)).start();
+
+
+    function format(display) {
+        return function (minutes, seconds) {
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+            display.textContent = minutes + ':' + seconds;
+        };
+    }
+};
+function CountDownTimer(duration, granularity) {
+    this.duration = duration;
+    this.granularity = granularity || 1000;
+    this.tickFtns = [];
+    this.running = false;
 }
-	var Ctor = Vue.extend(Main)
-	new Ctor().$mount('#app')
+CountDownTimer.prototype.start = function() {
+    if (this.running) {
+        return;
+    }
+    this.running = true;
+    var start = Date.now(),
+        that = this,
+        diff, obj;
+    (function timer() {
+        diff = that.duration - (((Date.now() - start) / 1000) | 0);
+        if (diff > 0) {
+            setTimeout(timer, that.granularity);
+        } else {
+            diff = 0;
+            document.getElementById("2").style.display = "none";
+            document.getElementById("1").style.display = "grid";
+            that.running = false;
+            
+        }
+        obj = CountDownTimer.parse(diff);
+        that.tickFtns.forEach(function(ftn) {
+            ftn.call(this, obj.minutes, obj.seconds);
+        }, that);
+    }());
+};
+CountDownTimer.prototype.onTick = function(ftn) {
+    if (typeof ftn === 'function') {
+        this.tickFtns.push(ftn);
+    }
+    return this;
+};
+CountDownTimer.prototype.expired = function() {
+    return !this.running;
+};
+CountDownTimer.parse = function(seconds) {
+    return {
+        'minutes': (seconds / 60) | 0,
+        'seconds': (seconds % 60) | 0
+    };
+};
 </script>
 </html>

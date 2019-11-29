@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.UserAccount;
-import  beans.UserDAO;
+import beans.UserDAO;
 
-import  util.BCrypt;
-import  util.GlobalConstants;
-import  util.Utils;
+import util.BCrypt;
+import util.GlobalConstants;
+import util.Utils;
 import util.MailUtil;
 
 /**
@@ -25,12 +25,13 @@ import util.MailUtil;
 @WebServlet("/VerifyRegisteredEmailHash")
 public class VerifyRegisteredEmailHash extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public VerifyRegisteredEmailHash() {
-        super();
-    }
+
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public VerifyRegisteredEmailHash() {
+		super();
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -48,19 +49,24 @@ public class VerifyRegisteredEmailHash extends HttpServlet {
 			if(UserDAO.verifyEmailHash(userId.toString(), hash) && scope == GlobalConstants.ACTIVATION) {
 			   //update status as active
 			   UserDAO.updateStatus(userId.toString(), GlobalConstants.ACTIVE);
-			   UserDAO.updateEmailVerificationHash(userId.toString(), null);
+			   UserDAO.updateEmailVerificationHash(userId.toString(), "");
 			   message = "Chúc mừng, bạn đã xác thực email hoàn tất. nhấp vào <a href=\"Login\">đây</a> để đăng nhập";
 			} else if(UserDAO.verifyEmailHash(userId.toString(), hash) && scope == GlobalConstants.RESET_PASSWORD) {
 			   //update status as active
 			   UserDAO.updateStatus(userId.toString(), GlobalConstants.ACTIVE);
-			   UserDAO.updateEmailVerificationHash(userId.toString(), null);
+			   UserDAO.updateEmailVerificationHash(userId.toString(), "");
 			   //put some session for user
-			   request.getSession().setAttribute("user", userId);
+			   request.getSession().setAttribute(GlobalConstants.USER_ID, userId);
 			   request.getSession().setAttribute("isResetPasswordVerified", "yes");
 			   RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/resetpassword.jsp");
 		       dispatcher.forward(request, response);
 			  
-			} else {
+			}if(!(UserDAO.verifyEmailHash(userId.toString(), hash)) && scope == GlobalConstants.ACTIVATION) {
+				 message = "Có vẻ như đường dẫn bạn đã cũ, vui lòng kiểm tra lại!";
+			}else if(!UserDAO.verifyEmailHash(userId.toString(), hash) && scope == GlobalConstants.RESET_PASSWORD){
+				message = "Có vẻ như đường dẫn bạn đã cũ, vui lòng kiểm tra lại!";
+			}else {
+			
 			   //now increment verification attempts 
 			   int attempts = UserDAO.incrementVerificationAttempts(userId.toString());
 			   if(attempts == 20) {
@@ -69,19 +75,22 @@ public class VerifyRegisteredEmailHash extends HttpServlet {
 				   UserDAO.updateEmailVerificationHash(userId.toString(), BCrypt.hashpw(hashcode, GlobalConstants.SALT));
 				   UserAccount up = UserDAO.selectUSER(userId.toString());
 				   MailUtil.sendEmailRegistrationLink(userId.toString(), up.getEMAIL(), hashcode);
-				   message = "Bạn đã nhập quá 20 lần,chúng tôi cũng đã gửi Email xác thực mới cho bạn!";
+				   message = "Bạn đã xác thực quá 20 lần,chúng tôi cũng đã gửi Email xác thực mới cho bạn!";
 			   } 
 			}
 		 
-		} catch (Exception e) {
-			message = e.getMessage();
+		}catch(
+
+	Exception e)
+	{
 			e.getMessage();
-		}
-		if(message!=null) {
-			request.setAttribute(GlobalConstants.MESSAGE, message);
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp");
-		       dispatcher.forward(request, response);
-		} 
+		}if(message!=null)
+	{
+		request.setAttribute(GlobalConstants.MESSAGE, message);
+		RequestDispatcher dispatcher = this.getServletContext()
+				.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp");
+		dispatcher.forward(request, response);
 	}
+}
 
 }

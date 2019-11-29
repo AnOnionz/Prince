@@ -8,24 +8,6 @@
 <title>Prince - Đăng tin</title>
 <!-- links for favicon
     	======================================== -->
-<link rel="apple-touch-icon" sizes="57x57"
-	href="assets/favicon/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60"
-	href="assets/favicon/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72"
-	href="assets/favicon/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76"
-	href="assets/favicon/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114"
-	href="assets/favicon/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120"
-	href="assets/favicon/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144"
-	href="assets/favicon/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152"
-	href="assets/favicon/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180"
-	href="assets/favicon/apple-icon-180x180.png">
 <link rel="icon" type="image/png" sizes="192x192"
 	href="assets/favicon/android-icon-192x192.png">
 <link rel="icon" type="image/png" sizes="32x32"
@@ -35,73 +17,12 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="assets/favicon/favicon-16x16.png">
 <link rel="manifest" href="assets/favicon/manifest.json">
-<link rel="stylesheet" href="assets/css/step2.css">
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage"
 	content="assets/favicon/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
-<style type="text/css">
-.labels {
-	margin-right: 1.3rem;
-}
+<link rel="stylesheet" href="assets/css/step2.css">
 
-.fileInput {
-	background: aqua;
-	padding: 1em;
-	margin: 1em;
-}
-
-$
-input-file-color: grey ; $input-file-hover-color: black ; input[type=file]
-	{
-	outline: 0;
-	opacity: 0;
-	pointer-events: none;
-	user-select: none;
-}
-
-.input-file::-webkit-file-upload-button {
-	visibility: hidden;
-}
-
-.input-file::-webkit-file-upload-text {
-	-webkit-appearance: none;
-}
-
-.label {
-	width: 120px;
-	height: 100px;
-	border: 2px dashed$input-file-color;
-	border-radius: 5px;
-	display: block;
-	padding: 1.2em;
-	transition: border 300ms ease;
-	cursor: pointer;
-	text-align: center; i { display : block;
-	font-size: 42px;
-	padding-bottom: 16px;
-}
-
-i, .title {
-	color: $input-file-color;
-	transition: 200ms color;
-}
-
-&
-:hover {
-	border: 2px solid$input-file-hover-color;
-	i
-	,
-	.title
-	{
-	color
-	:
-	$
-	input-file-hover-color;
-}
-}
-}
-</style>
 </head>
 <body>
 	<c:import url="/WEB-INF/classes/header.jsp" />
@@ -178,7 +99,7 @@ i, .title {
 		          title: 'Mẹo',
 		          message: 'nhìn bên phải màn hình để xem preview!',
 		          showClose: false,
-		          duration: 3000,
+		          duration: 2800,
 		          offset: 113
 		        });
 				  }
@@ -190,10 +111,10 @@ i, .title {
 	
 		var Ctor = Vue.extend(Main)
 		new Ctor().$mount('#app')
-	},900);
+	},1000);
 	</script>
 	<div class="main-content">
-		<div class="row mt-3">
+		<div class="row mt-3 mb-4">
 			<div class="col-lg-6">
 				<div class="row br mx-5 mt-4 pb-5" style="background: aliceblue">
 					<form data-toggle="validator" action="CreatePostStep2"
@@ -286,8 +207,7 @@ i, .title {
 											<ul class="list-group">
 												<div class="conatiner">
 													<div class="row">
-														<div class="col-3 ml-5">
-
+														<div class="col-3 ml-5 mx-auto">
 															<label class="btn btn-info"> <i
 																class="fa fa-image"></i>Ảnh bìa<input type="file"
 																style="display: none;" id="file-input1"
@@ -296,9 +216,6 @@ i, .title {
 																>
 															</label>
 
-														</div>
-														<div class="col-8 px-0">
-															
 														</div>
 													</div>
 													<div class="row">
@@ -391,7 +308,7 @@ i, .title {
 					</div>
 				</div>
 			</div>
-			<div class="col-lg-6" style="background: aliceblue">
+			<div class="col-lg-6 px-0 pr-4" style="background: aliceblue">
 				<div class="main-content">
 					<!-- Banner starts -->
 					<section class="banner banner__single-post banner__standard">
@@ -424,7 +341,7 @@ i, .title {
 								</div>
 								<!-- End of .col-lg-6 -->
 
-								<div class="col-lg-6">
+								<div class="col-lg-6 px-auto">
 									<img src="assets/images/post/latest-post.jpg" alt=""
 										class="img-fluid" width="280" height="280" id="image">
 								</div>
@@ -463,9 +380,10 @@ i, .title {
 												<h3 id="title2">Tiêu đề phụ 2</h3>
 
 												<figure>
-													<img
+												<div class="col-12"><img
 														src="assets/images/post-single-gallery/post-single-img-1.jpg"
-														alt="img" id="image2">
+														alt="img" id="image2" class="img-fluid mx-auto"></div>
+													
 													<figcaption style="font-size: 1.4rem; text-align: center;"
 														id="figure2">chú thích 2</figcaption>
 												</figure>
@@ -524,7 +442,11 @@ i, .title {
 					<!-- End of footer -->
 
 				</div>
-			</div>
+	</div>
+	</div>
+			
+		<div class= "row mx-auto">
+		<c:import url="/WEB-INF/classes/footer.jsp" />
 		</div>
 	</div>
 

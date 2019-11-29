@@ -36,8 +36,8 @@ input[type=radio], input[type=checkbox] {
 <body>
 	<c:import url="/WEB-INF/classes/header.jsp" />
 
-	<div class="container-fluid mt-5">
-		<div class="row justify-content-center mt-5">
+	<div class="container-fluid mt-5 mb-5 pb-5">
+		<div class="row justify-content-center mt-5 mb-5">
 			<div class="col-6">
 			<c:if test="${empty(extend)}">
 				<form action="CreatePostStep1"  method="post" role="form"
@@ -220,8 +220,9 @@ input[type=radio], input[type=checkbox] {
 					</a>
 				</div>
 			</div>
-		</div>
+		</div>	
 	</div>
+	<c:import url="/WEB-INF/classes/footer.jsp" />	
 
 	<script src="assets/js/vendor/jquery.min.js"></script>
 	<script src="assets/js/vendor/bootstrap.min.js"></script>

@@ -123,7 +123,6 @@ public class CreatePostStep1 extends HttpServlet {
 				break;
 			case "3":
 				
-				
 					RequestDispatcher dispatcher2 = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/uppoststep3.jsp");
 					dispatcher2.forward(request, response);
 					break;
@@ -134,6 +133,7 @@ public class CreatePostStep1 extends HttpServlet {
 				break;
 			default:
 				response.sendRedirect("/Prince/Create?step=1");
+			
 				break;
 			}
 //			if(step.equalsIgnoreCase("1") && stepcompleted == "0") {
@@ -151,7 +151,6 @@ public class CreatePostStep1 extends HttpServlet {
 //			response.sendError(404);
 		
 		}catch(Exception e) {
-			
 		}
 		
 		

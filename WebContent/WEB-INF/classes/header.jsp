@@ -26,7 +26,14 @@
 <title></title>
 <!-- links for favicon
     	======================================== -->
-
+	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+	<link rel="manifest" href="assets/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
 <!-- Icon fonts
     	======================================== -->
 <link
@@ -56,10 +63,6 @@
 <style type="text/css">
 
   @import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
- 
-.main-nav-wrapper {
-	margin-left: 50%;
-}
 
 .navbar-inner {
 	height: fit-content;
@@ -92,7 +95,18 @@
 	/*Without this, clicking will make it sticky*/
 	pointer-events: none;
 }
-
+	html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+/* Optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
 </style>
 </head>
 
@@ -167,8 +181,8 @@
 							class="header-top-nav list-inline justify-content-center justify-content-md-start">
 							<li class="current-date">25 July, 2019</li>
 							<li><a href="#">Tiện ích</a></li>
-							<li><a href="about-us.html">Giới thiệu</a></li>
-							<li><a href="contact.html">Liên hệ</a></li>
+							<li><a href="${pageContext.request.contextPath}/About">Giới thiệu</a></li>
+							<li><a href="contact.html">Trợ giúp</a></li>
 						</ul>
 						<!-- End of .header-top-nav -->
 					</div>
@@ -187,25 +201,26 @@
 		</div>
 		<nav class="navbar bg-white">
 			<div class="container">
-				<div class="navbar-inner">
-					<div class="brand-logo-container">
+			
+				<div class="navbar-inner d-flex justify-content-end ">
+					<div class="brand-logo-container mr-auto">
 						<a href="${pageContext.request.contextPath}/Home"> <img
 							src="assets/images/prince.png" alt="" class="brand-logo">
 						</a>
 					</div>
-
-					<div class="main-nav-wrapper">
+					
+					<div class="main-nav-wrapper ">
 						<ul class="main-navigation list-inline" id="main-menu">
 
-							<li><a href="#">Thông báo</a></li>
-							<li><a href="#">Trợ giúp</a></li>
+							<li><a href="${pageContext.request.contextPath}/View">Thông báo</a></li>
+							<li><a href="${pageContext.request.contextPath}/Contact">Liên hệ</a></li>
 							<li><a
 								href="${pageContext.request.contextPath}/Create?step=1">Đăng
 									tin</a>
 							<li class="has-dropdown"><div class="dropdown"
 									id="dropdownUser">
 									<i id="user" class="far fa-user"></i>
-									<c:out value='${userName}' />
+									${userName}
 									<div class="dropdown-menu" aria-labelledby="dropdownUser">
 										<a class="dropdown-item" href="#">Tài khoản của tôi</a> <a
 											class="dropdown-item"
@@ -218,6 +233,7 @@
 						</ul>
 						<!-- End of .main-navigation -->
 					</div>
+				
 					<!-- End of .main-nav-toggler -->
 				</div>
 				<!-- End of .navbar-inner -->
@@ -271,7 +287,7 @@ var Main = {
 	          type: '${notify.type}',
 	          showClose: false,
 	          dangerouslyUseHTMLString: '${notify.html}',
-	          duration: 3000,
+	          duration: 2000,
 	          offset: 113
 	        });
 			  }

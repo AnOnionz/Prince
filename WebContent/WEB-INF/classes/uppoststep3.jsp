@@ -129,7 +129,8 @@ span, h5 {
 					<h5>Quảng cáo cần thanh toán</h5>
 				</div>
 				<div class="col-lg-7 col-sm-5 mx-0 mx-0 pt-3 pb-3 ">
-					<button class="float-right">Thêm quảng cáo</button>
+					<button class="float-right btn btn-primary"><a class="" href="${pageContext.request.contextPath}/Create?step=1"
+						style="text-align: left; display: block;">Thêm quảng cáo</a></button>
 				</div>
 			</div>
 			<div class="row">
@@ -179,7 +180,7 @@ span, h5 {
 								<div class=" col-1 col-sm-1 px-0 mx-auto">
 									<span><strong>&#36;${item.cost}</strong></span>
 									<div class="item">
-										<c:if test="${empty(extend)}">
+										<c:if test="${item.extend==0}">
 											<div class="actions-block"
 												onmouseover="this.style.width='36px';"
 												onmouseout="this.style.width='36px';">
@@ -195,7 +196,7 @@ span, h5 {
 												</ul>
 											</div>
 										</c:if>
-										<c:if test="${!empty(extend)}">
+										<c:if test="${item.extend==1}">
 											<div class="actions-block"onmouseover="this.style.width='80px';" 
 												onmouseout="this.style.width='36px';">
 												<ul class="actions-list">
@@ -219,30 +220,29 @@ span, h5 {
 				</c:forEach>
 			</div>
 
-			<div class="row ">
-				<div class="col-lg-2 mx-2 px-5 mt-4 mb-5 pb-5 mx-auto">
-					<a href="${pageContext.request.contextPath}/Create?step=1"
-						style="text-align: left; display: block;">Thêm quảng cáo</a>
-				</div>
-				<div class="col-lg-2 mx-2 px-5 mt-4 mb-5 pb-5 mx-auto">
-					<a href="${pageContext.request.contextPath}/CreatePayment"
-						style="text-align: center; display: block;">Thanh toán</a>
+			<div class="row mt-5 pb-5 mb-5 pt-5 m-b-xs-70">
+				
+				<div class="col-lg-12 mx-auto">
+				
+					<a href="${pageContext.request.contextPath}/CreatePayment" class=""
+						style="text-align: center; display: block;"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png" alt="PayPal Logo"></a>
 				</div>
 			</div>
 		</c:if>
-		<c:if test="${	empty(listPayment)}">
-			<div class="row mx-auto mb-3 pt-5 mt-5 ">
+		<c:if test="${empty(listPayment)}">
+			<div class="row mx-auto pt-5 mt-5 mb-4 pb-5" style="height: 430px;">
 				<div class="col-8 mx-auto">
-					<h5 class="mb-2">Không tìm thấy quảng cáo nào cần thanh toán</h5>
-				</div>
-				<div class="col-8 mx-auto">
+					<h5 class="mb-5">Không tìm thấy quảng cáo nào cần thanh toán</h5>
+					<div class="col-12 mx-auto">
 					<a href="${pageContext.request.contextPath}/Create?step=1"><i
-						class="fas fa-cart-plus"> Tạo quảng cáo</i></a>
+						class="fas fa-cart-plus">Tạo quảng cáo</i></a>
 				</div>
-
+				</div>
+				
 			</div>
 		</c:if>
 	</div>
+	<c:import url="/WEB-INF/classes/footer.jsp" />	
 </body>
 <script type="text/javascript">
 	tippy('.action', {

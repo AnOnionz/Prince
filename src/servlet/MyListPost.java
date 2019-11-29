@@ -50,6 +50,9 @@ public class MyListPost extends HttpServlet {
 		ArrayList<Post> listVideo = PostDAO.selectVideoByUser(authorId);
 		ArrayList<Post> listBanner = PostDAO.selectBannerByUser(authorId);
 		request.getSession().setAttribute("listPost", listPost);
+		if (request.getSession().getAttribute("listPayment")==null) {
+			request.getSession().removeAttribute("countPayment");
+		}
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/listpost.jsp");
 	      dispatcher.forward(request, response);
 		}
@@ -60,7 +63,6 @@ public class MyListPost extends HttpServlet {
 				Post post = PostDAO.selectPostById(request.getParameter("id"));
 				Notify.createNotify("Thông báo","<strong><i>"+post.getTitle()+" </i></strong> đã bị xóa trước ngày hết hạn!", "warning","false", request, response);
 			}catch(Exception e) {
-				
 			}
 			response.sendRedirect("/Prince/MyListPost");
 		}	

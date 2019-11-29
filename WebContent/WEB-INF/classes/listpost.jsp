@@ -18,7 +18,7 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- Page Title
     	======================================== -->
-<title>Prince - Posts</title>
+<title>Prince - Đã đăng</title>
 <!-- links for favicon
     	======================================== -->
 <link rel="icon" type="image/png" sizes="192x192"
@@ -40,7 +40,7 @@ span {
 }
 
 .col-lg-10 {
-	background-color: #EDF3F8;
+	background-color: #F2F6FC;
 }
 
 .bg {
@@ -48,12 +48,13 @@ span {
 }
 
 .bg-teal {
-background-image: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);
-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px
+	background-image: linear-gradient(-20deg, #00cdac 0%, #8ddad5 100%);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px
 		rgba(0, 0, 0, 0.22);
-		transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
-		padding: -1rem;
+	transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+	padding: -1rem;
 }
+
 span, h5 {
 	word-break: break-word;
 }
@@ -131,20 +132,21 @@ span, h5 {
 </style>
 </head>
 <body>
+
 	<c:import url="/WEB-INF/classes/header.jsp" />
-	<div class="container-fluid ">
+	<div class="container-fluid pt-4 pb-4 " style="margin-bottom: 18rem;">
 		<div class="row">
 			<div class="col-lg-2 bg-teal px-0 mx-0 ">
 				<div class="col-lg-12 bg-teal px-0 mx-0 ">
-				<div class="row justify-content-md-center text-center pt-5 mx-auto">
-					<div class="col-6 col-lg-12 mb-2 ">
-						<img
-							src="https://cdn.dribbble.com/users/3399/screenshots/5826529/rework_4x.png"
-							alt="img" class="rounded-circle" width="150px" height="150px">
-					</div>
-					<div class="col-6 col-lg-12 mb-2 ">
-						<span><c:out value="${userName}"></c:out></span>
-					</div>
+					<div class="row justify-content-md-center text-center pt-5 mx-auto">
+						<div class="col-6 col-lg-12 mb-2 ">
+							<img
+								src="https://cdn.dribbble.com/users/3399/screenshots/5826529/rework_4x.png"
+								alt="img" class="rounded-circle" width="150px" height="150px">
+						</div>
+						<div class="col-6 col-lg-12 mb-2 ">
+							<span><c:out value="${userName}"></c:out></span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -152,7 +154,17 @@ span, h5 {
 				<c:if test="${!empty(listPost)}">
 					<!-- bai viet -->
 					<div class="row mx-auto mb-3 ">
-						<h4 class="mb-2">Bài viết</h4>
+						<div class="col-6">
+							<h4 class="mb-2">Bài viết</h4>
+						</div>
+						<c:if test="${!empty(countPayment)}">
+						<div class="col-6">
+							<a href="${pageContext.request.contextPath}/Create?step=3" class="mr-5 float-right"
+								style="padding: .5rem 1.5rem; background: #29B67B; border-radius: 1rem;"><i
+								class="fas fa-shopping-cart mr-2" style="font-size: 2rem;"></i><span
+								style="font-size: 2rem;" id="countPayment">${countPayment}</span></a>
+						</div>
+						</c:if>
 					</div>
 
 					<div class="box col-lg-11 mx-auto px-0 pt-4 mb-5 bg-white"
@@ -168,11 +180,11 @@ span, h5 {
 									</div>
 									<div class="row">
 										<div class="col-sm-6  mx-auto">Tiền 1 click</div>
-										<div class="col-sm-6 ">${item.costPerClick} &#36;</div>
+										<div class="col-sm-6 ">${item.costPerClick}&#36;</div>
 									</div>
 									<div class="row">
 										<div class="col-lg-6">Tổng tiền</div>
-										<div class="col-lg-6">${item.cost} &#36;</div>
+										<div class="col-lg-6">${item.cost}&#36;</div>
 									</div>
 									<div class="row">
 										<div class="col-6">Tổng click</div>
@@ -212,19 +224,19 @@ span, h5 {
 											<div class=" col-2 col-sm-2 px-0 mx-2 ml-2  ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto"> 10 lần xem</span>
+													<span class="mx-auto"> ${item.visiter} lần xem</span>
 												</div>
 											</div>
 											<div class="col-1 col-sm-2 px-0 mx-2 ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto">10 lần click</span>
+													<span class="mx-auto">${item.click} lần click</span>
 												</div>
 											</div>
 											<div class=" col-2 col-sm-3 px-0 mx-2 ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto">còn 300 click</span>
+													<span class="mx-auto">còn ${item.getClickGuess()-item.click} click</span>
 												</div>
 											</div>
 										</div>
@@ -237,7 +249,7 @@ span, h5 {
 															aria-hidden class="fas fa-ellipsis-h"></i><span
 															class="sr-only">Show Actions</span></a></li>
 
-													<li><a href="#" class="action"
+													<li><a id="view${item.post_id}" class="action"
 														data-tippy-content="Xem"><i aria-hidden
 															class="fas fa-clone"></i><span class="sr-only">Xem</span></a></li>
 													<li><a
@@ -249,6 +261,24 @@ span, h5 {
 										</div>
 									</div>
 								</div>
+								<script>
+        $(document).ready(function () {
+            jQuery("#view${item.post_id}").click(function(){
+                var id = ${item.post_id};
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
 							</c:if>
 							<c:if test="${item.status==5}">
 								<div class="rowdata row  pt-4 px-4 mx-4 rounded"
@@ -271,7 +301,8 @@ span, h5 {
 													<div class="col" style="display: contents;">
 														<span
 															style="word-break: break-word; font-size: 1.3rem; color: #259B78"
-															contenteditable="true">${item.createTimeToString()} </span>
+															contenteditable="true">${item.createTimeToString()}
+														</span>
 													</div>
 												</div>
 											</div>
@@ -301,20 +332,24 @@ span, h5 {
 												onmouseover="this.style.width='36px';"
 												onmouseout="this.style.width='36px';">
 												<ul class="actions-list">
-													<li><a href="${pageContext.request.contextPath}/Extend?id=${item.post_id}" id="extend${item.post_id}" class="action-expand plus"
+													<li><a onClick="extendOrder()"
+														href="${pageContext.request.contextPath}/Extend?id=${item.post_id}"
+														id="extend${item.post_id}" class="action-expand plus"
 														data-tippy-content="Gia hạn"><i aria-hidden
-															class="fas fa-cart-plus"></i><span class="sr-only">Gia hạn</span></a></li>
+															class="fas fa-cart-plus"></i><span class="sr-only">Gia
+																hạn</span></a></li>
 												</ul>
 											</div>
 										</div>
-										<c:forEach items="${listPayment}" var="itempay" varStatus="loop">
-										<c:if test="${item.post_id == itempay.post_id}">
-										<script type="text/javascript">
+										<c:forEach items="${listPayment}" var="itempay"
+											varStatus="loop">
+											<c:if test="${item.post_id == itempay.post_id}">
+												<script type="text/javascript">
 										$( document ).ready(function() {
 											 $('extend${item.post_id}').first().removeAttr('href');
 										})
 										</script>
-										</c:if>
+											</c:if>
 										</c:forEach>
 									</div>
 
@@ -350,16 +385,21 @@ span, h5 {
 				</c:if>
 				<c:if test="${empty(listPost)}">
 					<div class="row mx-auto mb-3 ">
-					<div class="col-8 mx-auto"><h5 class="mb-2">Bạn chưa đăng quảng cáo nào</h5></div>
-						<div class="col-8 mx-auto"><a href="${pageContext.request.contextPath}/Create?step=1"><i
-							class="fas fa-cart-plus"> Tạo quảng cáo</i></a></div>
-						
+						<div class="col-8 mx-auto">
+							<h5 class="mb-2">Bạn chưa đăng quảng cáo nào</h5>
+						</div>
+						<div class="col-8 mx-auto">
+							<a href="${pageContext.request.contextPath}/Create?step=1"><i
+								class="fas fa-cart-plus"> Tạo quảng cáo</i></a>
+						</div>
+
 					</div>
 				</c:if>
 
 			</div>
 		</div>
 	</div>
+	<c:import url="/WEB-INF/classes/footer.jsp" />
 </body>
 <script type="text/javascript">
 	tippy('.action', {

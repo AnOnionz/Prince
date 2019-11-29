@@ -22,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
 import org.apache.commons.fileupload.FileItem;
@@ -67,6 +68,7 @@ public class CreatePostStep2 extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		HttpSession session = request.getSession(true);
 		try {
 		int index = Integer.parseInt(request.getParameter("index"));
 		ArrayList<Post> listPayment = (ArrayList<Post>) request.getSession().getAttribute("listPayment");
@@ -75,10 +77,13 @@ public class CreatePostStep2 extends HttpServlet {
 				listPayment.remove(i);
 			}
 		}
-			request.getSession().setAttribute("listPayment", listPayment);
+			session.setAttribute("countPayment", listPayment.size());
+			if(listPayment.size()==0) {
+				request.getSession().removeAttribute("countPayment");
+			}
+			session.setAttribute("listPayment", listPayment);
 			Notify.createNotify("Thông báo","xóa thành công", "success","false", request, response);
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/uppoststep3.jsp");
-			dispatcher.forward(request, response);
+			response.sendRedirect("/Prince/Create?step=3");
 		
 		//response.sendRedirect("/Prince/Create?step=3");
 		
@@ -196,10 +201,11 @@ public class CreatePostStep2 extends HttpServlet {
 			post.setImage2(listFile.get(9));
 			post.setVideo(listFile.get(11));
 			//hoan tat buoc 2
-			request.getSession().setAttribute("stepcompleted", 2);
+			request.getSession(true).setAttribute("stepcompleted", 2);
 			//them post vua tao vao danh sach cho thanh toan
 			listPayment.add(post);
-			request.getSession().setAttribute("listPayment", listPayment);
+			request.getSession(true).setAttribute("listPayment", listPayment);
+			request.getSession(true).setAttribute("countPayment", listPayment.size());
 			Notify.createNotify("Tạo quảng cáo thành công","quảng cáo đang chờ thanh toán", "success","false", request, response);
 			response.sendRedirect("/Prince/Create?step=3");
 		}

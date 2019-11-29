@@ -80,6 +80,7 @@ public class CreatePostStep3 extends HttpServlet {
 				}
 				UserDAO.updateRole(String.valueOf(req.getSession().getAttribute(GlobalConstants.USER_ID)),GlobalConstants.CREATER);
 				req.getSession().removeAttribute("listPayment");
+				req.getSession().removeAttribute("countPayment");
 			} catch (PayPalRESTException e) {
 				
 			}

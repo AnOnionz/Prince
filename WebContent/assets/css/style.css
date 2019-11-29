@@ -5458,10 +5458,6 @@ textarea {
 	padding: 3.1rem 0.5rem 3rem;
 }
 
-.main-navigation li.has-dropdown {
-	margin-right: 3.4rem;
-}
-
 @media (max-width: 991px) {
 	.main-navigation li.has-dropdown {
 		margin-right: 0;
@@ -8060,7 +8056,6 @@ article li {
 
 .post-details figure img {
 	width: 100%;
-	margin: 0;
 }
 
 .axil-post-title {
@@ -9062,9 +9057,6 @@ ul.gallery img {
 }
 
 /*--Footer--*/
-.page-footer {
-	padding: 6rem 0;
-}
 
 .footer-widget {
 	margin-bottom: 3rem;

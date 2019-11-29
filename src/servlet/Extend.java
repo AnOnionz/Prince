@@ -63,7 +63,7 @@ public class Extend extends HttpServlet {
 					isextend=1;
 					Notify.createNotify("Rất tiếc","quảng cáo đang chờ gia hạn!", "warning","false", request, response);
 					RequestDispatcher dispatcher = this.getServletContext()
-					.getRequestDispatcher("/WEB-INF/classes/uppoststep3.jsp");
+					.getRequestDispatcher("/WEB-INF/classes/listpost.jsp");
 					dispatcher.forward(request, response);
 				}
 			}
@@ -72,9 +72,10 @@ public class Extend extends HttpServlet {
 			Post post = PostDAO.selectPostById(postId);
 			post.setExtend(1);
 			listPayment.add(post);
+			session.setAttribute("countPayment", listPayment.size());
 			session.setAttribute("listPayment", listPayment);
 			session.setAttribute("extend", "open");
-			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/uppoststep3.jsp");
+			RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/listpost.jsp");
 				dispatcher.forward(request, response);
 			}
 			// che do chinh sua

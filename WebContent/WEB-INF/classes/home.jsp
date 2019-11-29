@@ -16,7 +16,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- Page Title
     	======================================== -->
-	<title>Prince - Home</title>
+	<title>Prince - Trang chủ</title>
 	<!-- links for favicon
     	======================================== -->
 	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
