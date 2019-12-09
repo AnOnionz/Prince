@@ -1,7 +1,9 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
   pageEncoding="UTF-8"%>
   <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
   <%@page import="util.GlobalConstants"%>
+    <%@page import="beans.*"%>
 <!DOCTYPE html>
 <head>
 	<!-- Basic metas
@@ -47,30 +49,52 @@
 	<c:import url="/WEB-INF/classes/header.jsp"/>
 		<div class="recent-news-wrapper section-gap p-t-xs-15 p-t-sm-60">
 			<div class="container">
+			<% try{
+				ArrayList<Post> postPresent = PostDAO.selectPostPresent(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));				
+			%>
+			
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="axil-latest-post">
 							<div class="media post-block m-b-xs-20">
 								<figure class="fig-container">
-									<a href="post-format-standard.jsp"><img src="assets/images/post/latest-post.jpg"
+									<a ><img id="view<%=postPresent.get(0).getPost_id()%>" src="<%=postPresent.get(0).getImage() %>"
 											alt="latest post"></a>
 									<div class="post-cat-group m-b-xs-10">
 										<a href="business.jsp"
-											class="post-cat cat-btn bg-color-blue-one">Công Nghệ</a>
+											class="post-cat cat-btn bg-color-blue-one"><%=postPresent.get(0).getCategoryName()%></a>
 									</div>
 								</figure>
 								<div class="media-body">
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Máy thực tế ảo đang dần phổ biến</a></h3>
+									<h3 id="viewTitle<%=postPresent.get(0).getPost_id()%>" class="axil-post-title hover-line hover-line" style=" word-wrap: break-word;cursor: default;"><a
+											><%=postPresent.get(0).getTitle()%></a></h3>
 									<div class="post-metas">
 										<ul class="list-inline">
-											<li>Tác giả <a href="#" class="post-author">Lê Long</a></li>
-											<li><i class="dot">.</i>23/10/2019</li>
-											<li><a href="#"><i class="feather icon-activity"></i>5k lượt xem</a></li>
-											<li><a href="#"><i class="feather icon-share-2"></i>230 chia sẻ</a></li>
+											<li>Đăng bởi <a class="post-author"><strong><%=postPresent.get(0).getAuthorName() %></strong></a></li>
+											<li><i class="dot">.</i><%=postPresent.get(0).getStartDate()%></li>
+											<li><a><i class="feather icon-activity"></i><%=postPresent.get(0).getVisiter()%> lượt xem</a></li>
+											
 										</ul>
 									</div>
 								</div>
+								<script>
+        $(document).ready(function () {
+            jQuery("#view<%=postPresent.get(0).getPost_id()%>,#viewTitle<%=postPresent.get(0).getPost_id()%>").click(function(){
+                var id = <%=postPresent.get(0).getPost_id()%>;
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
 							</div>
 							<!-- End of .post-block -->
 						</div>
@@ -81,353 +105,63 @@
 						<div class="axil-recent-news">
 							<div class="section-title d-flex m-b-xs-30">
 								<h2 class="axil-title">Mới nhất</h2>
-								<a href="#" class="btn-link ml-auto">xem tất cả</a>
 							</div>
 							<!-- End of .section-title -->
 							<div class="axil-content">
+							<%for(int i = 1 ; i< postPresent.size(); i++){ %>
 								<div class="media post-block m-b-xs-30">
-									<a href="post-format-standard.jsp" class="align-self-center"><img
-											class=" m-r-xs-30" src="assets/images/post/post-img-18.jpg" alt=""></a>
+									<a class="align-self-center"><img id="view<%=postPresent.get(i).getPost_id()%>"
+											class=" m-r-xs-30" src="<%=postPresent.get(i).getImage()%>" alt="Ảnh bìa"></a>
 									<div class="media-body">
 										<div class="post-cat-group m-b-xs-10">
 											<a href="business.jsp"
-												class="post-cat cat-btn bg-color-purple-one">Du Lịch</a>
+												class="post-cat cat-btn bg-color-purple-one"><%=postPresent.get(i).getCategoryName()%></a>
 										</div>
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">5 khách sạn nên chọn khi đến Sapa </a></h3>
+										<h3 id="viewTitle<%=postPresent.get(0).getPost_id()%>" class="axil-post-title hover-line hover-line" style=" word-wrap: break-word;cursor: default;"><a
+												><%=postPresent.get(i).getTitle()%></a></h3>
 										<div class="post-metas">
 											<ul class="list-inline">
-												<li>Tác giả <a href="#">Bích Phụng</a></li>
+												<li>Đăng bởi <a><strong><%=postPresent.get(i).getAuthorName()%></strong></a></li>
 											</ul>
 										</div>
 									</div>
 								</div>
-								<!-- End of .post-block -->
-								<div class="media post-block m-b-xs-30">
-									<a href="post-format-standard.jsp" class="align-self-center"><img
-											class=" m-r-xs-30" src="assets/images/post/post-img-19.jpg" alt=""></a>
-									<div class="media-body">
-										<div class="post-cat-group m-b-xs-10">
-											<a href="business.jsp"
-												class="post-cat cat-btn bg-color-green-one">Đời Sống</a>
-										</div>
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Xu hướng thời trang đang làm mưa làm gió hiện nay</a>
-										</h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li>Tác giả <a href="#">Minh Nguyễn</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- End of .post-block -->
-								<div class="media post-block m-b-xs-30">
-									<a href="post-format-standard.jsp" class="align-self-center"><img
-											class=" m-r-xs-30" src="assets/images/post/post-img-20.jpg" alt=""></a>
-									<div class="media-body">
-										<div class="post-cat-group m-b-xs-10">
-											<a href="business.jsp"
-												class="post-cat cat-btn bg-color-blue-two">Ẩm Thực</a>
-										</div>
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Bánh mì kiểu ý đang hot ở sài gòn vì đâu?</a></h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li>Tác giả <a href="#">Nhân Nhân</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- End of .post-block -->
-								<div class="media post-block m-b-xs-30">
-									<a href="post-format-standard.jsp" class="align-self-center"><img
-											class=" m-r-xs-30" src="assets/images/post/post-img-21.jpg" alt=""></a>
-									<div class="media-body">
-										<div class="post-cat-group m-b-xs-10">
-											<a href="business.jsp"
-												class="post-cat cat-btn bg-color-red-two">Thế Giới Động Vật</a>
-										</div>
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">African Nations Are Struggling To Save
-												Their Wildlife</a></h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li>By <a href="#">Sergio Pliego</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<!-- End of .post-block -->
+								<script>
+        $(document).ready(function () {
+            jQuery("#view<%=postPresent.get(i).getPost_id()%>,#viewTitle<%=postPresent.get(i).getPost_id()%>").click(function(){
+                var id = <%=postPresent.get(i).getPost_id()%>;
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+								<%} %>
 							</div>
 							<!-- End of .content -->
 						</div>
 						<!-- End of .recent-news -->
 					</div>
 					<!-- End of .col-lg-6 -->
+					
 				</div>
+				<% }catch(Exception e){
+			%>
+			<%} %>
 				<!-- End of .row -->
 			</div>
 			<!-- End of .container -->
 		</div>
 	
-		<section class="section-gap section-gap-top__with-text top-stories bg-grey-light-three">
-			<div class="container">
-				<div class="section-title m-b-xs-40">
-					<h2 class="axil-title">Top Stories</h2>
-					<a href="#" class="btn-link">All Top Stories</a>
-				</div>
-				<div class="row">
-					<div class="col-lg-8">
-						<div class="axil-img-container m-b-xs-30">
-							<a href="post-format-standard.jsp" class="d-block">
-								<img src="assets/images/top-stories/top-stories-1.jpg" alt="gallery images"
-									class="w-100">
-								<div class="grad-overlay"></div>
-							</a>
-							<div class="media post-block position-absolute">
-								<div class="media-body media-body__big">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp" class="post-cat cat-btn bg-color-purple-one">TRAVEL</a>
-									</div>
-									<div class="axil-media-bottom">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">World Travel Holdings Will Be Honored
-												Alongside Other Recipients</a></h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li>By <a href="#" class="post-author">Ashley Graham</a></li>
-												<li><i class="dot">.</i>July 17, 2019</li>
-												<li><a href="#"><i class="feather icon-activity"></i>5k Views</a></li>
-												<li><a href="#"><i class="feather icon-share-2"></i>230 Shares</a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-						</div>
-						<!-- End of .axil-img-container -->
-					</div>
-					<!-- End of .grid-item -->
-					<div class="col-lg-4">
-						<div class="axil-img-container m-b-xs-30">
-							<a href="post-format-standard.jsp" class="d-block">
-								<img src="assets/images/top-stories/top-stories-2.jpg" alt="gallery images"
-									class="w-100">
-								<div class="grad-overlay"></div>
-							</a>
-							<div class="media post-block position-absolute">
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn btn-mid bg-color-purple-two">BUEATY</a>
-									</div>
-									<div class="axil-media-bottom">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Unmatched Toner Cartridge Quality 20
-												Less Than Oem Price</a></h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li><a href="post-format-standard.jsp"
-														class="d-flex align-items-center"><span>By Amachea
-															Jajah</span></a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-						</div>
-						<!-- End of .axil-img-container -->
-						<div class="axil-img-container m-b-xs-30">
-							<a href="post-format-standard.jsp" class="d-block">
-								<img src="assets/images/top-stories/top-stories-3.jpg" alt="gallery images"
-									class="w-100">
-								<div class="grad-overlay"></div>
-							</a>
-
-							<div class="media post-block position-absolute">
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn btn-mid bg-color-blue-three">TECHNOLOGY</a>
-									</div>
-									<div class="axil-media-bottom">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Stocking Your
-												Restaurant Kitchen Finding
-												Reliable
-												Sellers</a></h3>
-										<div class="post-metas">
-											<ul class="list-inline">
-												<li><a href="#" class="d-flex align-items-center"><span>By David
-															Brown</span></a></li>
-											</ul>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-						</div>
-						<!-- End of .axil-img-container -->
-					</div>
-					<!-- End of .col-lg-4 -->
-				</div>
-				<!-- End of .row -->
-			</div>
-			<!-- End of .container -->
-		</section>
-		<!-- End of .top-stories -->
-		<section class="section-gap section-gap-top__with-text trending-stories">
-			<div class="container">
-				<div class="section-title m-b-xs-40">
-					<h2 class="axil-title">Trending Stories</h2>
-					<a href="#" class="btn-link">ALL TRENDING STORIES</a>
-				</div>
-				<div class="row">
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-1.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-blue-grey-one">WORLD</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Increasing Prosperity With Positive
-										Thinking</a></h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Amachea Jajah</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-2.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-red-two">FOOD</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Crispy Air
-										Fryer
-										Parmesan And Thyme Roasted
-										Wedge Fries</a>
-								</h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Xu Jianhong</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-3.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-purple-one">LIFESTYLE</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Boxed Water
-										Partners
-										With Rag & Bone To Tap
-										Consumer Creativity</a></h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Ahmad Nazeri</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-4.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-blue-three">RACING</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Kipchoge
-										Proves He Has
-										No Equal: Runs 2nd
-										Fastest Marathon Time In History</a></h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Sergio Pliego</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-5.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-green-two">SWIMMING</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Here, I Focus
-										On A Range
-										Of Items And Features
-									</a></h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Amachea Jajah</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-					<div class="col-lg-6">
-						<div class="media post-block m-b-xs-30">
-							<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-									src="assets/images/trending-stories/trending-stories-6.jpg" alt=""></a>
-							<div class="media-body">
-								<div class="post-cat-group m-b-xs-10">
-									<a href="business.jsp" class="post-cat cat-btn bg-color-blue-two">SPORTS</a>
-								</div>
-								<h3 class="axil-post-title hover-line hover-line"><a
-										href="post-format-standard.jsp">Get Around Easily With A New York Limousine
-										Service</a>
-								</h3>
-								<div class="post-metas">
-									<ul class="list-inline">
-										<li>By <a href="#">Xu Jianhong</a></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- End of .post-block -->
-					</div>
-					<!-- End of .col-lg-6 -->
-				</div>
-				<!-- End of .row -->
-			</div>
-			<!-- End of .container -->
-		</section>
-		<!-- End of .trending-stories -->
+		
 		<section class="axil-video-posts section-gap section-gap-top__with-text bg-grey-dark-one">
 			<div class="container">
 				<div class="section-title title-white m-b-xs-40">
@@ -1403,270 +1137,8 @@
 			</div>
 			<!-- End of .container -->
 		</div>
-		<!-- End of .random-posts -->
-		<section class="related-post p-b-xs-30">
-			<div class="container">
-				<div class="section-title m-b-xs-40">
-					<h2 class="axil-title">Food &amp; Drink</h2>
-					<a href="#" class="btn-link ml-auto">All FOOD &amp; DRINK</a>
-				</div>
-				<!-- End of .section-title -->
-				<div class="grid-wrapper">
-					<div class="row">
-						<div class="col-lg-3 col-md-4">
-							<div class="content-block m-b-xs-30">
-								<a href="post-format-standard.jsp">
-									<img src="assets/images/related-post/related-post-1.jpg" alt="abstruct image"
-										class="img-fluid">
-									<div class="grad-overlay"></div>
-								</a>
-								<div class="media-caption">
-									<div class="caption-content">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Barbecue Party Tips For A Truly Amazing
-												Event</a></h3>
-										<div class="caption-meta">
-											By <a href="#">Martin Lambert</a>
-										</div>
-									</div>
-									<!-- End of .content-inner -->
-								</div>
-							</div>
-							<!-- End of .content-block -->
-						</div>
-						<!-- End of .col-lg-3 -->
-						<div class="col-lg-3 col-md-4">
-							<div class="content-block m-b-xs-30">
-								<a href="post-format-standard.jsp">
-									<img src="assets/images/related-post/related-post-2.jpg" alt="abstruct image"
-										class="img-fluid">
-									<div class="grad-overlay"></div>
-								</a>
-								<div class="media-caption">
-									<div class="caption-content">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Grilling Tips For The Dog Days Of
-												Summer</a></h3>
-										<div class="caption-meta">
-											By <a href="#">Angu Tamba
-
-											</a>
-										</div>
-									</div>
-									<!-- End of .content-inner -->
-								</div>
-							</div>
-							<!-- End of .content-block -->
-						</div>
-						<!-- End of .col-lg-3 -->
-						<div class="col-lg-3 col-md-4">
-							<div class="content-block m-b-xs-30">
-								<a href="post-format-standard.jsp">
-									<img src="assets/images/related-post/related-post-3.jpg" alt="abstruct image"
-										class="img-fluid">
-									<div class="grad-overlay"></div>
-								</a>
-								<div class="media-caption">
-									<div class="caption-content">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Smarter Food Choices 101 Tips For Busy
-												Women</a></h3>
-										<div class="caption-meta">
-											By <a href="#">Naseema Al Morad</a>
-										</div>
-									</div>
-									<!-- End of .content-inner -->
-								</div>
-							</div>
-							<!-- End of .content-block -->
-						</div>
-						<!-- End of .col-lg-3 -->
-						<div class="col-lg-3 col-md-4">
-							<div class="content-block m-b-xs-30">
-								<a href="post-format-standard.jsp">
-									<img src="assets/images/related-post/related-post-4.jpg" alt="abstruct image"
-										class="img-fluid">
-									<div class="grad-overlay"></div>
-								</a>
-								<div class="media-caption">
-									<div class="caption-content">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Deep Fryer Pieces Of Wisdom</a></h3>
-										<div class="caption-meta">
-											By <a href="#">Nayah Tantoh</a>
-										</div>
-									</div>
-									<!-- End of .content-inner -->
-								</div>
-							</div>
-							<!-- End of .content-block -->
-						</div>
-						<!-- End of .col-lg-3 -->
-					</div>
-					<!-- End of .row -->
-				</div>
-				<!-- End of .grid-wrapper -->
-			</div>
-			<!-- End of .container -->
-		</section>
-		<!-- End of .related-post -->
-		<!-- footer starts -->
-		<footer class="page-footer bg-grey-dark-key">
-			<div class="container">
-				<div class="footer-top">
-					<div class="row">
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									World
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">U.N.</a></li>
-									<li><a href="#">Conflicts</a></li>
-									<li><a href="#">Terrorism</a></li>
-									<li><a href="#">Disasters</a></li>
-									<li><a href="#">Global Economy</a></li>
-									<li><a href="#">Global Economy</a></li>
-									<li><a href="#">Environment</a></li>
-									<li><a href="#">Religion</a></li>
-									<li><a href="#">Scandals</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									Politics
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">Executive</a></li>
-									<li><a href="#">Senate</a></li>
-									<li><a href="#">House</a></li>
-									<li><a href="#">Judiciary</a></li>
-									<li><a href="#">Foreign policy</a></li>
-									<li><a href="#">Polls</a></li>
-									<li><a href="#">Elections</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									Entertainment
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">Celebrity News</a></li>
-									<li><a href="#">Movies</a></li>
-									<li><a href="#">TV News</a></li>
-									<li><a href="#">Music News</a></li>
-									<li><a href="#">Style News</a></li>
-									<li><a href="#">Entertainment Video</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									Business
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">Markets</a></li>
-									<li><a href="#">Politics</a></li>
-									<li><a href="#">Technology</a></li>
-									<li><a href="#">Features</a></li>
-									<li><a href="#">Business Leaders</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									Health
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">Healthy Living</a></li>
-									<li><a href="#">Medical Research</a></li>
-									<li><a href="#">Mental Health</a></li>
-									<li><a href="#">Cancer</a></li>
-									<li><a href="#">Heart Health</a></li>
-									<li><a href="#">Children's Health</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-						<div class="col-lg-2 col-md-4 col-6">
-							<div class="footer-widget">
-								<h2 class="footer-widget-title">
-									About
-								</h2>
-								<ul class="footer-nav">
-									<li><a href="#">Contact Us</a></li>
-									<li><a href="#">Careers</a></li>
-									<li><a href="#">Fox Around the World</a></li>
-									<li><a href="#">Advertise With Us</a></li>
-									<li><a href="#">Ad Choices</a></li>
-									<li><a href="#">Media Relations</a></li>
-									<li><a href="#">Compliance</a></li>
-								</ul>
-								<!-- End of .footer-nav -->
-							</div>
-							<!-- End of .footer-widget -->
-						</div>
-						<!-- End of .col-lg-2 -->
-					</div>
-					<!-- End of .row -->
-				</div>
-				<!-- End of .footer-top -->
-				<div class="footer-mid">
-					<div class="row align-items-center">
-						<div class="col-md">
-							<div class="footer-logo-container">
-								<a href="index.jsp">
-									<img src="assets/images/prince-black.png" alt="footer logo" class="footer-logo">
-								</a>
-							</div>
-							<!-- End of .brand-logo-container -->
-						</div>
-						<!-- End of .col-md-6 -->
-						<div class="col-md-auto">
-							<div class="footer-social-share-wrapper">
-								<div class="footer-social-share">
-									<div class="axil-social-title">Find us here</div>
-									<ul class="social-share social-share__with-bg">
-										<li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-										<li><a href="#"><i class="fab fa-twitter"></i></a></li>
-										<li><a href="#"><i class="fab fa-youtube"></i></a></li>
-										<li><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-										<li><a href="#"><i class="fab fa-pinterest"></i></a></li>
-									</ul>
-								</div>
-							</div>
-							<!-- End of .footer-social-share-wrapper -->
-						</div>
-						<!-- End of .col-md-6 -->
-					</div>
-					<!-- End of .row -->
-				</div>
-				<!-- End of .footer-mid -->
-				<!-- End of .footer-bottom -->
-			</div>
-			<!-- End of .container -->
-		</footer>
-		<!-- End of footer -->
+		
+		<c:import url="/WEB-INF/classes/footer.jsp" />
 </div>
 	<!-- End of .main-content -->
 	<!-- Javascripts

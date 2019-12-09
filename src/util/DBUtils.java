@@ -45,10 +45,10 @@ public class DBUtils {
             }
     	}
     }
-    public static UserAccount getLoginedUser(HttpServletRequest request, HttpSession session) {
-    	UserAccount user = new UserAccount();
+    public static UserAccount getLoginedUser(HttpServletRequest request) {
+    	UserAccount user = null;
     	try {
-    		user = (UserAccount) session.getAttribute("user");
+    		user = (UserAccount) request.getSession().getAttribute("user");
     	}
     	catch(Exception e) {
     		

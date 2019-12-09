@@ -151,7 +151,7 @@ public class CreatePostStep2 extends HttpServlet {
 							listFile.put(i, "upload/" + fileName);
 						}
 					}
-					if (item.isFormField()) {
+					if(item.isFormField()) {
 
 						if (i == 1) {
 							post.setTitle(new String(item.getString().getBytes(StandardCharsets.ISO_8859_1),
@@ -201,6 +201,75 @@ public class CreatePostStep2 extends HttpServlet {
 			post.setImage2(listFile.get(9));
 			post.setVideo(listFile.get(11));
 			//hoan tat buoc 2
+		}
+		if (post.getFormat() == 2) {
+			Map<Integer, String> listFile = new HashMap<Integer, String>();
+			// start upload
+			if (!ServletFileUpload.isMultipartContent(request)) {
+				PrintWriter writer = response.getWriter();
+				writer.println("Request does not contain upload data");
+				writer.flush();
+				return;
+			}
+
+			// configures upload settings
+			DiskFileItemFactory factory = new DiskFileItemFactory();
+			factory.setSizeThreshold(THRESHOLD_SIZE);
+			factory.setRepository(new File(System.getProperty("java.io.tmpdir")));
+
+			ServletFileUpload upload = new ServletFileUpload(factory);
+			upload.setFileSizeMax(MAX_FILE_SIZE);
+			upload.setSizeMax(MAX_REQUEST_SIZE);
+
+			// constructs the directory path to store upload file
+			String uploadPath = getServletContext().getRealPath("") + File.separator + UPLOAD_DIRECTORY;
+			// creates the directory if it does not exist
+			File uploadDir = new File(uploadPath);
+			if (!uploadDir.exists()) {
+				uploadDir.mkdir();
+			}
+
+			try {
+				int i = 1;
+				// parses the request's content to extract file data
+				List<?> formItems = upload.parseRequest(request);
+				Iterator<?> iter = formItems.iterator();
+				// iterates over form's fields
+				while (iter.hasNext()) {
+					FileItem item = (FileItem) iter.next();
+					// processes only fields that are not form fields
+					if (!item.isFormField()) {
+						String file = new File(item.getName()).getName();
+						String fileName = renameFile(file);
+						String filePath = uploadPath + File.separator + fileName;
+						File storeFile = new File(filePath);
+						// saves the file on disk
+						if (file != "") {
+							item.write(storeFile);
+							listFile.put(i, "upload/" + fileName);
+						}
+					}
+					if (item.isFormField()) {
+
+						if (i == 1) {
+							post.setTitle(new String(item.getString().getBytes(StandardCharsets.ISO_8859_1),
+									StandardCharsets.UTF_8));
+						}
+						if (i == 3) {
+							post.setUrl(new String(item.getString().getBytes(StandardCharsets.ISO_8859_1),
+									StandardCharsets.UTF_8));
+						}
+					}
+					i++;
+				}
+			} catch (Exception ex) {
+				request.setAttribute("message", "There was an error: " + ex.getMessage());
+			}
+
+			post.setVideo(listFile.get(2));
+			//hoan tat buoc 2
+			
+		}
 			request.getSession(true).setAttribute("stepcompleted", 2);
 			//them post vua tao vao danh sach cho thanh toan
 			listPayment.add(post);
@@ -208,7 +277,7 @@ public class CreatePostStep2 extends HttpServlet {
 			request.getSession(true).setAttribute("countPayment", listPayment.size());
 			Notify.createNotify("Tạo quảng cáo thành công","quảng cáo đang chờ thanh toán", "success","false", request, response);
 			response.sendRedirect("/Prince/Create?step=3");
-		}
+		
 	}
 	// end step 2
 
@@ -216,7 +285,5 @@ public class CreatePostStep2 extends HttpServlet {
 		return FilenameUtils.getBaseName(fileName) + "-" + System.nanoTime() + "."
 				+ FilenameUtils.getExtension(fileName);
 	}
-
-	
 
 }

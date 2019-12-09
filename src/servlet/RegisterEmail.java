@@ -56,6 +56,7 @@ public class RegisterEmail extends HttpServlet {
 			up.setSCORE(0);
 			up.setROLE_ID(GlobalConstants.BASIC_USER);
 			up.setSTATUS(GlobalConstants.NEW);
+			up.setAVATAR("assets/images/user/avartar.png");
 			// generate hash for password
 			up.setPASSWORD(BCrypt.hashpw(password,GlobalConstants.SALT));
 			

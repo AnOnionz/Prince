@@ -134,14 +134,27 @@ span, h5 {
 <body>
 
 	<c:import url="/WEB-INF/classes/header.jsp" />
-	<div class="container-fluid pt-4 pb-4 " style="margin-bottom: 18rem;">
-		<div class="row">
+	<div class="container-fluid pb-4 ">
+	<div class="breadcrumb-wrapper">
+				<div class="container">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/Home">Trang chủ</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Quảng
+									cáo của tôi</li>
+						</ol>
+						<!-- End of .breadcrumb -->
+					</nav>
+				</div>
+				<!-- End of .container -->
+			</div>
+		<div class="row">	
 			<div class="col-lg-2 bg-teal px-0 mx-0 ">
 				<div class="col-lg-12 bg-teal px-0 mx-0 ">
 					<div class="row justify-content-md-center text-center pt-5 mx-auto">
 						<div class="col-6 col-lg-12 mb-2 ">
 							<img
-								src="https://cdn.dribbble.com/users/3399/screenshots/5826529/rework_4x.png"
+								src="assets/images/user/avatar.png"
 								alt="img" class="rounded-circle" width="150px" height="150px">
 						</div>
 						<div class="col-6 col-lg-12 mb-2 ">
@@ -179,7 +192,7 @@ span, h5 {
 										<div class="col-6">${item.getCategoryName()}</div>
 									</div>
 									<div class="row">
-										<div class="col-sm-6  mx-auto">Tiền 1 click</div>
+										<div class="col-sm-6  mx-auto">Giá click</div>
 										<div class="col-sm-6 ">${item.costPerClick}&#36;</div>
 									</div>
 									<div class="row">
@@ -187,8 +200,8 @@ span, h5 {
 										<div class="col-lg-6">${item.cost}&#36;</div>
 									</div>
 									<div class="row">
-										<div class="col-6">Tổng click</div>
-										<div class="col-6">${item.getClickGuess()}click</div>
+										<div class="col-6">Số click</div>
+										<div class="col-6">${item.getClickGuess()} click</div>
 									</div>
 									<div class="row">
 										<div class="col-6">Ngày cuối</div>
@@ -208,7 +221,7 @@ span, h5 {
 									<div class="col-md-8 col-sm-8 px-0 mx-auto showdetail">
 										<div class="row mx-auto h-100">
 											<div class="col-4 col-sm-4 px-2">
-												<div class="row mx-auto h-50">
+												<div class="row h-50">
 													<h5 class="mb-1">${item.title}</h5>
 												</div>
 
@@ -281,10 +294,10 @@ span, h5 {
  </script>
 							</c:if>
 							<c:if test="${item.status==5}">
-								<div class="rowdata row  pt-4 px-4 mx-4 rounded"
+								<div class="<c:if test="${!loop.last}">rowdata </c:if> <c:if test="${loop.last}">pb-5 </c:if>row  pt-4 px-4 mx-4 rounded"
 									style="background: #ffffff;">
 									<div class="col-2 col-sm-2"
-										style="position: absolute; text-align: center;">hết hạn</div>
+										style="position: absolute; text-align: center;top:.5rem"><strong>hết hạn</strong></div>
 									<div class="col-md-2 col-sm-2 px-0" style="opacity: .4;">
 										<img height="85px" width="136px" src="${item.image}" alt="img"
 											class="rounded">
@@ -293,7 +306,7 @@ span, h5 {
 										style="opacity: .4;">
 										<div class="row mx-auto h-100">
 											<div class="col-4 col-sm-4 px-2">
-												<div class="row mx-auto h-50">
+												<div class="row h-50">
 													<h5 class="mb-1">${item.title}</h5>
 												</div>
 
@@ -309,19 +322,19 @@ span, h5 {
 											<div class=" col-2 col-sm-2 px-0 mx-2 ml-2  ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto"> 10 lần xem</span>
+													<span class="mx-auto"> ${item.visiter} lần xem</span>
 												</div>
 											</div>
 											<div class="col-1 col-sm-2 px-0 mx-2 ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto">10 lần click</span>
+													<span class="mx-auto">${item.click} lần click</span>
 												</div>
 											</div>
 											<div class=" col-2 col-sm-3 px-0 mx-2 ">
 
 												<div class="row mt-5 mx-auto">
-													<span class="mx-auto">còn 300 click</span>
+													<span class="mx-auto">còn ${item.getClickGuess()-item.click} click</span>
 												</div>
 											</div>
 										</div>
@@ -372,19 +385,234 @@ span, h5 {
 					</div>
 				</c:if>
 				<!-- video -->
-				<c:if test="${! empty(listVideo) }">
+				<c:if test="${!empty(listVideo) }">
+					<!-- bai viet -->
 					<div class="row mx-auto mb-3 ">
-						<h4 class="mb-2">Video</h4>
+						<div class="col-6">
+							<h4 class="mb-2">Video</h4>
+						</div>
+					</div>
+
+					<div class="box col-lg-11 mx-auto px-0 pt-4 mb-5 bg-white"
+						style="border-radius: .5rem;">
+
+						<c:forEach items="${listVideo}" var="item" varStatus="loop">
+
+							<div id="detail${item.post_id}" style="display: none;">
+								<div clas="container-fluid">
+									<div class="row">
+										<div class="col-6">Thể loại</div>
+										<div class="col-6">${item.getCategoryName()}</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-6  mx-auto">Giá click</div>
+										<div class="col-sm-6 ">${item.costPerClick}&#36;</div>
+									</div>
+									<div class="row">
+										<div class="col-lg-6">Tổng tiền</div>
+										<div class="col-lg-6">${item.cost}&#36;</div>
+									</div>
+									<div class="row">
+										<div class="col-6">Số click</div>
+										<div class="col-6">${item.getClickGuess()} click</div>
+									</div>
+									<div class="row">
+										<div class="col-6">Ngày cuối</div>
+										<div class="col-6">${item.endDate}</div>
+									</div>
+								</div>
+							</div>
+							<!--bat dau the quang cao-->
+							<c:if test="${item.status==1}">
+								<div
+									class="<c:if test="${!loop.last}">rowdata </c:if> <c:if test="${loop.last}">pb-5 </c:if>row  pt-4 px-4 mx-4 rounded"
+									style="background: #ffffff;">
+									<div class="col-md-2 col-sm-2 px-0">
+											<video class="plyr-post" preload="metadata" height="85px" width="136px" style="margin-bottom: 0;"
+														id="preview" src="${item.video}" controls>
+														<source src="video.mp4#t=0.1" type="video/mp4">
+														<source src="video.ogg#t=0.1" type="video/webm">
+														<source src="video.webm#t=0.1" type="video/webm">
+													</video>
+									</div>
+									<div class="col-md-8 col-sm-8 px-0 mx-auto showdetail">
+										<div class="row mx-auto h-100">
+											<div class="col-4 col-sm-4 px-2">
+												<div class="row h-50">
+													<h5 class="mb-1">${item.title}</h5>
+												</div>
+
+												<div class="row align-items-end h-50">
+													<div class="col" style="display: contents;">
+														<span
+															style="word-break: break-word; font-size: 1.3rem; color: #259B78;"
+															contenteditable="true">
+															${item.createTimeToString()} </span>
+													</div>
+												</div>
+											</div>
+											<div class=" col-2 col-sm-2 px-0 mx-2 ml-2  ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto"> ${item.visiter} lần xem</span>
+												</div>
+											</div>
+											<div class="col-1 col-sm-2 px-0 mx-2 ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto">${item.click} lần click</span>
+												</div>
+											</div>
+											<div class=" col-2 col-sm-3 px-0 mx-2 ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto">còn ${item.getClickGuess()-item.click} click</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class=" col-1 col-sm-1 px-0 mx-auto">
+										<div class="item">
+											<div class="actions-block">
+												<ul class="actions-list">
+													<li class="actions-expand"><a href="#"><i
+															aria-hidden class="fas fa-ellipsis-h"></i><span
+															class="sr-only">Show Actions</span></a></li>
+
+													<li><a id="view${item.post_id}" class="action"
+														data-tippy-content="Xem"><i aria-hidden
+															class="fas fa-clone"></i><span class="sr-only">Xem</span></a></li>
+													<li><a
+														href="${pageContext.request.contextPath}/MyListPost?action=delete&id=${item.post_id}"
+														class="action" data-tippy-content="Xóa"><i aria-hidden
+															class="fas fa-trash"></i><span class="sr-only">Xóa</span></a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+								<script>
+        $(document).ready(function () {
+            jQuery("#view${item.post_id}").click(function(){
+                var id = ${item.post_id};
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+							</c:if>
+							<c:if test="${item.status==5}">
+								<div class="<c:if test="${!loop.last}">rowdata </c:if> <c:if test="${loop.last}">pb-5 </c:if>row  pt-4 px-4 mx-4 rounded"
+									style="background: #ffffff;">
+									<div class="col-2 col-sm-2"
+										style="position: absolute; text-align: center; top:.5rem;"><strong>hết hạn</strong></div>
+									<div class="col-md-2 col-sm-2 px-0" style="opacity: .4;">
+										<video class="plyr-post" preload="metadata" height="85px" width="136px" style="margin-bottom: 0;"
+														id="preview" src="${item.video}" controls>
+														<source src="video.mp4#t=0.1" type="video/mp4">
+														<source src="video.ogg#t=0.1" type="video/webm">
+														<source src="video.webm#t=0.1" type="video/webm">
+													</video>
+									</div>
+									<div class="col-md-8 col-sm-8 px-0 mx-auto showdetail"
+										style="opacity: .4;">
+										<div class="row mx-auto h-100">
+											<div class="col-4 col-sm-4 px-2">
+												<div class="row h-50">
+													<h5 class="mb-1">${item.title}</h5>
+												</div>
+
+												<div class="row align-items-end h-50">
+													<div class="col" style="display: contents;">
+														<span
+															style="word-break: break-word; font-size: 1.3rem; color: #259B78"
+															contenteditable="true">${item.createTimeToString()}
+														</span>
+													</div>
+												</div>
+											</div>
+											<div class=" col-2 col-sm-2 px-0 mx-2 ml-2  ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto"> ${item.visiter} lần xem</span>
+												</div>
+											</div>
+											<div class="col-1 col-sm-2 px-0 mx-2 ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto">${item.click} lần click</span>
+												</div>
+											</div>
+											<div class=" col-2 col-sm-3 px-0 mx-2 ">
+
+												<div class="row mt-5 mx-auto">
+													<span class="mx-auto">còn ${item.getClickGuess()-item.click} click</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class=" col-1 col-sm-1 px-0 mx-auto">
+										<div class="item">
+											<div class="actions-block"
+												onmouseover="this.style.width='36px';"
+												onmouseout="this.style.width='36px';">
+												<ul class="actions-list">
+													<li><a onClick="extendOrder()"
+														href="${pageContext.request.contextPath}/Extend?id=${item.post_id}"
+														id="extend${item.post_id}" class="action-expand plus"
+														data-tippy-content="Gia hạn"><i aria-hidden
+															class="fas fa-cart-plus"></i><span class="sr-only">Gia
+																hạn</span></a></li>
+												</ul>
+											</div>
+										</div>
+										<c:forEach items="${listPayment}" var="itempay"
+											varStatus="loop">
+											<c:if test="${item.post_id == itempay.post_id}">
+												<script type="text/javascript">
+										$( document ).ready(function() {
+											 $('extend${item.post_id}').first().removeAttr('href');
+										})
+										</script>
+											</c:if>
+										</c:forEach>
+									</div>
+
+								</div>
+							</c:if>
+							<script type="text/javascript">
+								 
+							const template${item.post_id} = document.getElementById('detail${item.post_id}');
+							tippy('.showdetail', {
+							 	content: template${item.post_id}.innerHTML,
+								arrow : true,
+								interactive:false,
+								followCursor: false,
+								placement : "left-end",
+								lazy: false
+						});
+							</script>
+						</c:forEach>
+						<!-- end -->
 					</div>
 				</c:if>
 				<!-- banner -->
-				<c:if test="${! empty(listBanner) }">
+				<c:if test="${!empty(listBanner) }">
 					<div class="row mx-auto mb-3 ">
 						<h4 class="mb-2">Banner</h4>
 					</div>
 				</c:if>
-				<c:if test="${empty(listPost)}">
-					<div class="row mx-auto mb-3 ">
+				<c:if test="${empty(listPost) || empty(listVideo)} ">
+					<div class="row mx-auto mb-3 " style="margin-bottom: 18rem;">
 						<div class="col-8 mx-auto">
 							<h5 class="mb-2">Bạn chưa đăng quảng cáo nào</h5>
 						</div>

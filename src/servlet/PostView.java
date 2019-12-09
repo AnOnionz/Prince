@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.JsonObject;
 
+import beans.CommentDAO;
 import beans.Post;
 import beans.PostDAO;
+import util.GlobalConstants;
 
 /**
  * Servlet implementation class PostView
@@ -35,7 +38,16 @@ public class PostView extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		try {
+		Post view = (Post) request.getSession().getAttribute("view");
+		String id = String.valueOf(view.getPost_id());
+		Post post = PostDAO.selectPostById(id);
+		ArrayList parentCmt = CommentDAO.selectParentComment(id);
+		request.getSession().setAttribute("listCMT", parentCmt);
+		request.getSession().setAttribute("view", post);
+		}catch(Exception e) {
+			
+		}
 		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/post.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -48,12 +60,14 @@ public class PostView extends HttpServlet {
 			throws ServletException, IOException {
 		String id = request.getParameter("id");
 		Post post = PostDAO.selectPostById(id);
-		request.getSession(true).setAttribute("view", post);
-		
+		ArrayList parentCmt = CommentDAO.selectParentComment(id);
+		request.getSession().setAttribute("listCMT", parentCmt);
+		request.getSession().setAttribute("view", post);
+		request.getSession().setAttribute("valuecmt", CommentDAO.countComment((int) request.getSession().getAttribute(GlobalConstants.USER_ID)));
 		JsonObject jobj = new JsonObject();
 		String urlToRedirect = "/Prince/View";
 		jobj.addProperty("url", urlToRedirect);
-		response.setContentType("application/json");	
+		response.setContentType("application/json");
 		response.getWriter().write(jobj.toString());
 		
 	}

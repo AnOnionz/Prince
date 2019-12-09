@@ -80,9 +80,9 @@ input[type=radio], input[type=checkbox] {
 										class="form-check-label" for="gridRadios2"> video </label>
 								</div>
 								<div class="form-check ">
-									<input class="form-check-input" type="radio" name="gridRadios"
+									<input class="form-check-input" type="radio" name="gridRadios" disabled="disabled"
 										id="gridRadios3" value="3"> <label
-										class="form-check-label" for="gridRadios3"> banner </label>
+										class="form-check-label" for="gridRadios3"> banner(chưa ra mắt) </label>
 								</div>
 							</div>
 						</div>
@@ -153,20 +153,15 @@ input[type=radio], input[type=checkbox] {
 						<div class="row justify-content-between">
 							<legend class="col-form-label col-md-2 pt-0">Hình thức</legend>
 							<div class="col-md-9">
-								<div class="form-check <c:if test="${post.format==1}"> disabled</c:if>">
-									<input class="form-check-input " type="radio" name="gridRadios"
+								<div class="form-check">
+									<input class="form-check-input " type="radio" name="gridRadios" <c:if test="${post.format==2}"> disabled</c:if>
 										id="gridRadios1" value="1" <c:if test="${post.format==1}"> checked</c:if>  > 
 										<label class="form-check-label" for="gridRadios1"> bài viết </label>
 								</div>
-								<div class="form-check <c:if test="${post.format==2}"> disabled</c:if>">
-									<input class="form-check-input " type="radio" name="gridRadios"
+								<div class="form-check">
+									<input class="form-check-input " type="radio" name="gridRadios" <c:if test="${post.format==1}"> disabled</c:if>
 										id="gridRadios2" value="2" <c:if test="${post.format==2}"> checked</c:if>> <label
 										class="form-check-label" for="gridRadios2"> video </label>
-								</div>
-								<div class="form-check <c:if test="${post.format==3}"> disabled</c:if>">
-									<input class="form-check-input" type="radio" name="gridRadios"
-										id="gridRadios3" value="3" <c:if test="${post.format==3}"> checked</c:if>> <label
-										class="form-check-label" for="gridRadios3"> banner </label>
 								</div>
 							</div>
 						</div>

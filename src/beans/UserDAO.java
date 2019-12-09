@@ -452,7 +452,7 @@ public class UserDAO {
 		}
 		return user;
 	}
-	public static UserAccount selectAuthorById(int id) {
+	public static UserAccount selectUserById(int id) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet res = null;
@@ -460,18 +460,18 @@ public class UserDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			ps = conn.prepareStatement(
-					"select  username, email, status, created_time, role_id from user where user_id = ?");
+					"select username, email, status, created_time, role_id, avatar from user where user_id = ?");
 			ps.setInt(1, id);
 			res = ps.executeQuery();
 			if (res != null) {
 				while (res.next()) {
 					user = new UserAccount();
-					
 					user.setUSERNAME(res.getNString(1));
 					user.setEMAIL(res.getString(2));
 					user.setSTATUS(res.getInt(3));
 					user.setCREATED_TIME(res.getTimestamp(4));
 					user.setROLE_ID(res.getInt(5));
+					user.setAVATAR(res.getString(6));
 				}
 			}
 			MySQLConnUtils.close(conn, ps, res);
@@ -482,7 +482,7 @@ public class UserDAO {
 		}
 		return user;
 	}
-
+	
 
 	public static void main(String[] args) throws ParseException {
 		UserDAO ud = new UserDAO();
@@ -503,6 +503,7 @@ public class UserDAO {
 		// System.out.println(ud.insertRow(user));
 		// System.out.println(verifyLogin("an170998.22@gmail.com",
 		// "$2a$10$DOWSDz/CyKaJ40hslrk5fe0bsQa.Lg7u5LXl6uYx.b3bxaDaPM7Xm"));
-		System.out.println(selectUSER("12"));
+		//System.out.println(selectUSER("12"));
+		System.out.println(UserDAO.selectUserById(12));
 	}
 }

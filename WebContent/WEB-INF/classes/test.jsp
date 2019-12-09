@@ -1,20 +1,13 @@
-<%@page import="beans.UserAccount"%>
-<%@page import="beans.Post"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <title>Prince - Đăng tin</title>
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage"
-	content="assets/favicon/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+<!-- links for favicon
+    	======================================== -->
 <link rel="icon" type="image/png" sizes="192x192"
 	href="assets/favicon/android-icon-192x192.png">
 <link rel="icon" type="image/png" sizes="32x32"
@@ -24,6 +17,10 @@
 <link rel="icon" type="image/png" sizes="16x16"
 	href="assets/favicon/favicon-16x16.png">
 <link rel="manifest" href="assets/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage"
+	content="assets/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet" href="assets/css/step2.css">
 </head>
 <body>
@@ -60,32 +57,32 @@
 			figure2.innerHTML = inputFigure2.value;
 			figure3.innerHTML = inputFigure3.value;
 			url.innerHTML = inputURL.value;
-			if (inputTitle.value == '') {
-				title.innerHTML = "Tiêu đề";
+			if (inputTitle.value == "") {
+				title.innerHTML = "Tiêu đề"
 			}
 			if (inputTitle1.value == "") {
-				title1.innerHTML = "Tiêu đề phụ 1";
+				title1.innerHTML = "Tiêu đề phụ 1"
 			}
 			if (inputTitle2.value == "") {
-				title2.innerHTML = "Tiêu đề phụ 2";
+				title2.innerHTML = "Tiêu đề phụ 2"
 			}
 			if (inputContent1.value == "") {
-				content1.innerHTML = "Nội dung 1";
+				content1.innerHTML = "Nội dung 1"
 			}
 			if (inputContent2.value == "") {
-				content2.innerHTML = "Nội dung 2";
+				content2.innerHTML = "Nội dung 2"
 			}
 			if (inputFigure1.value == "") {
-				figure1.innerHTML = "chú thích 1";
+				figure1.innerHTML = "chú thích 1"
 			}
 			if (inputFigure1.value == "") {
-				figure2.innerHTML = "chú thích 2";
+				figure2.innerHTML = "chú thích 2"
 			}
 			if (inputFigure1.value == "") {
-				figure3.innerHTML = "chú thích 3";
+				figure3.innerHTML = "chú thích 3"
 			}
 			if (inputURL.value == "") {
-				url.innerHTML = "liên kết của bạn";
+				url.innerHTML = "liên kết của bạn"
 			}
 
 		};
@@ -112,7 +109,6 @@
 	},1000);
 	</script>
 	<div class="main-content">
-	<c:if test="${post.format == 1}">
 		<div class="row mt-3 mb-4">
 			<div class="col-lg-6">
 				<div class="row br mx-5 mt-4 pb-5" style="background: aliceblue">
@@ -233,7 +229,7 @@
 															<label class="labels d-inline-flex p-2 bd-highlight ml-1">chú
 																thích cho ảnh</label> <input
 																class="justify-content-center ml-2 px-2"
-																id="inputFigure1" type="text" name="figure2"
+																id="inputFigure2" type="text" name="figure2"
 																placeholder="" onkeyup="show_result()">
 														</div>
 													</div>
@@ -443,165 +439,7 @@
 				</div>
 	</div>
 	</div>
-		</c:if>
-		<c:if test="${post.format == 2}">
-				<div class="row mt-3 mb-4">
-			<div class="col-lg-6">
-				<div class="row br mx-5 mt-4 pb-5" style="background: aliceblue">
-					<form action="CreatePostStep2"
-						name="formPayment1" method="POST" autocomplete="off"
-						enctype="multipart/form-data">
-						<div class="form-group">
-							<div class="login-content">
-								<div class="input-div one">
-									<div class="i">
-										<i class="fas fa-edit"></i>
-									</div>
-									<div class="div">
-										<h5>Tiêu đề</h5>
-										<input type="text" class="input" data-charcount-enable=true
-											id="inputTitle" maxlength="60" name="inputTitle"
-											onkeyup="show_result()" value="" required>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						
-						<div class="form-group mt-5">
-								<label class="btn btn-info"> <i
-									class="fa fa-video"></i>video<input type="file" style="display: none;"
-									id="file-input4"
-									name="file-input4" required="required"
-									onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
-								</label>
-							
-						</div>
-						<div class="form-group">
-							<div class="textarea">
-								<label for="inputURL">Liên kết của bạn</label> <input
-									type="text" class="form-control" id="inputURL" name="inputURL"
-									onkeyup="show_result()" style="font-size: 1.4rem;">
-							</div>
-						</div>
-
-						<div style="display: flex; font-size: 1.7rem;"
-							class="justify-content-between ">
-							<input type="submit" class="btn btn-primary mx-auto" value="Tiếp tục">
-						</div>
-
-					</form>
-					<div style="position: absolute; right: 0; margin: 0 5.5rem;"
-						class=" mt-3 pb-5">
-						<a href="${pageContext.request.contextPath}/Create?step=cancle">
-							<i class="fas fa-window-close"
-							style="color: red; font-size: 2.5rem;"id="cancle"></i>
-						</a>
-					</div>
-				</div>
-			</div>
-			<div class="col-lg-6 px-0 pr-4" style="background: aliceblue">
-				<div class="main-content">
-					<!-- Banner starts -->
-					<section class="banner banner__single-post banner__standard">
-						<div class="container">
-							<i
-								style="position: absolute; top: 1rem; background: #B2FEFA; /* fallback for old browsers */ background: -webkit-linear-gradient(to right, #0ED2F7, #B2FEFA); /* Chrome 10-25, Safari 5.1-6 */ background: linear-gradient(to right, #0ED2F7, #B2FEFA); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */; font-style: italic;"
-								class="far fa-edit"> preview</i>
-							<div class="row align-items-center">
-								<div class="col-lg-6">
-									<div class="post-title-wrapper">
-
-										<div class="btn-group">
-											<label class="cat-btn bg-color-blue-one">${post.getCategoryName()}</label>
-										</div>
-										<div style="word-break: break-all;">
-											<h2 class="m-t-xs-20 m-b-xs-0 axil-post-title hover-line text-wrap"
-												id="title">Tiêu đề</h2>
-										</div>
-										<div class="post-metas banner-post-metas m-t-xs-20">
-											<ul class="list-inline">
-												<li><a href="#" style="font-size: 1.2rem;"
-													class="post-author post-author-with-img"><img
-														src="assets/images/user/avatar.png" alt="author">${userName}</a></li>
-
-											</ul>
-										</div>
-										<!-- End of .post-metas -->
-									</div>
-									<!-- End of .post-title-wrapper -->
-								</div>
-								<!-- End of .col-lg-6 -->
-
-								<div class="col-lg-6 px-auto">
-									<img src="assets/images/post/latest-post.jpg" alt=""
-										class="img-fluid" width="280" height="280" id="image">
-								</div>
-							</div>
-							<!-- End of .row -->
-						</div>
-						<!-- End of .container -->
-					</section>
-					<!-- End of .banner -->
-
-					<!-- post-single-wrapper starts -->
-					<div class="post-single-wrapper p-t-xs-30">
-						<div class="container">
-							<div class="row">
-								<div class="col-lg-12">
-									<main class="site-main">
-										<article class="post-details">
-											<div class="single-blog-wrapper">
-
-												<figure class="post-media">
-													<video class="plyr-post" preload="metadata"oncontextmenu="return false;"
-														id="preview" src="" controls>
-														<source src="video.mp4#t=0.1" type="video/mp4">
-														<source src="video.ogg#t=0.1" type="video/ogg">
-														<source src="video.webm#t=0.1" type="video/webm">
-													</video>
-													
-												</figure>
-
-
-												<h3 style="margin: 1rem 0 1rem !important;">Liên kết:</h3>
-												<a href="#" style="float: left; margin-bottom: 3rem;"
-													id="url">liên kết của bạn</a>
-
-
-
-												<!-- End of .post-shares -->
-
-												<hr class="m-t-xs-50 m-b-xs-60">
-
-												<div class="about-author m-b-xs-60"></div>
-											</div>
-										</article>
-									</main>
-									<!-- End of main -->
-								</div>
-								<!--End of .col-auto  -->
-
-
-								<!-- End of .col-lg-4 -->
-							</div>
-							<!-- End of .row -->
-						</div>
-						<!-- End of .container -->
-					</div>
-					<!-- End of .post-single-wrapper -->
-
-
-					<!-- End of .related-post -->
-
-					<!-- footer starts -->
-
-					<!-- End of footer -->
-
-				</div>
-	</div>
-	</div>
-		</c:if>	
+			
 		<div class= "row mx-auto">
 		<c:import url="/WEB-INF/classes/footer.jsp" />
 		</div>
@@ -629,4 +467,5 @@
 			content : 'Hủy',
 		});
 	</script>
+</body>
 </html>

@@ -212,7 +212,7 @@
 					<div class="main-nav-wrapper ">
 						<ul class="main-navigation list-inline" id="main-menu">
 
-							<li><a href="${pageContext.request.contextPath}/View">Thông báo</a></li>
+							<li><a href="${pageContext.request.contextPath}/Test">Thông báo</a></li>
 							<li><a href="${pageContext.request.contextPath}/Contact">Liên hệ</a></li>
 							<li><a
 								href="${pageContext.request.contextPath}/Create?step=1">Đăng

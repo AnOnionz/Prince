@@ -36,11 +36,14 @@ public class Post {
 
 	public Post() {
 		super();
-		this.extend=0;
+		this.extend = 0;
 	}
 
 	public int getAuthor_id() {
 		return author_id;
+	}
+	public String getAuthorName() {
+		return UserDAO.selectUserById(author_id).getUSERNAME();
 	}
 
 	public void setAuthor_id(int author_id) {
@@ -73,17 +76,6 @@ public class Post {
 
 	public String getCategoryName() {
 		return CategoryDAO.getCategoryName(String.valueOf(this.category_id));
-	}
-
-	public int getAuth_id() {
-		return author_id;
-	}
-	public String getAuthor() {
-		return UserDAO.selectAuthorById(author_id).getUSERNAME();
-		
-	}
-	public void setAuth_id(int author_id) {
-		this.author_id = author_id;
 	}
 
 	public Timestamp getCreated_time() {

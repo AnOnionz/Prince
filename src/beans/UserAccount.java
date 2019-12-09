@@ -21,8 +21,8 @@ public class UserAccount {
 	public String getAVATAR() {
 		return AVATAR;
 	}
-	public void setAVATAR(String blob) {
-		AVATAR = blob;
+	public void setAVATAR(String avatar) {
+		AVATAR = avatar;
 	}
 
 	private Timestamp CREATED_TIME;

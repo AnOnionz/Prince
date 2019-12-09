@@ -143,13 +143,25 @@ span, h5 {
 							<div class="rowdata row px-0 mx-4 rounded"
 								style="background: #ffffff;">
 
+								<c:if test="${item.format == 1}">
 								<div class="col-md-4 col-sm-4 px-0">
-									<img height="182px" width="152px" src="${item.image }"
+									<img height="182px" width="152px" src="${item.image}"
 										class="rounded">
 								</div>
+								</c:if>
+								<c:if test="${item.format == 2}">
+								<div class="col-md-4 col-sm-4 px-0">
+								<video class="plyr-post" preload="metadata" height="182px" width="152px" style="margin-bottom: 0;"
+														id="preview" src="${item.video}" controls>
+														<source src="video.mp4#t=0.1" type="video/mp4">
+														<source src="video.ogg#t=0.1" type="video/webm">
+														<source src="video.webm#t=0.1" type="video/webm">
+													</video>
+								</div>
+								</c:if>
 								<div class="col-md-7 col-sm-7 px-0 mx-auto">
 									<div class="row mx-auto">
-										<h5>${item.title}</h5>
+										<h5 style="margin-left: 1.5rem;">${item.title}</h5>
 									</div>
 									<div class="row mx-auto">
 										<div class=" col-md-6">

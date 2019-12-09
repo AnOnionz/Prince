@@ -49,7 +49,6 @@ public class CreatePostStep3 extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(req, resp);
 	}
-
 	// ##Create
 	// Sample showing to create a Payment using PayPal
 	@Override
@@ -75,7 +74,11 @@ public class CreatePostStep3 extends HttpServlet {
 					if(post.getExtend()!=0) {
 						PostDAO.updatePost(post.getPost_id(), GlobalConstants.ACTIVE);
 					}else {
+						if(post.getFormat() == 1) {
 					PostDAO.insertOption1(post);
+						}else {
+							PostDAO.insertOption2(post);
+						}
 					}
 				}
 				UserDAO.updateRole(String.valueOf(req.getSession().getAttribute(GlobalConstants.USER_ID)),GlobalConstants.CREATER);

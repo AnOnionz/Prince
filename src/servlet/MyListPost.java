@@ -50,6 +50,7 @@ public class MyListPost extends HttpServlet {
 		ArrayList<Post> listVideo = PostDAO.selectVideoByUser(authorId);
 		ArrayList<Post> listBanner = PostDAO.selectBannerByUser(authorId);
 		request.getSession().setAttribute("listPost", listPost);
+		request.getSession().setAttribute("listVideo", listVideo);
 		if (request.getSession().getAttribute("listPayment")==null) {
 			request.getSession().removeAttribute("countPayment");
 		}
@@ -58,6 +59,7 @@ public class MyListPost extends HttpServlet {
 		}
 		if(action.equalsIgnoreCase("delete")) {
 			request.getSession().removeAttribute("listPost");
+			request.getSession().removeAttribute("listVideo");
 			try { 
 				PostDAO.updatePost(Integer.parseInt(request.getParameter("id")), GlobalConstants.DELETED);
 				Post post = PostDAO.selectPostById(request.getParameter("id"));
