@@ -222,10 +222,10 @@
 									<i id="user" class="far fa-user"></i>
 									${userName}
 									<div class="dropdown-menu" aria-labelledby="dropdownUser">
-										<a class="dropdown-item" href="#">Tài khoản của tôi</a>
-										<c:if test="${user.ROLE_ID == 2}"> <a class="dropdown-item"
+										<a class="dropdown-item" href="#">Tài khoản của tôi</a> <a
+											class="dropdown-item"
 											href="${pageContext.request.contextPath}/MyListPost">Quảng
-											cáo của tôi</a></c:if> <a class="dropdown-item"
+											cáo của tôi</a> <a class="dropdown-item"
 											href="${pageContext.request.contextPath}/Logout">Đăng
 											xuất</a>
 									</div>

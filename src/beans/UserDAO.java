@@ -5,11 +5,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 
 import conn.MySQLConnUtils;
 import util.GlobalConstants;
@@ -165,7 +163,7 @@ public class UserDAO {
 			conn.commit();
 			MySQLConnUtils.close(conn, ps1, ps2, res);
 		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println(e.getMessage());
+			e.getMessage();
 			MySQLConnUtils.close(conn, ps1, ps2, res);
 		}
 		return id;
@@ -492,7 +490,9 @@ public class UserDAO {
 		user.setUSERNAME("aauqqq");
 		user.setEMAIL("aaqq@gmail.com");
 		user.setPASSWORD("weqe");
-		user.setCREATED_TIME(Timestamp.valueOf(LocalDateTime.now()));
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
+		user.setCREATED_TIME(timestamp);
 		user.setEMAIL_VERIFICATION_HASH("eeww");
 		user.setSTATUS(0);
 		user.setCODE(Utils.prepareRandomString(8));
@@ -500,10 +500,10 @@ public class UserDAO {
 		user.setROLE_ID(1);
 		String date2 = "2018-9-2";
 		user.setDATEOFBIRTH(Date.valueOf("2019-2-2"));
-		 System.out.println(ud.insertRow(user));
+		// System.out.println(ud.insertRow(user));
 		// System.out.println(verifyLogin("an170998.22@gmail.com",
 		// "$2a$10$DOWSDz/CyKaJ40hslrk5fe0bsQa.Lg7u5LXl6uYx.b3bxaDaPM7Xm"));
 		//System.out.println(selectUSER("12"));
-		//System.out.println(UserDAO.selectUserById(12));
+		System.out.println(UserDAO.selectUserById(12));
 	}
 }
