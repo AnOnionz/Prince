@@ -6,14 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>Prince - ${view.title}</title>
-<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-	<link rel="manifest" href="assets/favicon/manifest.json">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
-	<meta name="theme-color" content="#ffffff">	
+<link rel="icon" type="image/png" sizes="192x192"
+	href="assets/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="assets/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="assets/favicon/favicon-16x16.png">
+<link rel="manifest" href="assets/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage"
+	content="assets/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 <script
@@ -197,7 +202,7 @@
 											</figure>
 			</c:if>
 			<c:if test="${view.format == 2}">
-			<script type="text/javascript">
+				<script type="text/javascript">
 			 $(document).ready(function () {	
 				var videoElement = document.getElementById('video');  
 				videoElement.focus();
@@ -218,14 +223,21 @@
 									<article class="post-details">
 										<div class="single-blog-wrapper">
 											<figure class="post-media">
-												<video class="plyr-post" preload="metadata" id="video" 
-													src="${view.video}" controls autoplay  >
+												<video class="plyr-post" preload="metadata" id="video"
+													src="${view.video}" controls autoplay>
 													<source src="video.mp4#t=1" type="video/mp4">
 													<source src="video.ogg#t=1" type="video/ogg">
 													<source src="video.webm#t=1" type="video/webm">
 												</video>
+												<div class="contai mb-5 " id="1">
+
+													<a href="${view.url}" target="_blank"><span
+														class="pulse-button" id="recive">Nhận 10</span></a>
+												</div>
+												<div class='contai mb-5' id="2">
+													<span class="pulse-button" id="time"></span>
 											</figure>
-										<script type="text/javascript">
+											<script type="text/javascript">
 			</script>
 			</c:if>
 			<!--  -->
@@ -308,17 +320,17 @@
 			</div>
 		</div>
 		<c:if test="${view.format==1}">
-		<div class="row">
-			<div class="contai mb-5 " id="1">
+			<div class="row">
+				<div class="contai mb-5 " id="1">
 
-				<a href="${view.url}" target="_blank"><span class="pulse-button"
-					id="recive">Nhận 10</span></a>
-			</div>
-			<div class='contai mb-5' id="2">
-				<span class="pulse-button" id="time"></span>
+					<a href="${view.url}" target="_blank"><span
+						class="pulse-button" id="recive">Nhận 10</span></a>
+				</div>
+				<div class='contai mb-5' id="2">
+					<span class="pulse-button" id="time"></span>
 
+				</div>
 			</div>
-		</div>
 		</c:if>
 		</article>
 

@@ -44,7 +44,9 @@ public class Authen implements Filter {
 	     
 	     String identify = DBUtils.getCookie(req, "identify");
 	     UserAccount user = DBUtils.getLoginedUser(req);
-	     if(servletPath.equals("/Login")||servletPath.equals("/Logout")) {
+	     if(servletPath.equals("/Login")||servletPath.equals("/Logout")||servletPath.equals("/RegisterEmail")||servletPath.equals("/VerifyRegisteredEmailHash")
+	    		 ||servletPath.equals("/Resetpass")||servletPath.equals("/Register")||servletPath.equals("/ForgotPassword")
+	    		 ||servletPath.equals("/ChangePassword")) {
 	            chain.doFilter(req, resp);
 	            return;
 	      }
