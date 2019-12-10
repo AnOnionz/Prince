@@ -75,9 +75,11 @@ public class CreatePostStep3 extends HttpServlet {
 						PostDAO.updatePost(post.getPost_id(), GlobalConstants.ACTIVE);
 					}else {
 						if(post.getFormat() == 1) {
-					PostDAO.insertOption1(post);
+							PostDAO.insertOption1(post);
 						}else {
+							if(post.getFormat() == 2) {
 							PostDAO.insertOption2(post);
+							}
 						}
 					}
 				}

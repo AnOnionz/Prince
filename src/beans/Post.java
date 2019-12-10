@@ -33,7 +33,7 @@ public class Post {
 	private int score;
 	private int format;
 	private int status;
-
+	private int vote;
 	public Post() {
 		super();
 		this.extend = 0;
@@ -258,6 +258,14 @@ public class Post {
 
 	public void setVisiter(int visiter) {
 		this.visiter = visiter;
+	}
+	
+	public int getVote() {
+		return vote;
+	}
+
+	public void setVote(int vote) {
+		this.vote = vote;
 	}
 
 	public int getClickGuess() {

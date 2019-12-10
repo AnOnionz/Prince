@@ -26,25 +26,43 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"
 	integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
 	crossorigin="anonymous"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 </head>
 </head>
 <body>
 	<c:import url="/WEB-INF/classes/header.jsp" />
 	<c:if test="${!empty(view)}">
-		<script type="text/javascript">
+		<!-- Main contents
+	================================================ -->
+		<div class="main-content">
+
+			<div class="breadcrumb-wrapper">
+				<div class="container">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/Home">Trang chủ</a></li>
+							<c:if test="${location==null}">
+								<li class="breadcrumb-item"><a
+									href="${pageContext.request.contextPath}/MyListPost">Quảng
+										cáo của tôi</a></li>
+							</c:if>
+							<li class="breadcrumb-item active" aria-current="page">${view.title}</li>
+						</ol>
+						<!-- End of .breadcrumb -->
+					</nav>
+				</div>
+				<!-- End of .container -->
+			</div>
+			<!-- End of .breadcrumb-container -->
+			<c:if test="${view.format == 1}">
+				<script type="text/javascript">
 	window.onload = function () {
 		document.getElementById("1").style.display = "none";
-		var vid = document.getElementById('video');
-		var duration = vid.duration;
 	    var
 	        display2 = document.querySelector('#time'),
-	        timer2;
-	    if(duration>60){
-	    	 timer2 = new CountDownTimer(60);
-	    }else{
-	    	 timer2 = new CountDownTimer(duration);
-	    }
+	        timer2 = new CountDownTimer(60);
+	    
 	    timer2.onTick(format(display2)).start();
 
 	    function format(display) {
@@ -102,28 +120,6 @@
 	    };
 	};
 	</script>
-		<!-- Main contents
-	================================================ -->
-		<div class="main-content">
-
-			<div class="breadcrumb-wrapper">
-				<div class="container">
-					<nav aria-label="breadcrumb">
-						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-							<c:if test="${location==null}">
-							<li class="breadcrumb-item"><a
-								href="${pageContext.request.contextPath}/MyListPost">Quảng cáo của tôi</a></li>
-								</c:if>
-							<li class="breadcrumb-item active" aria-current="page">${view.title}</li>
-						</ol>
-						<!-- End of .breadcrumb -->
-					</nav>
-				</div>
-				<!-- End of .container -->
-			</div>
-			<!-- End of .breadcrumb-container -->
-			<c:if test="${view.format == 1}">
 				<!-- Banner starts -->
 				<section class="banner banner__single-post banner__standard">
 					<div class="container">
@@ -209,6 +205,28 @@
 			</c:if>
 			<c:if test="${view.format == 2}">
 				<script type="text/javascript">
+				window.onload = function () {
+					document.getElementById("s").style.display = "none";
+					var vid = document.getElementById('video');
+					var duration = vid.duration;
+				    var
+				        display2 = document.querySelector('#time'),
+				        timer2;
+				    if(duration < 60){
+				    	 timer2 = new CountDownTimer(duration);
+				    }else{
+				    	 timer2 = new CountDownTimer(60);
+				    }
+				    timer2.onTick(format(display2)).start();
+
+				    function format(display) {
+				        return function (minutes, seconds) {
+				            minutes = minutes < 10 ? "0" + minutes : minutes;
+				            seconds = seconds < 10 ? "0" + seconds : seconds;
+				            display.textContent = minutes + ':' + seconds;
+				        };
+				    }
+				};
 			 $(document).ready(function () {	
 				var videoElement = document.getElementById('video');  
 					videoElement.focus();
@@ -218,7 +236,53 @@
 					document.documentElement.scrollTop = document.body.scrollTop = 250;
 				}
 			 });
-			 
+				function CountDownTimer(duration, granularity) {
+				    this.duration = duration;
+				    this.granularity = granularity || 1000;
+				    this.tickFtns = [];
+				    this.running = false;
+				}
+				CountDownTimer.prototype.start = function() {
+				    if (this.running) {
+				        return;
+				    }
+				    this.running = true;
+				    var start = Date.now(),
+				        that = this,
+				        diff, obj;
+				    (function timer() {
+				        diff = that.duration - (((Date.now() - start) / 1000) | 0);
+				        if (diff > 0) {
+				            setTimeout(timer, that.granularity);
+				        } else {
+				            diff = 0;
+				            document.getElementById("t").style.display = "none";
+				            document.getElementById("s").style.display = "grid";
+				            that.running = false;
+				            
+				        }
+				        obj = CountDownTimer.parse(diff);
+				        that.tickFtns.forEach(function(ftn) {
+				            ftn.call(this, obj.minutes, obj.seconds);
+				        }, that);
+				    }());
+				};
+				CountDownTimer.prototype.onTick = function(ftn) {
+				    if (typeof ftn === 'function') {
+				        this.tickFtns.push(ftn);
+				    }
+				    return this;
+				};
+				CountDownTimer.prototype.expired = function() {
+				    return !this.running;
+				};
+				CountDownTimer.parse = function(seconds) {
+				    return {
+				        'minutes': (seconds / 60) | 0,
+				        'seconds': (seconds % 60) | 0
+				    };
+				};
+				
 			</script>
 				<div class="post-single-wrapper p-t-xs-60 p-b-xs-40 ">
 					<div class="container">
@@ -234,29 +298,54 @@
 													<source src="video.ogg#t=1" type="video/ogg">
 													<source src="video.webm#t=1" type="video/webm">
 												</video>
-												<div class="contai mb-5 " id="1"
-													style="position: absolute; top: 40%; right: 0;height: auto;">
-													<a href="${view.url}" target="_blank"><span
-														class="pulse-button" id="recive">Nhận ${view.score}</span></a>
+												<div class="contai mb-5 " id="s"
+													style="position: absolute; top: 40%; right: 0; height: auto;">
+													<a href="${view.url}"target="_blank"><span class="pulse-button"
+														id="reciveVideo">${view.score} điểm</span></a>
 												</div>
-												<div class='contai mb-5' id="2"
-													style="position: absolute; top: 40%; right: 0;height: auto;">
+												<div class='contai mb-5' id="t"
+													style="position: absolute; top: 40%; right: 0; height: auto;">
 													<span class="pulse-button" id="time"></span>
 												</div>
+												<c:if test="${location!=null}">
+												<script type="text/javascript">
+        $(document).ready(function () {
+            $("#reciveVideo").click(function(){
+                var postId = ${view.post_id};
+                var userId = ${user_id};
+                $.ajax({
+                    url: 'WatchHistory',
+                    type: 'GET',
+                    data: {
+                    		postId : postId,
+                    		userId : userId
+                    	  },
+                    success: function (data) {
+                    	document.getElementById("s").style.display = "none";
+                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");
+                    	 
+                    	
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+ </c:if>
 											</figure>
-											<script type="text/javascript">
-			</script>
 			</c:if>
 			<!--  -->
 
 			<div class="col-6">
-				<a href="" class="paw-button">
+				<a class="paw-button" id="like">
 					<div class="text">
 						<svg>
             <use xlink:href="#heart">
         </svg>
 						<span>Like</span>
-					</div> <span>12</span>
+					</div> <span>${view.vote}</span>
 					<div class="paws">
 						<svg class="paw">
             <use xlink:href="#paw">
@@ -269,7 +358,32 @@
         </svg>
 					</div>
 				</a>
-
+				<c:if test="${location!=null}">
+					<script type="text/javascript">
+        $(document).ready(function () {
+            $("#like").click(function(){
+                var postId = ${view.post_id};
+                var userId = ${user_id};
+                
+                $.ajax({
+                    url: 'WatchHistory',
+                    type: 'POST',
+                    data: {
+                    		postId : postId,
+                    		userId : userId
+                    		
+                    	  },
+                    success: function (data) {	 
+                    	
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+ </c:if>
 				<!-- Symbols -->
 				<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 19"
@@ -329,15 +443,41 @@
 		<c:if test="${view.format==1}">
 			<div class="row">
 				<div class="contai mb-5 " id="1">
-
 					<a href="${view.url}" target="_blank"><span
-						class="pulse-button" id="recive">Nhận ${view.score}</span></a>
+						class="pulse-button" id="recivePost">${view.score} điểm</span></a>
 				</div>
 				<div class='contai mb-5' id="2">
 					<span class="pulse-button" id="time"></span>
 
 				</div>
 			</div>
+			<c:if test="${location!=null}">
+			<script type="text/javascript">
+        $(document).ready(function () {
+            $("#recivePost").click(function(){
+                var postId = ${view.post_id};
+                var userId = ${user_id};
+                $.ajax({
+                    url: 'WatchHistory',
+                    type: 'GET',
+                    data: {
+                    		postId : postId,
+                    		userId : userId
+                    	  },
+                    success: function (data) {
+                    	document.getElementById("1").style.display = "none";
+                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");
+                    	 
+                    	
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+ </c:if>
 		</c:if>
 		</article>
 

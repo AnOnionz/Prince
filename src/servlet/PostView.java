@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import beans.CommentDAO;
 import beans.Post;
 import beans.PostDAO;
+import beans.WatchHistoryDAO;
 import util.GlobalConstants;
 
 /**
@@ -38,10 +39,21 @@ public class PostView extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String location = null;
 		try {
 		Post view = (Post) request.getSession().getAttribute("view");
+		location = (String) request.getSession().getAttribute("location");
 		String id = String.valueOf(view.getPost_id());
 		Post post = PostDAO.selectPostById(id);
+		post.setVisiter(post.getVisiter()+1);
+		PostDAO.updatePostWatched(post);
+		int userId = (int) request.getSession().getAttribute(GlobalConstants.USER_ID);
+		if(location !=null ){
+		try {
+		WatchHistoryDAO.insertRow(userId, Integer.parseInt(id), 0, 0);
+		}catch(Exception e) {
+		}
+		}
 		ArrayList parentCmt = CommentDAO.selectParentComment(id);
 		request.getSession().setAttribute("listCMT", parentCmt);
 		request.getSession().setAttribute("view", post);
@@ -72,7 +84,7 @@ public class PostView extends HttpServlet {
 		request.getSession().setAttribute("location", location);
 		request.getSession().setAttribute("valuecmt", CommentDAO.countComment((int) request.getSession().getAttribute(GlobalConstants.USER_ID)));
 		JsonObject jobj = new JsonObject();
-		String urlToRedirect = "/Prince/View";
+		String urlToRedirect ="/Prince/View"; //call doget()
 		jobj.addProperty("url", urlToRedirect);
 		response.setContentType("application/json");
 		response.getWriter().write(jobj.toString());

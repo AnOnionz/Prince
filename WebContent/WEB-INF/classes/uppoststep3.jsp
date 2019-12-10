@@ -145,7 +145,7 @@ span, h5 {
 
 								<c:if test="${item.format == 1}">
 								<div class="col-md-4 col-sm-4 px-0">
-									<img height="182px" width="152px" src="${item.image}"
+									<img height="182px" width="152px" src="${item.image}" style="object-fit: cover;"
 										class="rounded">
 								</div>
 								</c:if>

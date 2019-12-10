@@ -54,6 +54,11 @@ public class Authen implements Filter {
 	    		 resp.sendRedirect("/Prince/Login");
 	    		 return;
 	     }
+	     if(user.getROLE_ID()==1 && servletPath.equals("/MyListPost")) {
+	    	 resp.sendRedirect("/Prince/Create?step=1");
+	    	 return;
+	    	 
+	     }
 		chain.doFilter(request, response);
 	}
 

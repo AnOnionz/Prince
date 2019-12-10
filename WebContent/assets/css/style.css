@@ -3740,7 +3740,7 @@ video {
 video,
 audio {
 	max-width: 100%;
-	width: 100%;
+	/*width: 100%;*/
 	margin-bottom: 2rem;
 }
 
@@ -4009,7 +4009,7 @@ figure {
 
 /*--Helper clasess--*/
 .section-gap {
-	
+	padding-top : 3rem;
 	padding-bottom: 3rem;
 }
 
@@ -9314,7 +9314,7 @@ ul.gallery img {
 }
 
 .axil-img-container.flex-height-container {
-	height: calc(100% - 3rem);
+	
 }
 
 @media (max-width: 991px) {

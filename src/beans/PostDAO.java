@@ -72,7 +72,7 @@ public class PostDAO {
 		Post post = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("select post_id, category_id, author_id, click, created_time, title, subtitle1, subtitle2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, score, content1, content2, format, visiter, status from post where post_id=?");
+			ps = conn.prepareStatement("select post_id, category_id, author_id, click, created_time, title, subtitle1, subtitle2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, score, content1, content2, format, visiter, status,vote from post where post_id=?");
 			ps.setString(1,PostId);
 			res = ps.executeQuery();
 			if (res != null) {
@@ -104,6 +104,8 @@ public class PostDAO {
 					post.setFormat(res.getInt(24));
 					post.setVisiter(res.getInt(25));
 					post.setStatus(res.getInt(26));
+					post.setVote(res.getInt(27));
+					
 				}
 				
 			}
@@ -330,12 +332,9 @@ public class PostDAO {
 		Post post = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("create table postpresent select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = 12 and post_id = post_id and isclick = 1) and status = 1 and format = 1 and startdate <= now() and enddate >= now() order by startdate desc limit 5 ;\r\n" + 
-					" create table videopresent select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = 12 and post_id = post_id and isclick = 1) and status = 1 and format = 2 and startdate <= now() and enddate >= now() order by startdate desc limit 5 ;\r\n" + 
-					"select * from (post inner join postpresent p on post.post_id != p.post_id) inner join videopresent v on v.post_id != post.post_id ORDER BY RAND() LIMIT 8;\r\n" + 
-					"drop table postpresent;\r\n" + 
-					"drop table videopresent;");
+			ps = conn.prepareStatement("select * from (post inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 1 and startdate <= now() and enddate >= now() order by startdate desc limit 5) p on post.post_id != p.post_id) inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 2 and startdate <= now() and enddate >= now() order by startdate desc limit 5) v on v.post_id != post.post_id ORDER BY RAND() LIMIT 8"); 
 			ps.setString(1, userId);
+			ps.setString(2, userId);
 			res = ps.executeQuery();
 			if (res != null) {
 				while (res.next()) {
@@ -343,29 +342,30 @@ public class PostDAO {
 					post.setPost_id(res.getInt(1));
 					post.setCategory_id(res.getInt(2));
 					post.setAuthor_id(res.getInt(3));
-					post.setClick(res.getInt(4));
-					post.setCreated_time(res.getTimestamp(5));
-					post.setTitle(res.getString(6));
+					post.setCreated_time(res.getTimestamp(4));
+					post.setTitle(res.getString(5));
+					post.setScore(res.getInt(6));	
 					post.setSubTitle1(res.getString(7));
 					post.setSubTitle2(res.getString(8));
-					post.setImage(res.getString(9));
-					post.setImage1(res.getString(10));
-					post.setImage2(res.getString(11));
-					post.setFigure1(res.getString(12));
-					post.setFigure2(res.getString(13));
-					post.setFigure3(res.getString(14));
-					post.setUrl(res.getString(15));
-					post.setVideo(res.getString(16));
-					post.setStartDate(res.getDate(17));
-					post.setEndDate(res.getDate(18));
-					post.setCost(res.getInt(19));
-					post.setCostPerClick(res.getDouble(20));
-					post.setScore(res.getInt(21));	
-					post.setContent1(res.getNString(22));
-					post.setContent2(res.getNString(23));
-					post.setFormat(res.getInt(24));
-					post.setVisiter(res.getInt(25));
+					post.setContent1(res.getNString(9));
+					post.setContent2(res.getNString(10));
+					post.setImage(res.getString(11));
+					post.setImage1(res.getString(12));
+					post.setImage2(res.getString(13));
+					post.setFigure1(res.getString(14));
+					post.setFigure2(res.getString(15));
+					post.setFigure3(res.getString(16));
+					post.setUrl(res.getString(17));
+					post.setVideo(res.getString(18));
+					post.setStartDate(res.getDate(19));
+					post.setEndDate(res.getDate(20));
+					post.setCost(res.getInt(21));
+					post.setCostPerClick(res.getDouble(22));
+					post.setClick(res.getInt(23));
+					post.setVisiter(res.getInt(24));
+					post.setFormat(res.getInt(25));
 					post.setStatus(res.getInt(26));
+					post.setVote(res.getInt(27));	
 					listRand.add(post);
 					
 				}
@@ -413,7 +413,7 @@ public class PostDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			conn.setAutoCommit(false);
-			ps1 = conn.prepareStatement("insert into post(category_id, author_id, click, created_time, title, score, subtitle1, subtitle2, content1, content2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, format, visiter, status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			ps1 = conn.prepareStatement("insert into post(category_id, author_id, click, created_time, title, score, subtitle1, subtitle2, content1, content2, image, image1, image2, figure, figure1, figure2, url, video, startdate, enddate, cost, cost_per_click, format, visiter, status, vote) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ps1.setInt(1, post.getCategory_id());
 			ps1.setInt(2, post.getAuthor_id());
 			ps1.setInt(3, post.getClick());
@@ -438,7 +438,8 @@ public class PostDAO {
 			ps1.setDouble(22, post.getCostPerClick());
 			ps1.setInt(23,  post.getFormat());
 			ps1.setInt(24, post.getVisiter());
-			ps1.setInt(25,  1);
+			ps1.setInt(25,  1);// status = active
+			ps1.setInt(26,  0);//0 vote
 			ps1.executeUpdate();
 			
 			ps2 = conn.prepareStatement("SELECT LAST_INSERT_ID()");
@@ -468,7 +469,7 @@ public class PostDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			conn.setAutoCommit(false);
-			ps1 = conn.prepareStatement("insert into post (category_id, author_id, click, created_time, title, score, video, startdate, enddate, cost, cost_per_click, format, visiter, url,status) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			ps1 = conn.prepareStatement("insert into post (category_id, author_id, click, created_time, title, score, video, startdate, enddate, cost, cost_per_click, format, visiter, url,status, vote) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			ps1.setInt(1, post.getCategory_id());
 			ps1.setInt(2, post.getAuthor_id());
 			ps1.setInt(3, post.getClick());
@@ -484,6 +485,7 @@ public class PostDAO {
 			ps1.setInt(13, post.getVisiter());
 			ps1.setString(14, post.getUrl());
 			ps1.setInt(15, post.getStatus());
+			ps1.setInt(16, 0);
 			ps1.executeUpdate();
 			ps2 = conn.prepareStatement("SELECT LAST_INSERT_ID()");
 			res = ps2.executeQuery();
@@ -502,57 +504,41 @@ public class PostDAO {
 		}
 		return id;
 	}
-	public static String insertOption3(Post post)  {
-		Connection conn = null;
-		PreparedStatement ps1 = null;
-		PreparedStatement ps2 = null;
-		String id = null;
-		ResultSet res = null;
-		try {
-			conn = MySQLConnUtils.getMySQLConnection();
-			conn.setAutoCommit(false);
-			ps1 = conn.prepareStatement("insert into post (category_id, author_id, click, created_time, title, score, image, startdate, enddate, cost, cost_per_click, format, visiter) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			ps1.setInt(1, post.getCategory_id());
-			ps1.setInt(2, post.getAuthor_id());
-			ps1.setInt(3, post.getClick());
-			ps1.setTimestamp(4, post.getCreated_time());
-			ps1.setString(5, post.getTitle());
-			ps1.setInt(6, post.getScore());			
-			ps1.setString(7, post.getImage());			
-			ps1.setDate(8, post.getStartDate());
-			ps1.setDate(9, post.getEndDate());
-			ps1.setInt(10, post.getCost());
-			ps1.setDouble(11, post.getCostPerClick());
-			ps1.setInt(12, post.getFormat());
-			ps1.setInt(13, post.getVisiter());
-			ps1.setInt(14, post.getStatus());
-			ps1.executeUpdate();
-			ps2 = conn.prepareStatement("SELECT LAST_INSERT_ID()");
-			res = ps2.executeQuery();
-			
-			if (res != null) {
-				while (res.next()) {
-					id = res.getString(1);
-				}
-			}
-			conn.commit();
-			MySQLConnUtils.close(conn, ps1, ps2, res);
-		} catch (ClassNotFoundException | SQLException e) {
-			e.getMessage();
-			MySQLConnUtils.close(conn, ps1, ps2, res);
-		}
-		return id;
-	}
 	public static boolean updatePost(int id, int status) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		int i = 0;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("update post set status = ?, created_time = ? where post_id = ?");
+			ps = conn.prepareStatement("update post set status = ? where post_id = ?");
 			ps.setInt(1,status);
-			ps.setTimestamp(2,Timestamp.valueOf(LocalDateTime.now()));
-			ps.setInt(3,id);
+			ps.setInt(2,id);
+			i = ps.executeUpdate();
+			MySQLConnUtils.close(conn, ps);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.getMessage();
+			MySQLConnUtils.close(conn, ps);
+			return false;
+			
+		}
+		if(i>0) {
+			return true;
+		}
+		return false;
+	}
+	public static boolean updatePostWatched(Post post) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int i = 0;
+		try {
+			conn = MySQLConnUtils.getMySQLConnection();
+			ps = conn.prepareStatement("update post set click = ?, visiter = ?, status = ?, vote= ? where post_id = ?");
+			ps.setInt(1,post.getClick());
+			ps.setInt(2,post.getVisiter());
+			ps.setInt(3,post.getStatus());
+			ps.setInt(4,post.getVote());
+			ps.setInt(5,post.getPost_id());
 			i = ps.executeUpdate();
 			MySQLConnUtils.close(conn, ps);
 			
@@ -599,7 +585,8 @@ public class PostDAO {
 		//System.out.println(PostDAO.deletePost("47", GlobalConstants.DELETED));	
 		//System.out.println(PostDAO.selectPostById("69"));
 		//System.out.println(PostDAO.selectFileUrl());
-		System.out.println(selectPostById("91"));
+		//System.out.println(selectPostById("91"));
+		System.out.println(selectRandomPost("12"));
 		
 	}
 }

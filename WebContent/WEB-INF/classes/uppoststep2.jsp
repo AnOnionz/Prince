@@ -473,7 +473,7 @@
 									class="fa fa-video"></i>video<input type="file" style="display: none;"
 									id="file-input4"
 									name="file-input4" required="required"
-									onchange="document.getElementById('preview').src = window.URL.createObjectURL(this.files[0])">
+									onchange="document.getElementById('previewvideo').src = window.URL.createObjectURL(this.files[0])">
 								</label>
 							
 						</div>
@@ -554,11 +554,11 @@
 											<div class="single-blog-wrapper">
 
 												<figure class="post-media">
-													<video class="plyr-post" preload="metadata"oncontextmenu="return false;"
-														id="preview" src="" controls>
-														<source src="video.mp4#t=0.1" type="video/mp4">
-														<source src="video.ogg#t=0.1" type="video/ogg">
-														<source src="video.webm#t=0.1" type="video/webm">
+													<video class="plyr-post" preload="metadata" width="100%"
+														id="previewvideo" src="" controls autoplay>
+														<source src="video.mp4#t=1" type="video/mp4">
+														<source src="video.ogg#t=1" type="video/ogg">
+														<source src="video.webm#t=1" type="video/webm">
 													</video>
 													
 												</figure>
