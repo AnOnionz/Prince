@@ -77,7 +77,7 @@ public class RegisterEmail extends HttpServlet {
 		    		}catch(Exception e){
 		    			e.getMessage();
 		    		}
-		    		
+
 		    	}else {
 		    		request.setAttribute(GlobalConstants.ERROR, "Tên tài khoản đã được sử dụng");
 		    		request.setAttribute("email",email);
