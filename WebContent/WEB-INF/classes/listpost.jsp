@@ -132,7 +132,6 @@ span, h5 {
 </style>
 </head>
 <body>
-
 	<c:import url="/WEB-INF/classes/header.jsp" />
 	<div class="container-fluid pb-4 ">
 	<div class="breadcrumb-wrapper">

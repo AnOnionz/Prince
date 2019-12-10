@@ -4009,7 +4009,7 @@ figure {
 
 /*--Helper clasess--*/
 .section-gap {
-	padding-top: 6rem;
+	
 	padding-bottom: 3rem;
 }
 
@@ -9406,7 +9406,7 @@ ul.gallery img {
 }
 
 .axil-img-container .media-body__big {
-	padding: 5rem;
+	
 	-webkit-box-pack: end;
 	-ms-flex-pack: end;
 	justify-content: flex-end;

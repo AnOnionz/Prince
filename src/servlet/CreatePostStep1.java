@@ -179,8 +179,12 @@ public class CreatePostStep1 extends HttpServlet {
 			post.setFormat(format);
 			post.setClick(0);
 			post.setCreated_time(Timestamp.valueOf(LocalDateTime.now()));
-			post.setScore(post.costPerClick());
-			
+			try {
+				post.setScore(post.costPerClick());
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}	
 			session.setAttribute("post", post);
 			session.setAttribute("stepcompleted", 1);
 			session.setMaxInactiveInterval(60*60*24);

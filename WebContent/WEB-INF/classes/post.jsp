@@ -35,11 +35,16 @@
 		<script type="text/javascript">
 	window.onload = function () {
 		document.getElementById("1").style.display = "none";
-	    var 
+		var vid = document.getElementById('video');
+		var duration = vid.duration;
+	    var
 	        display2 = document.querySelector('#time'),
-	        timer2 = new CountDownTimer(60);
-
-	  
+	        timer2;
+	    if(duration>60){
+	    	 timer2 = new CountDownTimer(60);
+	    }else{
+	    	 timer2 = new CountDownTimer(duration);
+	    }
 	    timer2.onTick(format(display2)).start();
 
 	    function format(display) {
@@ -106,9 +111,10 @@
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+							<c:if test="${location==null}">
 							<li class="breadcrumb-item"><a
-								href="${pageContext.request.contextPath}/MyListPost">Quảng
-									cáo của tôi</a></li>
+								href="${pageContext.request.contextPath}/MyListPost">Quảng cáo của tôi</a></li>
+								</c:if>
 							<li class="breadcrumb-item active" aria-current="page">${view.title}</li>
 						</ol>
 						<!-- End of .breadcrumb -->
@@ -192,7 +198,7 @@
 											<h3>Video</h3>
 
 											<figure class="post-media">
-												<video class="plyr-post" preload="metadata" id="preview"
+												<video class="plyr-post" preload="auto" id="preview"
 													src="${view.video}" controls>
 													<source src="video.mp4#t=0.1" type="video/mp4">
 													<source src="video.ogg#t=0.1" type="video/ogg">
@@ -205,13 +211,12 @@
 				<script type="text/javascript">
 			 $(document).ready(function () {	
 				var videoElement = document.getElementById('video');  
-				videoElement.focus();
-				videoElement.load();
-				videoElement.play();		
+					videoElement.focus();
+					videoElement.load();
+					videoElement.play();
 				if (document.webkitCancelFullScreen) { 
 					document.documentElement.scrollTop = document.body.scrollTop = 250;
 				}
-				videoElement.webkitRequestFullScreen();
 			 });
 			 
 			</script>
@@ -229,13 +234,15 @@
 													<source src="video.ogg#t=1" type="video/ogg">
 													<source src="video.webm#t=1" type="video/webm">
 												</video>
-												<div class="contai mb-5 " id="1">
-
+												<div class="contai mb-5 " id="1"
+													style="position: absolute; top: 40%; right: 0;height: auto;">
 													<a href="${view.url}" target="_blank"><span
-														class="pulse-button" id="recive">Nhận 10</span></a>
+														class="pulse-button" id="recive">Nhận ${view.score}</span></a>
 												</div>
-												<div class='contai mb-5' id="2">
+												<div class='contai mb-5' id="2"
+													style="position: absolute; top: 40%; right: 0;height: auto;">
 													<span class="pulse-button" id="time"></span>
+												</div>
 											</figure>
 											<script type="text/javascript">
 			</script>
@@ -324,7 +331,7 @@
 				<div class="contai mb-5 " id="1">
 
 					<a href="${view.url}" target="_blank"><span
-						class="pulse-button" id="recive">Nhận 10</span></a>
+						class="pulse-button" id="recive">Nhận ${view.score}</span></a>
 				</div>
 				<div class='contai mb-5' id="2">
 					<span class="pulse-button" id="time"></span>

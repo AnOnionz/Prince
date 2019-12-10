@@ -13,7 +13,7 @@ public class MySQLConnUtils {
          throws ClassNotFoundException, SQLException {
      Connection conn = null;
      String driver = "com.mysql.cj.jdbc.Driver";
-     String url ="jdbc:mysql://127.0.0.1:3306/tmdt1";
+     String url ="jdbc:mysql://127.0.0.1:3306/tmdt";
      String userName = "root";
      String password = "1709";
      try {

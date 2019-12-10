@@ -42,17 +42,40 @@
 ::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
+
+video::-webkit-media-controls {
+  display: none;
+}
+video::-webkit-media-controls-play-button {display: none;}
+
+video::-webkit-media-controls-volume-slider {display: none;}
+
+video::-webkit-media-controls-mute-button {display: none;}
+
+video::-webkit-media-controls-timeline {display: none;}
+
+video::-webkit-media-controls-current-time-display {display: none;}
+
 	</style>
 </head>
 <body>
 <div class="main-content">
 	<c:import url="/WEB-INF/classes/header.jsp"/>
+	<% 
+	ArrayList<Post> videoPresent = new ArrayList();
+	ArrayList<Post> postPresent = new ArrayList();
+	ArrayList<Post> postRandom = new ArrayList();
+		try{
+				 videoPresent = PostDAO.selectVideoPresent(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));
+				 postPresent = PostDAO.selectPostPresent(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));		
+				 postRandom = PostDAO.selectRandomPost(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));
+			}catch(Exception e){
+			}%>
 		<div class="recent-news-wrapper section-gap p-t-xs-15 p-t-sm-60">
 			<div class="container">
-			<% try{
-				ArrayList<Post> postPresent = PostDAO.selectPostPresent(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));				
-			%>
 			
+			<%if(postPresent.size()>0){
+				%>
 				<div class="row">
 					<div class="col-lg-6">
 						<div class="axil-latest-post">
@@ -70,7 +93,7 @@
 											><%=postPresent.get(0).getTitle()%></a></h3>
 									<div class="post-metas">
 										<ul class="list-inline">
-											<li>Đăng bởi <a class="post-author"><strong><%=postPresent.get(0).getAuthorName() %></strong></a></li>
+											<li>Đăng bởi <a class="post-author"style="font-weight: bold;"><%=postPresent.get(0).getAuthorName() %></a></li>
 											<li><i class="dot">.</i><%=postPresent.get(0).getStartDate()%></li>
 											<li><a><i class="feather icon-activity"></i><%=postPresent.get(0).getVisiter()%> lượt xem</a></li>
 											
@@ -81,10 +104,13 @@
         $(document).ready(function () {
             jQuery("#view<%=postPresent.get(0).getPost_id()%>,#viewTitle<%=postPresent.get(0).getPost_id()%>").click(function(){
                 var id = <%=postPresent.get(0).getPost_id()%>;
+                var location = "home";
                 $.ajax({
                     url: 'View',
                     type: 'POST',
-                    data: {id : id },
+                    data: {id : id ,
+                    location : location	
+                    },
                     success: function (data) {
                     	window.location.href = data.url;
                     },
@@ -108,7 +134,8 @@
 							</div>
 							<!-- End of .section-title -->
 							<div class="axil-content">
-							<%for(int i = 1 ; i< postPresent.size(); i++){ %>
+							<% if(postPresent.size()>2){
+							for(int i = 1 ; i< postPresent.size(); i++){ %>
 								<div class="media post-block m-b-xs-30">
 									<a class="align-self-center"><img id="view<%=postPresent.get(i).getPost_id()%>"
 											class=" m-r-xs-30" src="<%=postPresent.get(i).getImage()%>" alt="Ảnh bìa"></a>
@@ -121,7 +148,7 @@
 												><%=postPresent.get(i).getTitle()%></a></h3>
 										<div class="post-metas">
 											<ul class="list-inline">
-												<li>Đăng bởi <a><strong><%=postPresent.get(i).getAuthorName()%></strong></a></li>
+												<li>Đăng bởi <a  class="font-weight-bold"><%=postPresent.get(i).getAuthorName()%></a></li>
 											</ul>
 										</div>
 									</div>
@@ -130,10 +157,12 @@
         $(document).ready(function () {
             jQuery("#view<%=postPresent.get(i).getPost_id()%>,#viewTitle<%=postPresent.get(i).getPost_id()%>").click(function(){
                 var id = <%=postPresent.get(i).getPost_id()%>;
+                var location = "home";
                 $.ajax({
                     url: 'View',
                     type: 'POST',
-                    data: {id : id },
+                    data: {id : id ,
+                    	location : location},
                     success: function (data) {
                     	window.location.href = data.url;
                     },
@@ -144,7 +173,11 @@
             });
         });
  </script>
-								<%} %>
+								<%}
+							}else{
+							%>
+							<div class="col-5 mx-auto">Chưa có quảng cáo mới</div>
+							<%} %>
 							</div>
 							<!-- End of .content -->
 						</div>
@@ -153,45 +186,40 @@
 					<!-- End of .col-lg-6 -->
 					
 				</div>
-				<% }catch(Exception e){
-			%>
 			<%} %>
 				<!-- End of .row -->
 			</div>
 			<!-- End of .container -->
 		</div>
 	
-		
+		<%if(videoPresent.size()>0){ %>
 		<section class="axil-video-posts section-gap section-gap-top__with-text bg-grey-dark-one">
 			<div class="container">
 				<div class="section-title title-white m-b-xs-40">
 					<h2 class="axil-title">Videos</h2>
-					<a href="#" class="btn-link ml-auto">All VIDEOS</a>
 				</div>
 				<!-- End of .section-title -->
 				<div class="row">
-					<div class="col-lg-8">
-						<div class="axil-img-container flex-height-container">
-							<a href="post-format-video.jsp" class="d-block h-100">
-								<img src="assets/images/video-post/video-post-latest.jpg" alt="video post"
-									class="w-100">
-								<div class="grad-overlay grad-overlay__transparent"></div>
-								<div class="video-popup video-play-btn video-play-btn__big"></div>
+					<div class="col-lg-6">
+						<div class="axil-img-container flex-height-container" id="view<%=videoPresent.get(0).getPost_id()%>">
+							<a class="d-block h-100" >
+								<video class="plyr-post postVideo" preload="metadata"  style="object-fit:contain;"
+													src="<%=videoPresent.get(0).getVideo()%>"controls="false">
+													<source src="video.mp4#t=1" type="video/mp4">
+													<source src="video.ogg#t=1" type="video/ogg">
+													<source src="video.webm#t=1" type="video/webm">
+												</video>
 							</a>
 							<div class="media post-block grad-overlay__transparent position-absolute m-b-xs-30">
 								<div class="media-body media-body__big">
 									<div class="axil-media-bottom mt-auto">
-										<h3 class="axil-post-title hover-line hover-line"><a
-												href="post-format-standard.jsp">Maui
-												By Air The
-												Best Way Around The
-												Island</a></h3>
+										<h3 class="axil-post-title hover-line hover-line" id="viewTitle<%=videoPresent.get(0).getPost_id()%>"style=" word-wrap: break-word;cursor: default;"><a
+												><%=videoPresent.get(0).getTitle()%></a></h3>
 										<div class="post-metas">
 											<ul class="list-inline">
-												<li>By <a href="#" class="post-author">Ashley Graham</a></li>
-												<li><i class="dot">.</i>July 23, 2019</li>
-												<li><a href="#"><i class="feather icon-activity"></i>5k Views</a></li>
-												<li><a href="#"><i class="feather icon-share-2"></i>230 Shares</a></li>
+												<li>Đăng bởi <a class="post-author font-weight-bold"><%=videoPresent.get(0).getAuthorName()%></a></li>
+												<li><i class="dot">.</i><%=videoPresent.get(0).getStringTime()%></li>
+												<li><a><i class="feather icon-activity"></i><%=videoPresent.get(0).getVisiter()%> lượt xem</a></li>
 											</ul>
 										</div>
 									</div>
@@ -199,92 +227,86 @@
 								<!-- End of .media-body -->
 							</div>
 							<!-- End of .post-block -->
+							<script>
+        $(document).ready(function () {
+            jQuery("#view<%=videoPresent.get(0).getPost_id()%>,#viewTitle<%=videoPresent.get(0).getPost_id()%>").click(function(){
+                var id = <%=videoPresent.get(0).getPost_id()%>;
+                var location = "home";
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id ,
+                    location : location	
+                    },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
 						</div>
 						<!-- End of .axil-img-container -->
 					</div>
 					<!-- End of .col-lg-8 -->
 					<div class="col-lg-4">
+					
 						<div class="axil-content">
-							<div class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30">
-								<a href="post-format-video.jsp" class="align-self-center">
-									<img class=" m-r-xs-30" src="assets/images/video-post/video-post-1.jpg" alt="">
+						<% if(postPresent.size()>2){
+							for(int i = 1 ; i< videoPresent.size(); i++){ %>
+						
+							<div class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30" id="view<%=videoPresent.get(i).getPost_id()%>">
+								<a class="align-self-center">
 									<span class="video-play-btn video-play-btn__small"></span>
+									<video class="plyr-post d-none" preload="metadata" 
+													src="<%=videoPresent.get(i).getVideo()%>"  controls>
+													<source src="video.mp4#t=5" type="video/mp4">
+													<source src="video.ogg#t=5" type="video/ogg">
+													<source src="video.webm#t=5" type="video/webm">
+												</video>
 								</a>
 								<div class="media-body">
 									<div class="post-cat-group">
-										<a href="post-format-video.jsp" class="post-cat color-blue-three">BEAUTY</a>
+										<a class="post-cat color-blue-three"></a>
 									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-video.jsp">Stocking
-											Your
-											Restaurant Kitchen Finding
-											Reliable
-											Sellers</a></h3>
+									<h3 class="axil-post-title hover-line hover-line" id="viewTitle<%=videoPresent.get(i).getPost_id()%>" style=" word-wrap: break-word;cursor: default;"><a
+											><%=videoPresent.get(i).getTitle()%></a></h3>
 									<div class="post-metas">
 										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
+											<li>Đăng bởi <a class="post-author"><%=videoPresent.get(i).getAuthorName()%></a></li>		
 										</ul>
 									</div>
 								</div>
 							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30">
-								<a href="post-format-video.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/video-post/video-post-2.jpg" alt="">
-									<span class="video-play-btn video-play-btn__small"></span></a>
-								<div class="media-body">
-									<a href="post-format-video.jsp" class="post-cat color-green-three">TRAVEL</a>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-video.jsp">Trip To
-											Iqaluit In
-											Nunavut A Canadian
-											Arctic
-											City</a>
-									</h3>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Xu Jianhong</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30">
-								<a href="post-format-video.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/video-post/video-post-3.jpg" alt="">
-									<span class="video-play-btn video-play-btn__small"></span></a>
-								<div class="media-body">
-									<a href="post-format-video.jsp" class="post-cat color-red-two">SPORTS</a>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-video.jsp">Get The Boot A Birds Eye Look Into Mcse
-											Boot Camps</a></h3>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Ahmad Nazeri</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30">
-								<a href="post-format-video.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/video-post/video-post-4.jpg" alt="">
-									<span class="video-play-btn video-play-btn__small"></span></a>
-								<div class="media-body">
-									<a href="post-format-video.jsp" class="post-cat color-blue-one">FASHION</a>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-video.jsp">To Keep
-											Makeup
-											Looking Fresh Take A
-											Powder</a></h3>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Sergio Pliego</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
+							<script>
+        $(document).ready(function () {
+            jQuery("#view<%=videoPresent.get(i).getPost_id()%>,#viewTitle<%=videoPresent.get(i).getPost_id()%>").click(function(){
+                var id = <%=videoPresent.get(i).getPost_id()%>;
+                var location = "home";
+                $.ajax({
+                    url: 'View',
+                    type: 'POST',
+                    data: {id : id ,
+                    location : location	
+                    },
+                    success: function (data) {
+                    	window.location.href = data.url;
+                    },
+                    error: function (e) {
+                        console.log(e.message);
+                    }
+                });
+            });
+        });
+ </script>
+							<%}
+							}else{
+								%>
+							<div class="col-8 mx-auto mt-5">chưa có video mới</div>
+							<%} %>
 						</div>
 						<!-- End of .axil-content -->
 					</div>
@@ -294,7 +316,9 @@
 			</div>
 			<!-- End of .container -->
 		</section>
+		<%} %>
 		<!-- End of .axil-video-posts -->
+		<%if(postRandom.size()>0){ %>
 		<div class="random-posts section-gap">
 			<div class="container">
 				<div class="row">
@@ -304,183 +328,59 @@
 									class="img-fluid"></a>
 						</div>
 						<main class="axil-content">
+						<%for(Post item : postRandom){ 
+						if(item.getFormat()==1){
+						%>
 							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-3.jpg" alt=""></a>
+								<a class="align-self-center"><img class=" m-r-xs-30"
+										src="<%=item.getImage()%>" alt="ảnh bìa"></a>
 								<div class="media-body">
 									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp" class="post-cat cat-btn bg-color-blue-one">TRAVEL</a>
+										<a class="post-cat cat-btn bg-color-blue-one"><%=item.getCategoryName() %></a>
 									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Will The
-											Democrats
-											Be Able To Reverse The
-											Online Gambling Ban</a></h3>
-									<p class="mid">Aliquam erat volutpat. Nam ut bibendum eros. Nam vel nulla est.
-										Quisque fermentum sapien.</p>
+									<h3 class="axil-post-title hover-line hover-line"><a><%=item.getTitle()%></a></h3>
+									<p class="mid"><%=item.getContent1()%></p>
 									<div class="post-metas">
 										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
+											<li>Đăng bởi<a class="font-weight-bold"><%=item.getAuthorName()%></a></li>
 										</ul>
 									</div>
 								</div>
 							</div>
-							<!-- End of .post-block -->
+							<%} if(item.getFormat()==2){ %>
 							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-4.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp" class="post-cat cat-btn bg-color-blue-two">SCIENCE</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Old
-											Fashioned Recipe
-											For Preventing
-											Allergies And Chemical Sensitivities</a></h3>
-									<p class="mid">Cras sit amet maximus odio, finibus pulvinar nisl. Praesent sed
-										sagittis diam. Integer sed volutpat mi, in ultrices tellus.</p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-5.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn bg-color-purple-one">PHILOSOPHY</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Barbeque
-											Techniques
-											Two Methods To
-											Consider</a></h3>
-									<p class="mid">Nulla facilisi. Aenean scelerisque elit nec placerat fermentum. Duis
-										eu urna.</p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-6.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp" class="post-cat cat-btn bg-color-purple-two">BEAUTY</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Sony
-											Laptops Are
-											Still Part Of The Sony
-											Family</a></h3>
-									<p class="mid">Curabitur egestas est vitae sem blandit tincidunt. Nunc cursus
-										interdum odio sit amet gravida.</p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-7.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn bg-color-blue-three">ADVERTISING</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">It takes a big idea to attract the
-											attention of consumers and get them to buy your product. </a></h3>
-									<p class="mid">Nullam arcu purus, elementum ut tincidunt sit amet, facilisis quis
-										quam. Pellentesque fringilla leo et commodo pulvinar.</p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-8.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn bg-color-green-two">TECHNOLOGY</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Going
-											Wireless With
-											Your Headphones</a></h3>
-									<p class="mid">Donec ac felis purus. Nam quis justo vel tortor imperdiet efficitur.
-										Ut ac sagittis magna. Ut tincidunt rhoncus lacus.</p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-9.jpg" alt=""></a>
-								<div class="media-body">
-									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp"
-											class="post-cat cat-btn bg-color-green-three">MOTIVATION</a>
-									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Hypnotherapy For Motivation Getting The
-											Drive Back</a>
-									</h3>
-									<p class="mid">Pellentesque ullamcorper nibh nec lacus lobortis lobortis. Praesent
-										sit amet venenatis nibh. </p>
-									<div class="post-metas">
-										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<!-- End of .post-block -->
+								
+								<video class="plyr-post d-none" preload="metadata" id="video" width="140px"
+								style=":-webkit-media-controls:display: none;
+								pointer-events: none;
+								:-webkit-media-controls-play-button :  display: none;
 
-							<div class="media post-block post-block__mid m-b-xs-30">
-								<a href="post-format-standard.jsp" class="align-self-center"><img class=" m-r-xs-30"
-										src="assets/images/post/post-img-10.jpg" alt=""></a>
+								:-webkit-media-controls-volume-slider:  display: none;
+
+								:-webkit-media-controls-mute-button : display: none;
+
+								:-webkit-media-controls-timeline :  display: none;
+
+								:-webkit-media-controls-current-time-display : display: none; "
+													src="<%=item.getVideo()%>"controls="false">
+													<source src="video.mp4#t=0.8" type="video/mp4">
+													<source src="video.ogg#t=0.8" type="video/ogg">
+													<source src="video.webm#t=0.8" type="video/webm">
+												</video>
 								<div class="media-body">
 									<div class="post-cat-group m-b-xs-10">
-										<a href="business.jsp" class="post-cat cat-btn bg-color-red-one">SPORTS</a>
+										<a class="post-cat cat-btn bg-color-blue-one"><%=item.getCategoryName() %></a>
 									</div>
-									<h3 class="axil-post-title hover-line hover-line"><a
-											href="post-format-standard.jsp">Maui By Air The Best Way Around The
-											Island</a>
-									</h3>
-									<p class="mid">Ut et feugiat dui. Nam fringilla, sem et mollis tincidunt, eros orci
-										congue magna, eget lacinia erat metus vel tortor. Praesent efficitur ultricies
-										felis. </p>
+									<h3 class="axil-post-title hover-line hover-line"><a><%=item.getTitle()%></a></h3>
+									<p class="mid"><%=item.getContent1()%></p>
 									<div class="post-metas">
 										<ul class="list-inline">
-											<li>By <a href="#">Amachea Jajah</a></li>
+											<li>Đăng bởi<a  class="font-weight-bold"><%=item.getAuthorName()%></a></li>
 										</ul>
 									</div>
 								</div>
 							</div>
-							<!-- End of .post-block -->
+							<%}} %>
 						</main>
 						<!-- End of .axil-content -->
 					</div>
@@ -1137,6 +1037,7 @@
 			</div>
 			<!-- End of .container -->
 		</div>
+		<%} %>
 		
 		<c:import url="/WEB-INF/classes/footer.jsp" />
 </div>

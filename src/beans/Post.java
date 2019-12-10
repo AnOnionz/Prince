@@ -265,10 +265,10 @@ public class Post {
 
 	}
 
-	public int costPerClick() {
+	public int costPerClick() throws Exception {
 		// nguoi dung chi nhan 35%
 		final double rate = 0.65;
-		return (int) ((1 - rate) * (costPerClick));
+		return (int) (((1 - rate) * (this.costPerClick))*util.Utils.getRateUSD())/100;
 	}
 
 	public String createTimeToString() {
@@ -305,6 +305,34 @@ public class Post {
 		}
 		return null;
 	}
+	public String getStringTime() {
+		LocalDateTime today = LocalDateTime.now();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this.created_time);
+		int dayc = cal.get(Calendar.DAY_OF_YEAR);
+		int dayt = today.getDayOfYear();
+		if(dayt-dayc < 7 && dayt-dayc >1) {
+			return dayt-dayc +" ngày trước";
+		}else {
+			int hourc = cal.get(Calendar.HOUR_OF_DAY);
+			int hourt = today.getHour();
+			int minutec = cal.get(Calendar.MINUTE);
+			int minutet = today.getMinute();
+			int secondc = cal.get(Calendar.SECOND);
+			int secondt =today.getSecond();
+			String hour = hourt - hourc > 0 ? hourt - hourc + "" : null;
+			String minute = minutet-minutec > 0 ? minutet-minutec + "" : null;
+			String second = secondt-secondc > 0 ? secondt-secondc + "" : null;
+			if(dayt-dayc<1) {
+				return hour!=null?hour+" giờ trước": minute!=null?minute+" phút trước" : second!=null?second +" giây trước":"ngay bây giờ"; 
+			}
+			if(dayt-dayc==1){
+				return "hôm qua lúc "+hourc+":"+minutec;
+			}
+		}
+		return null;
+		
+	}
 	@Override
 	public String toString() {
 
@@ -314,9 +342,10 @@ public class Post {
 
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Post post = new Post();
-
+		post.setCostPerClick(0.3);
+		//System.out.println(post.costPerClick());
 		post.setCreated_time(Timestamp.valueOf(LocalDateTime.now()));
 		System.out.println(post.createTimeToString());
 	}

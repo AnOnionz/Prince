@@ -58,11 +58,18 @@ public class PostView extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String location = null;
 		String id = request.getParameter("id");
+		try {
+			location = request.getParameter("location");
+		}catch(Exception e) {
+			
+		}
 		Post post = PostDAO.selectPostById(id);
 		ArrayList parentCmt = CommentDAO.selectParentComment(id);
 		request.getSession().setAttribute("listCMT", parentCmt);
 		request.getSession().setAttribute("view", post);
+		request.getSession().setAttribute("location", location);
 		request.getSession().setAttribute("valuecmt", CommentDAO.countComment((int) request.getSession().getAttribute(GlobalConstants.USER_ID)));
 		JsonObject jobj = new JsonObject();
 		String urlToRedirect = "/Prince/View";

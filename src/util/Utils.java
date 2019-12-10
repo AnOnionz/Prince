@@ -82,7 +82,7 @@ public class Utils {
 
 	public static void main(String args[]) throws Exception {
 		// System.out.println(BCrypt.gensalt());
-		System.out.println(getRateUSD());
+		//System.out.println(getRateUSD());
 		deleteOldFile();
 	}
 }

@@ -340,7 +340,7 @@ public class UserDAO {
 			conn = MySQLConnUtils.getMySQLConnection();
 			ps = conn.prepareStatement("select 1 from user where identify = ?");
 			ps.setString(1, identify);
-			res = ps.executeQuery();
+			res = ps.executeQuery();	
 			if (res != null) {
 				while (res.next()) {
 					verified = true;
