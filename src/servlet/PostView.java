@@ -40,9 +40,12 @@ public class PostView extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String location = null;
+		
+		
 		try {
 		Post view = (Post) request.getSession().getAttribute("view");
 		location = (String) request.getSession().getAttribute("location");
+		
 		String id = String.valueOf(view.getPost_id());
 		Post post = PostDAO.selectPostById(id);
 		post.setVisiter(post.getVisiter()+1);
@@ -57,6 +60,9 @@ public class PostView extends HttpServlet {
 		ArrayList parentCmt = CommentDAO.selectParentComment(id);
 		request.getSession().setAttribute("listCMT", parentCmt);
 		request.getSession().setAttribute("view", post);
+		if(WatchHistoryDAO.maxWatchHistory()==false) {
+			request.getSession().setAttribute("maxview", "yes");
+		}
 		}catch(Exception e) {
 			
 		}

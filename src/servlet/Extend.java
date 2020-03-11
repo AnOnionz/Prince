@@ -113,7 +113,7 @@ public class Extend extends HttpServlet {
 		for (int i = 0; i < list.size(); i++) {
 			// neu bai viet da edit trung voi bai viet trong listPayment
 			if (list.get(i).getPost_id() == (post.getPost_id())) {
-				// update
+				// cap nhat lai bai viet trong listPayment
 				list.get(i).setCost(cost);
 				list.get(i).setCostPerClick(cpc);
 				list.get(i).setStartDate(Date.valueOf(sDate));

@@ -51,15 +51,17 @@ public class LoginServlet extends HttpServlet {
 				UserAccount user = UserDAO.selectUSER(identify);
 				HttpSession session = request.getSession();
 				if (session.isNew()) {
-					Notify.createNotify("Đăng nhập thành công", "chào mừng bạn đến với Prince", "success", "false",request, response);
+					Notify.createNotify("Đăng nhập thành công", "chào mừng bạn đến với Prince", "success", "false",
+							request, response);
 				}
 				session.setAttribute(GlobalConstants.USER_ID, user.getUSER_ID());
 				session.setAttribute(GlobalConstants.USER_NAME, user.getUSERNAME());
-				session.setAttribute("user", user);	
+				session.setAttribute("user", user);
 				response.sendRedirect("/Prince/Home");
-			} else {	
+			} else {
 				RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/login.jsp");
 				dispatcher.forward(request, response);
+
 			}
 		}
 	}
@@ -79,21 +81,22 @@ public class LoginServlet extends HttpServlet {
 		String inputPassword = BCrypt.hashpw(password, GlobalConstants.SALT);
 
 		try {
-			UserAccount up = UserDAO.verifyLogin(inputEmail, inputPassword);
-			if (up != null && up.getUSER_ID() != 0) {
-				if (up.getSTATUS() == (GlobalConstants.ACTIVE)) {
+			UserAccount user = UserDAO.verifyLogin(inputEmail, inputPassword);
+			if (user != null && user.getUSER_ID() != 0) {
+				if (user.getSTATUS() == (GlobalConstants.ACTIVE)||user.getSTATUS() == (GlobalConstants.IN_RESET_PASSWORD)) {
 					// khoi tao cookie identify
 					String identify = Utils.prepareRandomString(40);
-					UserDAO.updateIdentify(String.valueOf(up.getUSER_ID()), identify);
+					UserDAO.updateIdentify(String.valueOf(user.getUSER_ID()), identify);
 					DBUtils.storeUserCookie(request, response, identify);
 					HttpSession session = request.getSession(true);
-					session.setAttribute(GlobalConstants.USER_ID, up.getUSER_ID());
-					session.setAttribute(GlobalConstants.USER_NAME, up.getUSERNAME());
-					session.setAttribute("user", up);
+					session.setAttribute(GlobalConstants.USER_ID, user.getUSER_ID());
+					session.setAttribute(GlobalConstants.USER_NAME, user.getUSERNAME());
+					session.setAttribute("score", user.getSCORE());
+					session.setAttribute("user", UserDAO.selectUserById(user.getUSER_ID()));
 					response.sendRedirect("/Prince/Home");
 
 				} else {
-					if (up.getSTATUS() == (GlobalConstants.NEW)) {
+					if (user.getSTATUS() == (GlobalConstants.NEW)) {
 						request.setAttribute(GlobalConstants.MESSAGE,
 								"Tài khoản đang trong quá trình xác thực </br> <a href=\"javascript:history.back()\"> quay lại</a>");
 						request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);

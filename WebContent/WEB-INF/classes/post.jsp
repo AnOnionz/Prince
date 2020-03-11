@@ -41,7 +41,8 @@
 				<div class="container">
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/Home">Trang chủ</a></li>
+							<li class="breadcrumb-item"><a
+								href="${pageContext.request.contextPath}/Home">Trang chủ</a></li>
 							<c:if test="${location==null}">
 								<li class="breadcrumb-item"><a
 									href="${pageContext.request.contextPath}/MyListPost">Quảng
@@ -176,12 +177,10 @@
 												<figcaption style="font-size: 1.4rem; text-align: center;">${view.figure1}</figcaption>
 											</figure>
 
-
 											<p>${view.content1}</p>
 
-
-
 											<h3>${view.subTitle2}</h3>
+
 
 											<figure>
 												<img class="rounded" src="${view.image2}" alt="img"
@@ -300,41 +299,49 @@
 												</video>
 												<div class="contai mb-5 " id="s"
 													style="position: absolute; top: 40%; right: 0; height: auto;">
-													<a href="${view.url}"target="_blank"><span class="pulse-button"
-														id="reciveVideo">${view.score} điểm</span></a>
+													<a href="${view.url}" target="_blank"><span
+														class="pulse-button" id="reciveVideo">${view.score}
+															điểm</span></a>
 												</div>
 												<div class='contai mb-5' id="t"
 													style="position: absolute; top: 40%; right: 0; height: auto;">
 													<span class="pulse-button" id="time"></span>
-												</div>
-												<c:if test="${location!=null}">
-												<script type="text/javascript">
+												</div>												
+									
+											
+		<c:if test="${location!=null}">
+		<script type="text/javascript">
         $(document).ready(function () {
             $("#reciveVideo").click(function(){
-                var postId = ${view.post_id};
-                var userId = ${user_id};
+            	if(${maxview=="yes"}){
+            		swal("Thông báo!", "Bạn đã dùng hết số lần tích điểm hôm nay", "warning");
+            }else{
+        		var postId = ${view.post_id};
+                var userId = ${user_id};	
+                var score = ${view.score};
                 $.ajax({
                     url: 'WatchHistory',
                     type: 'GET',
                     data: {
                     		postId : postId,
-                    		userId : userId
+                    		userId : userId,
+                    		score : score
                     	  },
                     success: function (data) {
-                    	document.getElementById("s").style.display = "none";
-                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");
-                    	 
-                    	
+                   	 	document.getElementById("1").style.display ="none";                   	
+                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");                                	                    	                     	
                     },
                     error: function (e) {
                         console.log(e.message);
                     }
                 });
+        	     	
+            };
             });
         });
  </script>
- </c:if>
-											</figure>
+</c:if>
+</figure>
 			</c:if>
 			<!--  -->
 
@@ -364,7 +371,6 @@
             $("#like").click(function(){
                 var postId = ${view.post_id};
                 var userId = ${user_id};
-                
                 $.ajax({
                     url: 'WatchHistory',
                     type: 'POST',
@@ -383,7 +389,7 @@
             });
         });
  </script>
- </c:if>
+				</c:if>
 				<!-- Symbols -->
 				<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 19"
@@ -452,32 +458,38 @@
 				</div>
 			</div>
 			<c:if test="${location!=null}">
-			<script type="text/javascript">
+				<script type="text/javascript">
         $(document).ready(function () {
             $("#recivePost").click(function(){
-                var postId = ${view.post_id};
+            	if(${maxview=="yes"}){
+            		swal("Thông báo!", "Bạn đã dùng hết số lần tích điểm hôm nay", "warning");
+            }else{
+        		var postId = ${view.post_id};
                 var userId = ${user_id};
+                var score = ${view.score};
                 $.ajax({
                     url: 'WatchHistory',
                     type: 'GET',
                     data: {
                     		postId : postId,
-                    		userId : userId
+                    		userId : userId,
+                    		score : score
                     	  },
                     success: function (data) {
-                    	document.getElementById("1").style.display = "none";
-                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");
-                    	 
-                    	
+                    	document.getElementById("1").style.display = "none";                   	
+                    	swal("Chúc mừng!", "Bạn đã nhận được ${view.score} điểm", "success");                                	                    	                     	
                     },
                     error: function (e) {
                         console.log(e.message);
                     }
                 });
+        	     	
+            };
             });
         });
  </script>
- </c:if>
+
+			</c:if>
 		</c:if>
 		</article>
 

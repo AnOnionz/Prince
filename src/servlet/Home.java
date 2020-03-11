@@ -37,7 +37,11 @@ public class Home extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// xoa file nhung bai viet khong con ton tai	
+		try {
 		Utils.deleteOldFile();
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
     		RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/WEB-INF/classes/home.jsp");
  	       dispatcher.forward(request, response);
     	

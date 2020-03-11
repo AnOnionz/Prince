@@ -68,6 +68,7 @@ public class CreatePostStep2 extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		//deleteOrder
 		HttpSession session = request.getSession(true);
 		try {
 		int index = Integer.parseInt(request.getParameter("index"));

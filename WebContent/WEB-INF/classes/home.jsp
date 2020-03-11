@@ -87,6 +87,7 @@ video::-webkit-media-controls-current-time-display {
 				 postPresent = PostDAO.selectPostPresent(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));		
 				 postRandom = PostDAO.selectRandomPost(String.valueOf(request.getSession().getAttribute(GlobalConstants.USER_ID)));
 			}catch(Exception e){
+				
 			}%>
 		<div class="recent-news-wrapper section-gap p-t-xs-15 p-t-sm-60">
 			<div class="container">
@@ -160,7 +161,7 @@ video::-webkit-media-controls-current-time-display {
 							for(int i = 1 ; i< postPresent.size(); i++){ %>
 								<div class="media post-block m-b-xs-30">
 									<a class="align-self-center"><img
-										id="view<%=postPresent.get(i).getPost_id()%>"
+										id="view<%=postPresent.get(i).getPost_id()%>" height="100px" style="object-fit: fill;"
 										class=" m-r-xs-30" src="<%=postPresent.get(i).getImage()%>"
 										alt="Ảnh bìa"></a>
 									<div class="media-body">
@@ -233,7 +234,7 @@ video::-webkit-media-controls-current-time-display {
 							id="view<%=videoPresent.get(0).getPost_id()%>">
 							<a class="d-block h-100"> <span
 								class="video-play-btn video-play-btn__small"></span> <video
-									class="plyr-post postVideo" preload="metadata"
+									class="plyr-post postVideo" preload="true"
 									style="object-fit: contain;"
 									src="<%=videoPresent.get(0).getVideo()%>" controls="false">
 									<source src="video.mp4#t=1" type="video/mp4">
@@ -293,14 +294,13 @@ video::-webkit-media-controls-current-time-display {
 						<div class="axil-content">
 							<% if(postPresent.size()>2){
 							for(int i = 1 ; i< videoPresent.size(); i++){ %>
-
 							<div
 								class="media post-block post-block__small post-block__on-dark-bg m-b-xs-30"
 								id="view<%=videoPresent.get(i).getPost_id()%>">
 								<a class="align-self-center"> <span
 									class="video-play-btn video-play-btn__small"></span> <video
 										class="plyr-post postVideo" preload="metadata"
-										style="object-fit: cover; width:;" height="140px"
+										style="object-fit: cover; height="140px"
 										width="190px" src="<%=videoPresent.get(i).getVideo()%>"
 										controls="false">
 										<source src="video.mp4#t=1" type="video/mp4">
@@ -377,7 +377,7 @@ video::-webkit-media-controls-current-time-display {
 						%>
 							<div class="media post-block post-block__mid m-b-xs-30">
 								<a class="align-self-center"><img class=" m-r-xs-30"
-									src="<%=item.getImage()%>" alt="ảnh bìa" id="view<%=item.getPost_id()%>"></a>
+									src="<%=item.getImage()%>" alt="ảnh bìa" height="160px" id="view<%=item.getPost_id()%>"></a>
 								<div class="media-body">
 									<div class="post-cat-group m-b-xs-10">
 										<a class="post-cat cat-btn bg-color-blue-one"><%=item.getCategoryName() %></a>
@@ -396,7 +396,7 @@ video::-webkit-media-controls-current-time-display {
 							</div>
 							<%}else{ %>
 							<div class="media post-block post-block__mid m-b-xs-30">
-								<video class="plyr-post postVideo pr-5" preload="metadata" id="view<%=item.getPost_id()%>"
+								<video class="plyr-post postVideo pr-5" preload="true" id="view<%=item.getPost_id()%>"
 									style="object-fit: contain; width:;" height="160px"
 									width="320px" src="<%=item.getVideo()%>" controls="false">
 									<source src="video.mp4#t=1" type="video/mp4">

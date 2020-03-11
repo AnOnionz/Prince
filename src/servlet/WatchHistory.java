@@ -6,9 +6,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.websocket.Session;
 
 import beans.Post;
 import beans.PostDAO;
+import beans.UserDAO;
 import beans.WatchHistoryDAO;
 
 /**
@@ -33,12 +37,19 @@ public class WatchHistory extends HttpServlet {
 		//update click
 		int postId = Integer.parseInt(request.getParameter("postId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
+		int score = Integer.parseInt(request.getParameter("score"));
 		WatchHistoryDAO.updateClick(userId, postId);
+		if(!WatchHistoryDAO.maxWatchHistory()) {
+			request.getSession().setAttribute("maxview", "yes");
+		}else {
+			UserDAO.updateScore(userId,UserDAO.selectUserById(userId).getSCORE()+score);
+			
+		}
 		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//update vote
+		//update voted, watched
 		int postId = Integer.parseInt(request.getParameter("postId"));
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		WatchHistoryDAO.updateVote(userId, postId);

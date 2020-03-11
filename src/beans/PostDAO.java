@@ -332,7 +332,7 @@ public class PostDAO {
 		Post post = null;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("select * from (post inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 1 and startdate <= now() and enddate >= now() order by startdate desc limit 5) p on post.post_id != p.post_id) inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 2 and startdate <= now() and enddate >= now() order by startdate desc limit 5) v on v.post_id != post.post_id ORDER BY RAND() LIMIT 8"); 
+			ps = conn.prepareStatement("select * from (post inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 1 and startdate <= now() and enddate >= now() order by startdate desc limit 5) p on post.post_id != p.post_id) inner join (select * from post where post_id not in (select post_id from tmdt.watch_history where user_id = ? and post_id = post_id and isclick = 1) and status = 1 and format = 2 and startdate <= now() and enddate >= now() order by startdate desc limit 5) v on v.post_id != post.post_id ORDER BY RAND() LIMIT 10"); 
 			ps.setString(1, userId);
 			ps.setString(2, userId);
 			res = ps.executeQuery();
@@ -504,15 +504,44 @@ public class PostDAO {
 		}
 		return id;
 	}
+	public static boolean updatePost(Post post, int status) throws Exception {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		int i = 0;
+		try {
+			conn = MySQLConnUtils.getMySQLConnection();
+			ps = conn.prepareStatement("update post set status = ?, created_time = ?, enddate = ?, cost = ?, cost_per_click = ?, click= 0, visiter = 0, vote = 0, score= ? where post_id = ?");
+			ps.setInt(1,status);
+			ps.setTimestamp(2, Timestamp.valueOf(LocalDateTime.now()));
+			ps.setDate(3,post.getEndDate());
+			ps.setInt(4, post.getCost());
+			ps.setDouble(5, post.getCostPerClick());
+			ps.setInt(6, post.costPerClick());
+			ps.setInt(7, post.getPost_id());
+			i = ps.executeUpdate();
+			MySQLConnUtils.close(conn, ps);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.getMessage();
+			MySQLConnUtils.close(conn, ps);
+			return false;
+			
+		}
+		if(i>0) {
+			return true;
+		}
+		return false;
+	}
 	public static boolean updatePost(int id, int status) {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		int i = 0;
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
-			ps = conn.prepareStatement("update post set status = ? where post_id = ?");
+			ps = conn.prepareStatement("update post set status = ?, created_time = ? where post_id = ?");
 			ps.setInt(1,status);
-			ps.setInt(2,id);
+			ps.setTimestamp(2,Timestamp.valueOf(LocalDateTime.now()));
+			ps.setInt(3,id);
 			i = ps.executeUpdate();
 			MySQLConnUtils.close(conn, ps);
 			
@@ -587,6 +616,7 @@ public class PostDAO {
 		//System.out.println(PostDAO.selectFileUrl());
 		//System.out.println(selectPostById("91"));
 		System.out.println(selectRandomPost("12"));
+		//updatePost(80, 5);
 		
 	}
 }

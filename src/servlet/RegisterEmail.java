@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 import  util.MailUtil;
+import beans.AttendanceDAO;
 import beans.UserAccount;
 import  beans.UserDAO;
 
@@ -71,6 +72,9 @@ public class RegisterEmail extends HttpServlet {
 		    		// create account if email not exists
 		    		try {
 		    		String id = UserDAO.insertRow(up);
+		    		AttendanceDAO.insertRow(Integer.parseInt(id)); 
+		    		//
+		    		AttendanceDAO.insertToLuckyWheel(Integer.parseInt(id)); 
 		    		MailUtil.sendEmailRegistrationLink(id, email, hash);
 		    		request.setAttribute(GlobalConstants.MESSAGE, "đăng ký hoàn tất, vui lòng kiểm tra Email của bạn");
 					request.getRequestDispatcher("/WEB-INF/classes/messagetouser.jsp").forward(request, response);	

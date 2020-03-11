@@ -1,6 +1,8 @@
 package beans;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.mysql.cj.jdbc.Blob;
@@ -195,9 +197,25 @@ public class UserAccount {
 	public void setIDENTIFY(String iDENTIFY) {
 		IDENTIFY = iDENTIFY;
 	}
+	public static int getDay(String date) throws ParseException {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		int day = f.parse(date).getDate();
+		return day;
+	}
+	
+	public static int getMonth(String date) throws ParseException {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		int month = f.parse(date).getMonth();
+		return month;
+	}
+	public static int getYear(String date) throws ParseException {
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+		int year = f.parse(date).getYear();
+		return year;
+	}
 	 @Override
 	    public String toString()
 	    {
-	        return "ClassPojo [USER_ID = "+USER_ID+", EMAIL = "+EMAIL+", USERNAME = "+USERNAME+", EMAIL_VERIFICATION_HASH = "+EMAIL_VERIFICATION_HASH+", EMAIL_VERIFICATION_ATTEMPTS = "+EMAIL_VERIFICATION_ATTEMPTS+", PASSWORD = "+PASSWORD+", STATUS = "+STATUS+", CREATED_TIME = "+CREATED_TIME+", ROLE_ID = "+ROLE_ID+"]";
+	        return "ClassPojo [USER_ID = "+USER_ID+", EMAIL = "+EMAIL+", USERNAME = "+USERNAME+", EMAIL_VERIFICATION_HASH = "+EMAIL_VERIFICATION_HASH+", EMAIL_VERIFICATION_ATTEMPTS = "+EMAIL_VERIFICATION_ATTEMPTS+", PASSWORD = "+PASSWORD+", STATUS = "+STATUS+", CREATED_TIME = "+CREATED_TIME+", ROLE_ID = "+ROLE_ID+", SCORE = "+ SCORE +"]";
 	    }
 }

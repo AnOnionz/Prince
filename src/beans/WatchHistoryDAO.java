@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import conn.MySQLConnUtils;
 
@@ -81,6 +83,44 @@ public class WatchHistoryDAO {
 			return true;
 		}
 		return false;
+	}
+	public static boolean maxWatchHistory() {
+		LocalDate date = LocalDate.now();
+		String sday = date + " 00:00:00 ";
+		String eday = date.plusDays(1) + " 00:00:00 "; 
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet res = null;
+		int watched = 0;
+		try {
+			conn = MySQLConnUtils.getMySQLConnection();
+			ps = conn.prepareStatement("SELECT count(post_id) from tmdt.watch_history where isclick = 1 and created_time > ? and created_time < ?");	
+			ps.setString(1,sday);
+			ps.setString(2,eday);
+			res = ps.executeQuery();
+			if (res != null) {
+				while (res.next()) {
+					watched = res.getInt(1);
+					System.out.println(watched);
+				}
+				
+			}
+			MySQLConnUtils.close(conn, ps);
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.getMessage();
+			MySQLConnUtils.close(conn, ps);
+			return false;
+			
+		}
+		if(watched > 10) {
+			//maximum
+			return false;
+		}
+		return true;
+	}
+	public static void main(String[] args) {
+		WatchHistoryDAO.maxWatchHistory();
 	}
 	
 

@@ -114,7 +114,7 @@ public class Comment {
 	}
 	public static void main(String[] args) throws ParseException {
 		Comment c = new Comment();
-		java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2019-11-29 16:00:00.0");
+		java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf("2019-12-05 17:39:45");
 		c.setCreate_time(timestamp);
 		System.out.println(c.getStringTime());
 	}

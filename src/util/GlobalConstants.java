@@ -16,6 +16,8 @@ package util;
 		public static final int RESET_PASSWORD = 3;
 		public static final int ACTIVATION = 4;
 		public static final int DELETED = 5;
+		public static final int SUCCESS = 6;
+		public static final int FAIL = 7;
 		public static final String YES = "yes";
 		public static final String USER_NAME = "userName";
 		

@@ -49,24 +49,25 @@ public class Authen implements Filter {
 	    		 ||servletPath.equals("/ChangePassword")) {
 	            chain.doFilter(req, resp);
 	            return;
+	      }else{
+	    	  if(identify == null|| user == null) {
+		    		 resp.sendRedirect("/Prince/Logout");
+		    		 return;
+		     }else {
+		    	 if(user.getROLE_ID()==1 && servletPath.equals("/MyListPost")) {
+			    	 resp.sendRedirect("/Prince/Create?step=1");
+			    	 return;
+			     }
+		     }  
 	      }
-	     if(identify == null || user == null) {
-	    		 resp.sendRedirect("/Prince/Login");
-	    		 return;
-	     }
-	     if(user.getROLE_ID()==1 && servletPath.equals("/MyListPost")) {
-	    	 resp.sendRedirect("/Prince/Create?step=1");
-	    	 return;
-	    	 
-	     }
+	          
 		chain.doFilter(request, response);
 	}
 
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+		
+		
 	}
 
 }

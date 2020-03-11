@@ -5,11 +5,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 
 import conn.MySQLConnUtils;
+import util.BCrypt;
 import util.GlobalConstants;
 import util.Utils;
 
@@ -278,7 +281,7 @@ public class UserDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			ps = conn.prepareStatement(
-					"select user_id, username, email, status, created_time, role_id, password from user where email =? and password =?");
+					"select user_id, username, email, status, created_time, role_id, password, score from user where email =? and password =?");
 			ps.setString(1, inputEmail);
 			ps.setString(2, inputPassword);
 			res = ps.executeQuery();
@@ -292,6 +295,7 @@ public class UserDAO {
 					user.setCREATED_TIME(res.getTimestamp(5));
 					user.setROLE_ID(res.getInt(6));
 					user.setPASSWORD(res.getString(7));
+					user.setSCORE(res.getInt(8));
 				}
 			}
 
@@ -428,7 +432,7 @@ public class UserDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			ps = conn.prepareStatement(
-					"select user_id, username, email, email_verification_hash, email_verification_attempts, status, created_time, role_id from user where email = ?");
+					"select user_id, username, status, created_time, firstname, lastname, gender, date_of_birth, age, score, code, payment, avatar, role_id, identify from user where email = ?");
 			ps.setString(1, inputEmail);
 			res = ps.executeQuery();
 			if (res != null) {
@@ -436,12 +440,20 @@ public class UserDAO {
 					user = new UserAccount();
 					user.setUSER_ID(res.getInt(1));
 					user.setUSERNAME(res.getNString(2));
-					user.setEMAIL(res.getString(3));
-					user.setEMAIL_VERIFICATION_HASH(res.getString(4));
-					user.setEMAIL_VERIFICATION_ATTEMPTS(res.getInt(5));
-					user.setSTATUS(res.getInt(6));
-					user.setCREATED_TIME(res.getTimestamp(7));
-					user.setROLE_ID(res.getInt(8));
+					user.setSTATUS(res.getInt(3));
+					user.setCREATED_TIME(res.getTimestamp(4));
+					user.setFIRSTNAME(res.getNString(5));
+					user.setLASTNAME(res.getNString(6));
+					user.setGENDER(res.getNString(7));
+					user.setDATEOFBIRTH(res.getDate(8));
+					user.setAGE(res.getInt(9));
+					user.setSCORE(res.getInt(10));
+					user.setCODE(res.getString(11));
+					user.setPAYMENT(res.getString(12));
+					user.setAVATAR(res.getString(13));
+					user.setROLE_ID(res.getInt(14));
+					user.setIDENTIFY(res.getString(15));
+					user.setEMAIL(res.getString(16));
 				}
 			}
 			MySQLConnUtils.close(conn, ps, res);
@@ -460,18 +472,28 @@ public class UserDAO {
 		try {
 			conn = MySQLConnUtils.getMySQLConnection();
 			ps = conn.prepareStatement(
-					"select username, email, status, created_time, role_id, avatar from user where user_id = ?");
+					"select user_id, username, status, created_time, firstname, lastname, gender, date_of_birth, age, score, code, payment, avatar, role_id, identify, email from user where user_id = ?");
 			ps.setInt(1, id);
 			res = ps.executeQuery();
 			if (res != null) {
 				while (res.next()) {
 					user = new UserAccount();
-					user.setUSERNAME(res.getNString(1));
-					user.setEMAIL(res.getString(2));
+					user.setUSER_ID(res.getInt(1));
+					user.setUSERNAME(res.getNString(2));
 					user.setSTATUS(res.getInt(3));
 					user.setCREATED_TIME(res.getTimestamp(4));
-					user.setROLE_ID(res.getInt(5));
-					user.setAVATAR(res.getString(6));
+					user.setFIRSTNAME(res.getNString(5));
+					user.setLASTNAME(res.getNString(6));
+					user.setGENDER(res.getNString(7));
+					user.setDATEOFBIRTH(res.getDate(8));
+					user.setAGE(res.getInt(9));
+					user.setSCORE(res.getInt(10));
+					user.setCODE(res.getString(11));
+					user.setPAYMENT(res.getString(12));
+					user.setAVATAR(res.getString(13));
+					user.setROLE_ID(res.getInt(14));
+					user.setIDENTIFY(res.getString(15));
+					user.setEMAIL(res.getString(16));
 				}
 			}
 			MySQLConnUtils.close(conn, ps, res);
@@ -482,7 +504,52 @@ public class UserDAO {
 		}
 		return user;
 	}
-	
+	public static UserAccount updateScore(int userId, int score) {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		UserAccount user = null;
+		try {
+			conn = MySQLConnUtils.getMySQLConnection();
+			ps = conn.prepareStatement("update user set score = ? where user_id = ?");
+			ps.setInt(1, score);
+			ps.setInt(2, userId);
+			ps.executeUpdate();
+			MySQLConnUtils.close(conn, ps);
+			user = selectUserById(userId);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.getMessage();
+			MySQLConnUtils.close(conn, ps);
+		}
+		return user;
+	}
+	//Thay đổi thông tin user
+		public void updateInformation(String userId, String firstname, String lastname, String birthday, String gender, String avatar) throws ParseException {
+			Connection conn = null;
+			PreparedStatement ps = null;
+			try {
+				conn = MySQLConnUtils.getMySQLConnection();
+				ps = conn.prepareStatement("update user set firstname = ? , lastname = ? , date_of_birth = ? , gender = ? ,avatar =? where user_id = ?");
+				ps.setString(1, firstname);
+				ps.setString(2, lastname);
+				
+				int day = UserAccount.getDay(birthday);
+				int month = UserAccount.getMonth(birthday);
+				int year = UserAccount.getYear(birthday);	
+				Date date = new Date(year, month, day);
+				
+				ps.setDate(3, date);
+				ps.setString(4, gender);
+				ps.setString(5, avatar);
+				ps.setString(6, userId);
+				
+				ps.executeUpdate();
+				MySQLConnUtils.close(conn, ps);
+			} catch (ClassNotFoundException | SQLException e) {
+				e.getMessage();
+				MySQLConnUtils.close(conn, ps);
+			}
+		}
+		
 
 	public static void main(String[] args) throws ParseException {
 		UserDAO ud = new UserDAO();
@@ -490,13 +557,11 @@ public class UserDAO {
 		user.setUSERNAME("aauqqq");
 		user.setEMAIL("aaqq@gmail.com");
 		user.setPASSWORD("weqe");
-		java.util.Date date = new java.util.Date();
-		java.sql.Timestamp timestamp = new java.sql.Timestamp(date.getTime());
-		user.setCREATED_TIME(timestamp);
+		user.setCREATED_TIME(Timestamp.valueOf(LocalDateTime.now()));
 		user.setEMAIL_VERIFICATION_HASH("eeww");
 		user.setSTATUS(0);
 		user.setCODE(Utils.prepareRandomString(8));
-		user.setSCORE(0);
+		user.setSCORE(10000);
 		user.setROLE_ID(1);
 		String date2 = "2018-9-2";
 		user.setDATEOFBIRTH(Date.valueOf("2019-2-2"));
@@ -504,6 +569,7 @@ public class UserDAO {
 		// System.out.println(verifyLogin("an170998.22@gmail.com",
 		// "$2a$10$DOWSDz/CyKaJ40hslrk5fe0bsQa.Lg7u5LXl6uYx.b3bxaDaPM7Xm"));
 		//System.out.println(selectUSER("12"));
-		System.out.println(UserDAO.selectUserById(12));
+		UserDAO.updateScore(27,UserDAO.selectUserById(27).getSCORE()+10);
+		//System.out.println(ud.verifyLogin("an170998.22@gmail.com", BCrypt.hashpw("123456", GlobalConstants.SALT)).getSCORE());
 	}
 }

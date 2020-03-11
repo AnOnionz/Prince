@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import beans.PostDAO;
 import beans.TiGia;
@@ -46,14 +47,23 @@ public class Utils {
 		s = s.replace("(", "");
 		s = s.replace(")", "");
 		Gson gs = new Gson();
-		TiGia dstg = gs.fromJson(s, TiGia.class);
-		for (item list : dstg.items) {
-			if (list.getType().equalsIgnoreCase("USD")) {
-				return Integer.parseInt(list.getMuack());
-			}
+		try
+		{
+			TiGia dstg = gs.fromJson(s, TiGia.class);
+			for (item list : dstg.items) {
+				//USD to VND
+				if (list.getType().equalsIgnoreCase("USD")) {
+					return Integer.parseInt(list.getMuack());
+				}
 
+			}
 		}
-		return 23000;
+		catch (IllegalStateException | JsonSyntaxException exception)
+		{
+		
+		
+		}
+		return 23220;
 
 	}
 
@@ -82,7 +92,7 @@ public class Utils {
 
 	public static void main(String args[]) throws Exception {
 		// System.out.println(BCrypt.gensalt());
-		//System.out.println(getRateUSD());
-		deleteOldFile();
+		System.out.println(getRateUSD());
+		//deleteOldFile();
 	}
 }

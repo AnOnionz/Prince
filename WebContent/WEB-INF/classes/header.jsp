@@ -26,14 +26,19 @@
 <title></title>
 <!-- links for favicon
     	======================================== -->
-	<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="assets/favicon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
-	<link rel="manifest" href="assets/favicon/manifest.json">
-	<meta name="msapplication-TileColor" content="#ffffff">
-	<meta name="msapplication-TileImage" content="assets/favicon/ms-icon-144x144.png">
-	<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" sizes="192x192"
+	href="assets/favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="assets/favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="assets/favicon/favicon-16x16.png">
+<link rel="manifest" href="assets/favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage"
+	content="assets/favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
 <!-- Icon fonts
     	======================================== -->
 <link
@@ -41,11 +46,16 @@
 	rel="stylesheet">
 <link rel="stylesheet" type="text/css"
 	href="assets/css/fontawesome-all.min.css">
-	<link rel="stylesheet" type="text/css"
+<link rel="stylesheet" type="text/css"
 	href="assets/css/vendor/tippy.css">
 <link rel="stylesheet" type="text/css" href="assets/css/iconfont.css">
 <!-- css links
-    	======================================== -->
+	======================================== -->
+<link rel="stylesheet" type="text/css"
+	href="assets/luckywheelcss/luckywheel-notification.css">
+<script type="text/javascript"
+	src="assets/luckywheeljs/jquery-3.4.1.min.js"></script>
+<script type="text/javascript" src="assets/luckywheeljs/luckywheel.js"></script>
 <!-- Bootstrap link -->
 <link rel="stylesheet" type="text/css"
 	href="assets/css/vendor/bootstrap.min.css">
@@ -61,8 +71,7 @@
 <!-- Custom css -->
 <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 <style type="text/css">
-
-  @import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
+@import url("//unpkg.com/element-ui@2.12.0/lib/theme-chalk/index.css");
 
 .navbar-inner {
 	height: fit-content;
@@ -95,27 +104,27 @@
 	/*Without this, clicking will make it sticky*/
 	pointer-events: none;
 }
-	html {
-    overflow: scroll;
-    overflow-x: hidden;
+
+html {
+	overflow: scroll;
+	overflow-x: hidden;
 }
+
 ::-webkit-scrollbar {
-    width: 0px;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+	width: 0px; /* Remove scrollbar space */
+	background: transparent; /* Optional: just make scrollbar invisible */
 }
 /* Optional: show position indicator in red */
 ::-webkit-scrollbar-thumb {
-    background: #FF0000;
+	background: #FF0000;
 }
 </style>
 </head>
 
 <body>
-<div id="app">
-<template>
-  
-</template>
-</div>
+	<div id="app">
+		<template> </template>
+	</div>
 	<!--[if lte IE 9]>
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
     <![endif]-->
@@ -179,10 +188,11 @@
 					<div class="col-md">
 						<ul
 							class="header-top-nav list-inline justify-content-center justify-content-md-start">
-							<li class="current-date">25 July, 2019</li>
+							<li class="current-date">10 tháng 1, 2020</li>
 							<li><a href="#">Tiện ích</a></li>
-							<li><a href="${pageContext.request.contextPath}/About">Giới thiệu</a></li>
-							<li><a href="contact.html">Trợ giúp</a></li>
+							<li><a href="${pageContext.request.contextPath}/About">Giới
+									thiệu</a></li>
+							<li><a href="#">Trợ giúp</a></li>
 						</ul>
 						<!-- End of .header-top-nav -->
 					</div>
@@ -201,39 +211,62 @@
 		</div>
 		<nav class="navbar bg-white">
 			<div class="container">
-			
+
 				<div class="navbar-inner d-flex justify-content-end ">
 					<div class="brand-logo-container mr-auto">
 						<a href="${pageContext.request.contextPath}/Home"> <img
 							src="assets/images/prince.png" alt="" class="brand-logo">
 						</a>
 					</div>
-					
+
 					<div class="main-nav-wrapper ">
+						<%
+							if (request.getAttribute("lw_err") != null) {
+								out.print(
+										"<div class=\"notification\"><div class=\"congratulation__container\"><div class=\"notification__close\"><i class=\"fas fa-times\"></i></div><div class=\"congratulation__emotion\"><i class=\"fas fa-smile\"></i></div><p class=\"congratulation__note\">"
+												+ (String) request.getAttribute("lw_err") + "</p></div></div>");
+
+							}
+						%>
+
 						<ul class="main-navigation list-inline" id="main-menu">
 
-							<li><a href="#">Thông báo</a></li>
-							<li><a href="${pageContext.request.contextPath}/Contact">Liên hệ</a></li>
+							<li><a href="${pageContext.request.contextPath}/Contact">Liên
+									hệ</a></li>
 							<li><a
 								href="${pageContext.request.contextPath}/Create?step=1">Đăng
 									tin</a>
+									</li>
 							<li class="has-dropdown"><div class="dropdown"
 									id="dropdownUser">
-									<i id="user" class="far fa-user"></i>
-									${userName}
+									<i id="user" class="far fa-user"></i> ${userName}
+
 									<div class="dropdown-menu" aria-labelledby="dropdownUser">
-										<a class="dropdown-item" href="#">Tài khoản của tôi</a> <a
-											class="dropdown-item"
-											href="${pageContext.request.contextPath}/MyListPost">Quảng
-											cáo của tôi</a> <a class="dropdown-item"
+										<a class="dropdown-item"
+											href="${pageContext.request.contextPath}/userProfile">Tài
+											khoản của tôi</a> 
+											<c:if test="${user.ROLE_ID == 2}">
+											<a class="dropdown-item"
+												href="${pageContext.request.contextPath}/MyListPost">Quảng
+												cáo của tôi</a>
+										</c:if>
+											<a class="dropdown-item"
+											href="${pageContext.request.contextPath}/Attendance">Điểm
+											danh</a>
+										
+										<a class="dropdown-item"
+											href="${pageContext.request.contextPath}/LuckyWheelDay">Vòng
+											Quay May Mắn</a> <a class="dropdown-item"
 											href="${pageContext.request.contextPath}/Logout">Đăng
 											xuất</a>
+
+
 									</div>
 								</div></li>
 						</ul>
 						<!-- End of .main-navigation -->
 					</div>
-				
+
 					<!-- End of .main-nav-toggler -->
 				</div>
 				<!-- End of .navbar-inner -->
@@ -247,7 +280,7 @@
     	======================================= -->
 	<!-- jQuery -->
 	<script src="//unpkg.com/vue/dist/vue.js"></script>
-<script src="//unpkg.com/element-ui@2.12.0/lib/index.js"></script>
+	<script src="//unpkg.com/element-ui@2.12.0/lib/index.js"></script>
 	<script src="assets/js/vendor/jquery.min.js"></script>
 	<script src="assets/js/vendor/jquery-migrate.min.js"></script>
 	<!-- jQuery Easing Plugin -->
@@ -277,7 +310,7 @@
 	<script src="assets/js/main.js"></script>
 </body>
 <c:if test="${!empty(notify)}">
-<script type="text/javascript">
+	<script type="text/javascript">
 var Main = {
 		methods: {
 			  open1() {

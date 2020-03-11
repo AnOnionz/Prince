@@ -54,11 +54,15 @@ public class CreatePostStep3 extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		createPayment(req, resp);
+		try {
+			createPayment(req, resp);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Notify.createNotify("Thanh toán thành công","chuyển đến danh sách quảng cáo của bạn", "success","false", req, resp);
 		resp.sendRedirect("/Prince/MyListPost");
 	}
-	public Payment createPayment(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public Payment createPayment(HttpServletRequest req, HttpServletResponse resp) throws Exception {
 		Payment createdPayment = null;
 		ArrayList<Post> listPayment = (ArrayList<Post>) req.getSession().getAttribute("listPayment");
 		APIContext apiContext = new APIContext(clientID, clientSecret, mode);
@@ -72,7 +76,7 @@ public class CreatePostStep3 extends HttpServlet {
 				req.getSession().setAttribute("stepcompleted", 0);
 				for(Post post:listPayment) {
 					if(post.getExtend()!=0) {
-						PostDAO.updatePost(post.getPost_id(), GlobalConstants.ACTIVE);
+						PostDAO.updatePost(post, GlobalConstants.ACTIVE);
 					}else {
 						if(post.getFormat() == 1) {
 							PostDAO.insertOption1(post);
